@@ -13,16 +13,27 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KinectAirBand
+namespace KinectAirBand.Pages
 {
-    /// <summary>
-    /// MainWindow.xaml 的互動邏輯
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainMenu : UserControl, ISwitchable
     {
-        public MainWindow ()
+        public MainMenu ()
         {
             InitializeComponent();
+        }
+
+        #region ISwitchable Members
+
+        public void UtilizeState (object state)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        private void Button_Click (object sender, RoutedEventArgs e)
+        {
+            Switcher.Switch(new Playing());
         }
     }
 }
