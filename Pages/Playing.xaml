@@ -95,15 +95,11 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Viewbox Grid.RowSpan="2">
-                <Grid Width="1366" Height="768">
-                    <Canvas Name="canvas" ClipToBounds="True">
-                        <Ellipse Canvas.Left="0" Canvas.Top="0" Height="50" Name="leftEllipse"  Width="50" Fill="#FF4D298D" Opacity="1" Stroke="White" />
-                        <Ellipse Canvas.Left="640" Canvas.Top="150" Height="150" Name="rightEllipse"  Width="150" Fill="#FF4D298D" Opacity="1" Stroke="White" />
-                    </Canvas>
-                    <Image Name="Image_Test" Source="{Binding ImageSource}" Stretch="Fill" Width="1366" Height="768"/>
-                    <ctrl:PianoControl x:Name="PianoControl" VerticalAlignment="Center"/>
-                    <Image Source="{Binding BodyImageSource}" Stretch="Fill"/>
-                </Grid>
+            <Grid Width="1366" Height="768">
+                <Image Source="{Binding ImageSource}" Stretch="Fill"/>
+                <ctrl:PianoControl x:Name="PianoControl" VerticalAlignment="Center"/>
+                <Image Source="{Binding BodyImageSource}" Stretch="Fill"/>
+            </Grid>
             </Viewbox>
             <Grid Name="Grid_State" Grid.Row="1" Background="Black" Opacity="0.7">
                 <Grid.ColumnDefinitions>

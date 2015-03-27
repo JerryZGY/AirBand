@@ -101,7 +101,7 @@ namespace KinectAirBand.Controls
                     whiteKeyCount++;
                     key.Width = 47;
                     key.Height = 191;
-                    key.Margin = new Thickness(nextLeft, 0, 0, 0);
+                    Canvas.SetLeft(key, nextLeft);
                     nextLeft += 47;
                     key.SetValue(Canvas.ZIndexProperty, 0);
                 }
@@ -110,7 +110,7 @@ namespace KinectAirBand.Controls
                     key.NoteOffColor = Colors.Black;
                     key.Width = 29.375;
                     key.Height = 119.375;
-                    key.Margin = new Thickness(nextLeft - 14.6875, 0, 0, 0);
+                    Canvas.SetLeft(key, nextLeft - 14.6875);
                     key.SetValue(Canvas.ZIndexProperty, 10);
                 }
                 keys.Add(key);

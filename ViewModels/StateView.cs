@@ -166,7 +166,7 @@ namespace KinectAirBand
 
         public void UpdateStateResult (Body body)
         {
-            RightHandX = ((int)(body.Joints[JointType.HandRight].Position.X * 100 + 80)).ToString("#0.00");
+            RightHandX = body.Joints[JointType.HandRight].Position.X.ToString("#0.00");
             RightHandY = body.Joints[JointType.HandRight].Position.Y.ToString("#0.00");
             RightHandZ = body.Joints[JointType.HandRight].Position.Z.ToString("#0.00");
             LeftHandX = body.Joints[JointType.HandLeft].Position.X.ToString("#0.00");

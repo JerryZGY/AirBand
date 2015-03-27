@@ -39,15 +39,6 @@ namespace KinectAirBand.Pages
         private MultiSourceFrameReader _reader;
         private Body[] _bodies;
         private List<StateView> _stateViewList = null;
-        private readonly Brush handClosedBrush = new SolidColorBrush(Color.FromArgb(128, 255, 0, 0));
-        private readonly Brush handOpenBrush = new SolidColorBrush(Color.FromArgb(128, 0, 255, 0));
-        private readonly Brush handLassoBrush = new SolidColorBrush(Color.FromArgb(128, 0, 0, 255));
-        private readonly Brush trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
-        private readonly Brush inferredJointBrush = Brushes.Yellow;
-        private const double JointThickness = 3;
-        private const double HandSize = 30;
-        private readonly Pen trackedBonePen = new Pen(Brushes.Green, 6);
-        private readonly Pen inferredBonePen = new Pen(Brushes.Gray, 1);
         private DrawingGroup drawingGroup;
         private int displayWidth;
         private int displayHeight;
@@ -87,10 +78,8 @@ namespace KinectAirBand.Pages
                 Grid.SetColumn(contentControl, i);
                 Grid_State.Children.Add(contentControl);
             }
-            var test = PianoControl.cnvPiano.Children[3] as PianoKey;
-            Vector offset = VisualTreeHelper.GetOffset(test);
-            //var test = PianoControl.cnvPiano.Children[0];
-            //var testt = Canvas.GetLeft(test);
+            var test = PianoControl.cnvPiano.Children[10] as PianoKey;
+            var testt = Canvas.GetLeft(test);
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
@@ -161,7 +150,7 @@ namespace KinectAirBand.Pages
                                 }*/
                                 //this.DrawBody(joints, jointPoints, dc);
                                 //dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandLeft], HandSize, HandSize);
-                                dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandRight], HandSize, HandSize);
+                                //dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandRight], HandSize, HandSize);
                                 /*if(jointPoints[JointType.HandRight].X != null && jointPoints[JointType.HandRight].Y != null)
                                 {
                                 Canvas.SetLeft(leftEllipse, jointPoints[JointType.HandRight].X);
@@ -193,121 +182,6 @@ namespace KinectAirBand.Pages
             }
         }
 
-        public static bool CheckCollision (FrameworkElement a, FrameworkElement b)
-        {
-            Rect rect1 = new Rect((double)a.GetValue(Canvas.LeftProperty), (double)a.GetValue(Canvas.TopProperty), a.Width, a.Height);
-            Rect rect2 = new Rect((double)b.GetValue(Canvas.LeftProperty), (double)b.GetValue(Canvas.TopProperty), b.Width, b.Height);
-            return rect1.IntersectsWith(rect2);
-        }
-
-        private void DrawBody (IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext)
-        {
-            // Draw the bones
-
-            // Torso
-            this.DrawBone(joints, jointPoints, JointType.Head, JointType.Neck, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.Neck, JointType.SpineShoulder, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineShoulder, JointType.SpineMid, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineMid, JointType.SpineBase, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineShoulder, JointType.ShoulderRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineShoulder, JointType.ShoulderLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineBase, JointType.HipRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.SpineBase, JointType.HipLeft, drawingContext);
-
-            // Right Arm    
-            this.DrawBone(joints, jointPoints, JointType.ShoulderRight, JointType.ElbowRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.ElbowRight, JointType.WristRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.WristRight, JointType.HandRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.HandRight, JointType.HandTipRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.WristRight, JointType.ThumbRight, drawingContext);
-
-            // Left Arm
-            this.DrawBone(joints, jointPoints, JointType.ShoulderLeft, JointType.ElbowLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.ElbowLeft, JointType.WristLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.WristLeft, JointType.HandLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.HandLeft, JointType.HandTipLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.WristLeft, JointType.ThumbLeft, drawingContext);
-
-            // Right Leg
-            this.DrawBone(joints, jointPoints, JointType.HipRight, JointType.KneeRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.KneeRight, JointType.AnkleRight, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.AnkleRight, JointType.FootRight, drawingContext);
-
-            // Left Leg
-            this.DrawBone(joints, jointPoints, JointType.HipLeft, JointType.KneeLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.KneeLeft, JointType.AnkleLeft, drawingContext);
-            this.DrawBone(joints, jointPoints, JointType.AnkleLeft, JointType.FootLeft, drawingContext);
-
-            // Draw the joints
-            foreach (JointType jointType in joints.Keys)
-            {
-                Brush drawBrush = null;
-
-                TrackingState trackingState = joints[jointType].TrackingState;
-
-                if (trackingState == TrackingState.Tracked)
-                {
-                    drawBrush = this.trackedJointBrush;
-                }
-                else if (trackingState == TrackingState.Inferred)
-                {
-                    drawBrush = this.inferredJointBrush;
-                }
-
-                if (drawBrush != null)
-                {
-                    drawingContext.DrawEllipse(drawBrush, null, jointPoints[jointType], JointThickness, JointThickness);
-                }
-            }
-        }
-
-        private void DrawBone (IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, JointType jointType0, JointType jointType1, DrawingContext drawingContext)
-        {
-            Joint joint0 = joints[jointType0];
-            Joint joint1 = joints[jointType1];
-
-            // If we can't find either of these joints, exit
-            if (joint0.TrackingState == TrackingState.NotTracked ||
-                joint1.TrackingState == TrackingState.NotTracked)
-            {
-                return;
-            }
-
-            // Don't draw if both points are inferred
-            if (joint0.TrackingState == TrackingState.Inferred &&
-                joint1.TrackingState == TrackingState.Inferred)
-            {
-                return;
-            }
-
-            // We assume all drawn bones are inferred unless BOTH joints are tracked
-            Pen drawPen = this.inferredBonePen;
-            if (( joint0.TrackingState == TrackingState.Tracked ) && ( joint1.TrackingState == TrackingState.Tracked ))
-            {
-                drawPen = this.trackedBonePen;
-            }
-
-            drawingContext.DrawLine(drawPen, jointPoints[jointType0], jointPoints[jointType1]);
-        }
-
-        private void DrawHand (HandState handState, Point handPosition, DrawingContext drawingContext)
-        {
-            switch (handState)
-            {
-                case HandState.Closed:
-                    drawingContext.DrawEllipse(this.handClosedBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Open:
-                    drawingContext.DrawEllipse(this.handOpenBrush, null, handPosition, HandSize, HandSize);
-                    break;
-
-                case HandState.Lasso:
-                    drawingContext.DrawEllipse(this.handLassoBrush, null, handPosition, HandSize, HandSize);
-                    break;
-            }
-        }
-
         #region ISwitchable Members
 
         public void UtilizeState (object state)
@@ -320,13 +194,6 @@ namespace KinectAirBand.Pages
         private void Button_Click (object sender, RoutedEventArgs e)
         {
             //Switcher.Switch(new Playing());
-        }
-
-        private void ScalePosition (FrameworkElement element, Joint joint)
-        {
-            Joint scaledJoint = joint.ScaleTo(canvas.ActualWidth, canvas.ActualHeight);
-            Canvas.SetLeft(element, scaledJoint.Position.X);
-            Canvas.SetTop(element, scaledJoint.Position.Y);
         }
     }
 }
