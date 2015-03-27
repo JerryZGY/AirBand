@@ -39,7 +39,6 @@ namespace KinectAirBand.Controls
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.LightGray, 0.0));
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
             InitializeComponent();
-            
         }
 
         public void PressPianoKey()

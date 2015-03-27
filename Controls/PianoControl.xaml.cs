@@ -118,6 +118,16 @@ namespace KinectAirBand.Controls
             }
         }
 
+        public void Send (int id)
+        {
+            if (!keys[id].IsPianoKeyPressed)
+            {
+                if (id < HighNoteID - LowNoteID && id > 0)
+                    keys[id].PressPianoKey();
+
+            }
+        }
+
         public void Send(ChannelMessage message)
         {
             if (message.Command == ChannelCommand.NoteOn &&

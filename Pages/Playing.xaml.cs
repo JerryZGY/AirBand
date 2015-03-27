@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 using KinectAirBand;
+using KinectAirBand.Controls;
 
 namespace KinectAirBand.Pages
 {
@@ -75,7 +76,7 @@ namespace KinectAirBand.Pages
             this.drawingGroup = new DrawingGroup();
             _bodySourceRTB = new RenderTargetBitmap(displayWidth, displayHeight, 96.0, 96.0, PixelFormats.Pbgra32);
             rootGrid = new Grid();
-            _bodyWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight); 
+            _bodyWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
             InitializeComponent();
             DataContext = this;
             for (int i = 0; i < maxBodies; ++i)
@@ -86,6 +87,10 @@ namespace KinectAirBand.Pages
                 Grid.SetColumn(contentControl, i);
                 Grid_State.Children.Add(contentControl);
             }
+            var test = PianoControl.cnvPiano.Children[3] as PianoKey;
+            Vector offset = VisualTreeHelper.GetOffset(test);
+            //var test = PianoControl.cnvPiano.Children[0];
+            //var testt = Canvas.GetLeft(test);
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
@@ -145,13 +150,27 @@ namespace KinectAirBand.Pages
                                     ColorSpacePoint colorSpacePoint = _sensor.CoordinateMapper.MapCameraPointToColorSpace(joints[jointType].Position);
                                     jointPoints[jointType] = new Point(colorSpacePoint.X, colorSpacePoint.Y);
                                 }
+                                //0 ~ 150
+                                PianoControl.Send(( (int)( joints[JointType.HandRight].Position.X * 100 ) ) + 80);
+                                /*switch ((int)(joints[JointType.HandRight].Position.X * 10))
+                                {
+                                    case 0:
+                                        PianoControl.Send()
+                                    default:
+                                        break;
+                                }*/
                                 //this.DrawBody(joints, jointPoints, dc);
                                 //dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandLeft], HandSize, HandSize);
-                                //dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandRight], HandSize, HandSize);
+                                dc.DrawEllipse(this.handClosedBrush, null, jointPoints[JointType.HandRight], HandSize, HandSize);
                                 /*if(jointPoints[JointType.HandRight].X != null && jointPoints[JointType.HandRight].Y != null)
-                                {*/
-                                    Canvas.SetLeft(leftEllipse, jointPoints[JointType.HandRight].X);
-                                    Canvas.SetTop(leftEllipse, jointPoints[JointType.HandRight].Y);
+                                {
+                                Canvas.SetLeft(leftEllipse, jointPoints[JointType.HandRight].X);
+                                Canvas.SetTop(leftEllipse, jointPoints[JointType.HandRight].Y);
+                                var test = PianoControl.cnvPiano.Children[1] as PianoKey;
+                                if (CheckCollision(leftEllipse, test))
+                                {
+                                    Image_Test.Visibility = System.Windows.Visibility.Collapsed;
+                                }*/
                                 //}
                                 //dc.DrawLine(trackedBonePen, jointPoints[JointType.HandLeft], jointPoints[JointType.HandRight]);
                                 /*this.DrawHand(body.HandLeftState, jointPoints[JointType.HandLeft], dc);
@@ -165,13 +184,20 @@ namespace KinectAirBand.Pages
                         rootGrid.Measure(new Size(bodyImage.Width, bodyImage.Height));
                         rootGrid.Arrange(new Rect(0, 0, bodyImage.Width, bodyImage.Height));
                         _bodySourceRTB.Clear();
-                        _bodySourceRTB.Render(canvas);
+                        _bodySourceRTB.Render(rootGrid);
                         _bodySourceRTB.CopyPixels(this.bodyBytespixels, displayWidth * this.bytesPerPixel, 0);
                         _bodyWriteableBitmap.FromByteArray(this.bodyBytespixels);
-                        
+
                     }
                 }
             }
+        }
+
+        public static bool CheckCollision (FrameworkElement a, FrameworkElement b)
+        {
+            Rect rect1 = new Rect((double)a.GetValue(Canvas.LeftProperty), (double)a.GetValue(Canvas.TopProperty), a.Width, a.Height);
+            Rect rect2 = new Rect((double)b.GetValue(Canvas.LeftProperty), (double)b.GetValue(Canvas.TopProperty), b.Width, b.Height);
+            return rect1.IntersectsWith(rect2);
         }
 
         private void DrawBody (IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext)

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:local="clr-namespace:KinectAirBand"
              xmlns:ctrl="clr-namespace:KinectAirBand.Controls"
-             xmlns:c="http://schemas.microsoft.com/kinect/2014"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:properties="clr-namespace:KinectAirBand.Properties"
              mc:Ignorable="d" 
@@ -90,7 +89,6 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <c:KinectRegion Name="KinectRegion">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2.5*" />
@@ -98,11 +96,12 @@
             </Grid.RowDefinitions>
             <Viewbox Grid.RowSpan="2">
                 <Grid Width="1366" Height="768">
-                    <ctrl:PianoControl VerticalAlignment="Center"/>
                     <Canvas Name="canvas" ClipToBounds="True">
                         <Ellipse Canvas.Left="0" Canvas.Top="0" Height="50" Name="leftEllipse"  Width="50" Fill="#FF4D298D" Opacity="1" Stroke="White" />
+                        <Ellipse Canvas.Left="640" Canvas.Top="150" Height="150" Name="rightEllipse"  Width="150" Fill="#FF4D298D" Opacity="1" Stroke="White" />
                     </Canvas>
-                    <Image Source="{Binding ImageSource}" Stretch="Fill" Width="1366" Height="768"/>
+                    <Image Name="Image_Test" Source="{Binding ImageSource}" Stretch="Fill" Width="1366" Height="768"/>
+                    <ctrl:PianoControl x:Name="PianoControl" VerticalAlignment="Center"/>
                     <Image Source="{Binding BodyImageSource}" Stretch="Fill"/>
                 </Grid>
             </Viewbox>
@@ -121,7 +120,5 @@
                     <ImageBrush ImageSource="/KinectAirBand;component/Keyboard.png" Stretch="UniformToFill"/>
                 </Button.Background>
             </Button>
-            
         </Grid>
-    </c:KinectRegion>
 </UserControl>
