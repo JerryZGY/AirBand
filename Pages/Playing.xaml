@@ -95,10 +95,12 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Viewbox Grid.RowSpan="2">
-            <Grid Width="1366" Height="768">
+            <Grid Name="viewGrid" Width="1366" Height="768">
+                <ctrl:PianoControl x:Name="PianoControl"/>
+                <Canvas Name="cnv"/>
                 <Image Source="{Binding ImageSource}" Stretch="Fill"/>
-                <ctrl:PianoControl x:Name="PianoControl" VerticalAlignment="Center"/>
                 <Image Source="{Binding BodyImageSource}" Stretch="Fill"/>
+                <Image Source="{Binding PointImageSource}" Stretch="Fill"/>
             </Grid>
             </Viewbox>
             <Grid Name="Grid_State" Grid.Row="1" Background="Black" Opacity="0.7">
@@ -111,7 +113,9 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
             </Grid>
-            <Button Style="{DynamicResource StartButtonStyle}" VerticalAlignment="Top" Content="Test" FontSize="36">
+            <TextBlock Name="tb1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="50"/>
+            <TextBlock Name="tb2" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="50"/>
+            <Button Style="{DynamicResource StartButtonStyle}" VerticalAlignment="Top" Content="Test" FontSize="36" Visibility="Collapsed">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Keyboard.png" Stretch="UniformToFill"/>
                 </Button.Background>

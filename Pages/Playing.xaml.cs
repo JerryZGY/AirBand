@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Kinect;
 using KinectAirBand;
 using KinectAirBand.Controls;
+using Sanford.Multimedia.Midi;
 
 namespace KinectAirBand.Pages
 {
@@ -35,6 +36,13 @@ namespace KinectAirBand.Pages
                 return _bodyWriteableBitmap;
             }
         }
+        public ImageSource PointImageSource
+        {
+            get
+            {
+                return _pointWriteableBitmap;
+            }
+        }
         private KinectSensor _sensor;
         private MultiSourceFrameReader _reader;
         private Body[] _bodies;
@@ -42,20 +50,23 @@ namespace KinectAirBand.Pages
         private DrawingGroup drawingGroup;
         private int displayWidth;
         private int displayHeight;
-        RenderTargetBitmap bmp;
         Grid rootGrid;
-        Image img;
         Image bodyImage;
         private RenderTargetBitmap _bodySourceRTB;
+        private RenderTargetBitmap _pointSourceRTB;
         private byte[] bodyBytespixels = null;
         private readonly int bytesPerPixel = ( PixelFormats.Bgr32.BitsPerPixel + 7 ) / 8;
         private readonly WriteableBitmap _bodyWriteableBitmap;
+        private readonly WriteableBitmap _pointWriteableBitmap;
+        Line test = new Line() { X1 = 0, Y1 = 0, X2 = 0, Y2 = 344, StrokeThickness = 20, Stroke = Brushes.Red };
+        private OutputDevice outDevice;
+        private int pressedKey = 0;
 
         public Playing ()
         {
             _sensor = KinectSensor.GetDefault();
             _sensor.Open();
-            _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Depth | FrameSourceTypes.Infrared | FrameSourceTypes.Body);
+            _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
             _reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
             FrameDescription colorFrameDescription = _sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             _colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
@@ -66,9 +77,14 @@ namespace KinectAirBand.Pages
             this.bodyBytespixels = new byte[displayWidth * displayHeight * this.bytesPerPixel];
             this.drawingGroup = new DrawingGroup();
             _bodySourceRTB = new RenderTargetBitmap(displayWidth, displayHeight, 96.0, 96.0, PixelFormats.Pbgra32);
+            _pointSourceRTB = new RenderTargetBitmap(displayWidth, displayHeight, 96.0, 96.0, PixelFormats.Pbgra32);
             rootGrid = new Grid();
             _bodyWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
+             _pointWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
+             outDevice = new OutputDevice(0);
             InitializeComponent();
+            cnv.Children.Add(test);
+            Canvas.SetLeft(test, 688);
             DataContext = this;
             for (int i = 0; i < maxBodies; ++i)
             {
@@ -78,8 +94,6 @@ namespace KinectAirBand.Pages
                 Grid.SetColumn(contentControl, i);
                 Grid_State.Children.Add(contentControl);
             }
-            var test = PianoControl.cnvPiano.Children[10] as PianoKey;
-            var testt = Canvas.GetLeft(test);
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
@@ -103,6 +117,24 @@ namespace KinectAirBand.Pages
                 }
             }
 
+            /*using (DepthFrame depthFrame = reference.DepthFrameReference.AcquireFrame())
+            {
+                if (depthFrame != null)
+                {
+                    FrameDescription depthFrameDescription = depthFrame.FrameDescription;
+                    using (KinectBuffer depthBuffer = depthFrame.LockImageBuffer())
+                    {
+                        _colorBitmap.Lock();
+                        if (( depthFrameDescription.Width == this._colorBitmap.PixelWidth ) && ( depthFrameDescription.Height == _colorBitmap.PixelHeight ))
+                        {
+                            colorFrame.CopyConvertedFrameDataToIntPtr(this._colorBitmap.BackBuffer, (uint)( colorFrameDescription.Width * colorFrameDescription.Height * 4 ), ColorImageFormat.Bgra);
+                            _colorBitmap.AddDirtyRect(new Int32Rect(0, 0, _colorBitmap.PixelWidth, _colorBitmap.PixelHeight));
+                        }
+                        _colorBitmap.Unlock();
+                    }
+                }
+            }*/
+
             Boolean dataReceived = false;
 
             using (BodyFrame frame = reference.BodyFrameReference.AcquireFrame())
@@ -123,9 +155,9 @@ namespace KinectAirBand.Pages
                 if (_bodies != null)
                 {
                     int maxBodies = _sensor.BodyFrameSource.BodyCount;
-                    using (DrawingContext dc = this.drawingGroup.Open())
-                    {
-                        dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+                    //using (DrawingContext dc = this.drawingGroup.Open())
+                    //{
+                        //dc.DrawRectangle(Brushes.Transparent, null, new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
                         for (int i = 0; i < maxBodies; ++i)
                         {
                             Body body = _bodies[i];
@@ -139,8 +171,49 @@ namespace KinectAirBand.Pages
                                     ColorSpacePoint colorSpacePoint = _sensor.CoordinateMapper.MapCameraPointToColorSpace(joints[jointType].Position);
                                     jointPoints[jointType] = new Point(colorSpacePoint.X, colorSpacePoint.Y);
                                 }
+                                foreach (PianoKey key in PianoControl.cnvPiano.Children)
+                                {
+                                    /*if (key.IsPianoKeyPressed && body.HandRightState != HandState.Lasso)
+                                    {
+                                        outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, key.NoteID, 127));
+                                        PianoControl.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, key.NoteID, 127));
+                                    }*/
+                                    var toppos = (int)( jointPoints[JointType.HandTipRight].X );
+                                    var keypos = (int)( Canvas.GetLeft(key));
+                                    if (toppos - keypos <= 110 && toppos - keypos >= 0 &&
+                                        body.Joints[JointType.HandTipRight].Position.Y >= 0 &&
+                                        !key.releaseTimer.Enabled
+                                       )
+                                    {
+                                        outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, key.NoteID, 127));
+                                        PianoControl.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, key.NoteID, 127));
+                                        
+                                    }
+                                    /*else if ((int)( jointPoints[JointType.HandRight].X ) - (int)( Canvas.GetLeft(key) + key.Width / 2 ) <= 30 &&
+                                        (int)( jointPoints[JointType.HandRight].X ) - (int)( Canvas.GetLeft(key) + key.Width / 2 ) >= 0 &&
+                                        body.HandRightState != HandState.Open
+                                        )
+                                    {
+                                        outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, pressedKey, 127));
+                                        PianoControl.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, pressedKey, 127));
+                                        pressedKey = 0;
+                                        outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, key.NoteID, 127));
+                                        PianoControl.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, key.NoteID, 127));
+                                    }*/
+                                }
+                                try
+                                {
+                                    Canvas.SetLeft(test, jointPoints[JointType.HandTipRight].X);
+
+                                }
+                                catch (Exception)
+                                {
+
+                                }
+                                //Canvas.SetTop(test, jointPoints[JointType.HandRight].Y);
+                                //dc.DrawEllipse(Brushes.Blue, null, jointPoints[JointType.HandTipRight], 30, 30);
                                 //0 ~ 150
-                                PianoControl.Send(( (int)( joints[JointType.HandRight].Position.X * 100 ) ) + 80);
+                                //PianoControl.Send(( (int)( joints[JointType.HandRight].Position.X * 100 ) ) + 80);
                                 /*switch ((int)(joints[JointType.HandRight].Position.X * 10))
                                 {
                                     case 0:
@@ -166,18 +239,27 @@ namespace KinectAirBand.Pages
                                 this.DrawHand(body.HandRightState, jointPoints[JointType.HandRight], dc);*/
                             }
                         }
-                        this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
+                        //testt = locatableCanvas;
+                        _bodySourceRTB.Clear();
+                        _bodySourceRTB.Render(PianoControl);
+                        _bodySourceRTB.CopyPixels(this.bodyBytespixels, displayWidth * this.bytesPerPixel, 0);
+                        _bodyWriteableBitmap.FromByteArray(this.bodyBytespixels);
+
+                        _pointSourceRTB.Clear();
+                        _pointSourceRTB.Render(cnv);
+                        _pointSourceRTB.CopyPixels(this.bodyBytespixels, displayWidth * this.bytesPerPixel, 0);
+                        _pointWriteableBitmap.FromByteArray(this.bodyBytespixels);
+                        /*this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, this.displayWidth, this.displayHeight));
                         bodyImage = new Image { Source = new DrawingImage(drawingGroup), Width = this.displayWidth, Height = this.displayHeight };
                         rootGrid.Children.Clear();
                         rootGrid.Children.Add(bodyImage);
                         rootGrid.Measure(new Size(bodyImage.Width, bodyImage.Height));
                         rootGrid.Arrange(new Rect(0, 0, bodyImage.Width, bodyImage.Height));
                         _bodySourceRTB.Clear();
-                        _bodySourceRTB.Render(rootGrid);
+                        _bodySourceRTB.Render(testt);
                         _bodySourceRTB.CopyPixels(this.bodyBytespixels, displayWidth * this.bytesPerPixel, 0);
-                        _bodyWriteableBitmap.FromByteArray(this.bodyBytespixels);
-
-                    }
+                        _bodyWriteableBitmap.FromByteArray(this.bodyBytespixels);*/
+                    //}
                 }
             }
         }

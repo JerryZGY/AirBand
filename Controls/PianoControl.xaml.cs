@@ -19,8 +19,8 @@ namespace KinectAirBand.Controls
 {
     public partial class PianoControl : UserControl
     {
-        private const int LowNoteID = 41;
-        private const int HighNoteID = 89;
+        private const int LowNoteID = 52;
+        private const int HighNoteID = 79;
         private delegate void NoteMessageCallback(ChannelMessage message);
         private NoteMessageCallback noteOnCallback;
         private NoteMessageCallback noteOffCallback;
@@ -87,7 +87,62 @@ namespace KinectAirBand.Controls
             };
         }
 
+        public PianoControl (bool test)
+        {
+            noteOnCallback = delegate(ChannelMessage message)
+            {
+                if (message.Data2 > 0)
+                {
+                    keys[message.Data1 - LowNoteID].PressPianoKey();
+                }
+                else
+                {
+                    keys[message.Data1 - LowNoteID].ReleasePianoKey();
+                }
+            };
+
+            noteOffCallback = delegate(ChannelMessage message)
+            {
+                keys[message.Data1 - LowNoteID].ReleasePianoKey();
+            };
+        }
+
         private void CreatePianoKeys()
+        {
+            whiteKeyCount = 0;
+            double nextLeft = 90;
+            for (int i = 0; i < HighNoteID - LowNoteID; i++)
+            {
+                var key = new PianoKey(KeyTypeTable[i + LowNoteID]);
+                key.NoteID = i + LowNoteID;
+                if (KeyTypeTable[key.NoteID] == KeyType.White)
+                {
+                    key.NoteOffColor = Colors.White;
+                    whiteKeyCount++;
+                    key.Width = 110;
+                    key.Height = 191;
+                    Canvas.SetLeft(key, nextLeft);
+                    Canvas.SetTop(key, 100);
+                    nextLeft += 110;
+                    key.SetValue(Canvas.ZIndexProperty, 0);
+                    
+                }
+                else
+                {
+
+                    /*key.NoteOffColor = Colors.Black;
+                    key.Width = 29.375;
+                    key.Height = 119.375;
+                    Canvas.SetLeft(key, nextLeft - 14.6875);
+                    key.SetValue(Canvas.ZIndexProperty, 10);*/
+                }
+                keys.Add(key);
+                cnvPiano.Opacity = 0.7;
+                cnvPiano.Children.Add(key);
+            }
+        }
+
+        public void CreatePianoKeys (Canvas canvas)
         {
             whiteKeyCount = 0;
             double nextLeft = 0;
@@ -113,8 +168,10 @@ namespace KinectAirBand.Controls
                     Canvas.SetLeft(key, nextLeft - 14.6875);
                     key.SetValue(Canvas.ZIndexProperty, 10);
                 }
+                key.Opacity = 0.7;
+                Canvas.SetTop(key, 334);
                 keys.Add(key);
-                cnvPiano.Children.Add(key);
+                canvas.Children.Add(key);
             }
         }
 

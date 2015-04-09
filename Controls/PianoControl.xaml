@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              d:DesignWidth="1316" d:DesignHeight="191">
-        <Grid Width="1316" Height="191" Background="LightBlue">
+        <Grid Width="1366" Height="191">
             <Canvas Name="cnvPiano"/>
-        </Grid>
+            <Canvas Name="cnvEllipse"/>
+    </Grid>
 </UserControl>

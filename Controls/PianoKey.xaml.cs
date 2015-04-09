@@ -28,6 +28,7 @@ namespace KinectAirBand.Controls
         private SolidColorBrush whiteKeyOffBrush = new SolidColorBrush(Colors.White);
         private int noteID = 60;
         public PianoControl.KeyType KeyType { get; set; }
+        public System.Windows.Forms.Timer releaseTimer =  new System.Windows.Forms.Timer() { Interval = 500 };
 
         public PianoKey (PianoControl.KeyType keyType)
         {
@@ -38,6 +39,7 @@ namespace KinectAirBand.Controls
             blackKeyOnBrush = new LinearGradientBrush();
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.LightGray, 0.0));
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+            releaseTimer.Enabled = false;
             InitializeComponent();
         }
 
@@ -48,7 +50,15 @@ namespace KinectAirBand.Controls
                     delegate()
                     {
                         if (keyType == PianoControl.KeyType.White)
+                        {
                             brdInner.Background = whiteKeyOnBrush;
+                            releaseTimer.Enabled = true;
+                            releaseTimer.Tick += (s, e) =>
+                            { 
+                                brdInner.Background = whiteKeyOffBrush;
+                                releaseTimer.Enabled = false;
+                            };
+                        }
                         else
                             brdInner.Background = blackKeyOnBrush;
                     }
