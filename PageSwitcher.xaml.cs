@@ -11,7 +11,7 @@ namespace KinectAirBand
         {
             InitializeComponent();
             Switcher.pageSwitcher = this;
-            Switcher.Switch(new Playing());
+            Switcher.Switch(new MainMenu());
         }
 
         public void Navigate (UserControl nextPage)

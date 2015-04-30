@@ -1,5 +1,5 @@
 ﻿<Window x:Class="KinectAirBand.PageSwitcher"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Kinect Air Band" ResizeMode="NoResize" Width="1310" Height="768">
+        Title="Kinect Air Band" ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized" Width="1366" Height="768" WindowStartupLocation="CenterScreen">
 </Window>
