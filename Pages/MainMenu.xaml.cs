@@ -21,15 +21,7 @@ namespace KinectAirBand.Pages
         public MainMenu ()
         {
             InitializeComponent();
-            Storyboard storyBoard = (Storyboard)this.Resources["StartStoryboard"];
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(0) as DoubleAnimation, Grid_Main);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(1) as DoubleAnimation, Button_2);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(2) as DoubleAnimation, Button_1);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(3) as DoubleAnimation, Button_3);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(4) as DoubleAnimation, Button_0);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(5) as DoubleAnimation, Button_4);
-            Storyboard.SetTarget(storyBoard.Children.ElementAt(6) as DoubleAnimation, Button_Exit);
-            storyBoard.Begin();
+            Grid_Main.Opacity = 0;
         }
 
         #region ISwitchable Members
@@ -48,13 +40,13 @@ namespace KinectAirBand.Pages
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
-            
+            Storyboard storyBoard = ((Storyboard)this.Resources["StartStoryboard"]);
+            storyBoard.Begin();
         }
 
         private void Button_Exit_Click (object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
-
     }
 }
