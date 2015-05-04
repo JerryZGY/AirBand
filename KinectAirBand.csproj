@@ -158,16 +158,16 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\About.png" />
+    <Resource Include="Resources\Logo.png" />
     <Resource Include="Resources\Setting.png" />
     <Resource Include="Resources\Mod.png" />
     <Resource Include="Resources\Share.png" />
     <Resource Include="Resources\Start.png" />
     <Resource Include="Resources\Background.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ResourcesDictionary\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
