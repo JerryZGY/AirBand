@@ -15,21 +15,34 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Button Name="Button_Keyboard" Grid.Column="2" Height="128" Width="128">
+        <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="10" HorizontalAlignment="Center" Opacity="0"/>
+        <Button Name="Button_Ensemble" Content="合奏模式" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Ensemble_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Keyboard.png"/>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Ensemble.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Dashed" Grid.Row="2" Content="選單" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Dashed_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Dashed.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Piano" Grid.Column="5" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="200"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Guitar" Grid.Row="1" Grid.Column="2" Height="128" Width="128">
+        <Button Name="Button_Guitar" Grid.Row="1" Grid.Column="5" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
             </Button.Background>
@@ -37,10 +50,19 @@
                 <TranslateTransform X="200"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Back" Grid.Row="1" Grid.Column="1" Content="返回" Margin="0 0 0 20" Opacity="0" Style="{StaticResource ResourceKey= BackButton}" Click="Button_Back_Click">
+        <Button Name="Button_Drum" Grid.Row="2" Grid.Column="4" Content="鼓" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Drum.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Back" Grid.Row="2" Grid.Column="2" Content="返回" Opacity="0" Style="{StaticResource ResourceKey= BackButton}" Click="Button_Back_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
             </Button.Background>
         </Button>
+        <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
     </Grid>
 </UserControl>

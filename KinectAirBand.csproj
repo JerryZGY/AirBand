@@ -169,10 +169,13 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Single.png" />
+    <Resource Include="Resources\Ensemble.png" />
+    <Resource Include="Resources\Dashed.png" />
+    <Resource Include="Resources\Piano.png" />
     <Resource Include="Resources\BackgroundN.jpg" />
     <Resource Include="Resources\Drum.png" />
     <Resource Include="Resources\Guitar.png" />
-    <Resource Include="Resources\Keyboard.png" />
     <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\About.png" />
     <Resource Include="Resources\Logo.png" />

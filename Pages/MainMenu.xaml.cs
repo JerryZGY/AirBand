@@ -22,6 +22,7 @@ namespace KinectAirBand.Pages
         {
             InitializeComponent();
             Grid_Main.Opacity = 0;
+            this.IsHitTestVisible = false;
         }
 
         #region ISwitchable Members
@@ -41,6 +42,7 @@ namespace KinectAirBand.Pages
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
             Storyboard storyBoard = ((Storyboard)this.Resources["EnterStoryboard"]);
+            storyBoard.Completed += (se, ev) => { this.IsHitTestVisible = true; };
             storyBoard.Begin();
         }
 
@@ -51,6 +53,7 @@ namespace KinectAirBand.Pages
 
         private void Button_Start_Click (object sender, RoutedEventArgs e)
         {
+            this.IsHitTestVisible = false;
             Storyboard storyBoard = ( (Storyboard)this.Resources["ExitStoryboard"] );
             storyBoard.Completed += (se, ev) => { Switcher.Switch(new StartPlaying()); };
             storyBoard.Begin();

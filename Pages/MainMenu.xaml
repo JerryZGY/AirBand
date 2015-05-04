@@ -25,6 +25,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!--<Canvas Background="#FFCFCFCF"/>-->
+
         <Image Grid.ColumnSpan="5" Source="/KinectAirBand;component/Resources/Logo.png" Height="141" Width="250"/>
         <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>
         <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Start_Click">
@@ -67,10 +68,11 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Margin="0 0 0 20" Opacity="0" Style="{StaticResource ResourceKey= ExitButton}" Click="Button_Exit_Click">
+        <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Opacity="0" Style="{StaticResource ResourceKey= ExitButton}" Click="Button_Exit_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
             </Button.Background>
         </Button>
+        <TextBlock Grid.Row="3" Text="主選單" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
     </Grid>
 </UserControl>
