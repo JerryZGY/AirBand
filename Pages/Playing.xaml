@@ -117,7 +117,7 @@
             <TextBlock Name="tb2" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="50"/>
             <Button Style="{DynamicResource StartButtonStyle}" VerticalAlignment="Top" Content="Test" FontSize="36" Visibility="Collapsed">
                 <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Keyboard.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Keyboard.png" Stretch="UniformToFill"/>
                 </Button.Background>
             </Button>
         </Grid>

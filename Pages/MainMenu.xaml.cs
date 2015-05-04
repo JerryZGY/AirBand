@@ -40,13 +40,26 @@ namespace KinectAirBand.Pages
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
-            Storyboard storyBoard = ((Storyboard)this.Resources["StartStoryboard"]);
+            Storyboard storyBoard = ((Storyboard)this.Resources["EnterStoryboard"]);
             storyBoard.Begin();
         }
 
         private void Button_Exit_Click (object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void Button_Start_Click (object sender, RoutedEventArgs e)
+        {
+            Storyboard storyBoard = ( (Storyboard)this.Resources["ExitStoryboard"] );
+            storyBoard.Completed += (se, ev) => { Switcher.Switch(new StartPlaying()); };
+            storyBoard.Begin();
+        }
+
+        private void Button_2_Click (object sender, RoutedEventArgs e)
+        {
+            Storyboard storyBoard = ( (Storyboard)this.Resources["SettingStoryboard"] );
+            storyBoard.Begin();
         }
     }
 }

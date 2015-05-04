@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Storyboard x:Key="StartStoryboard">
+    <Storyboard x:Key="EnterStoryboard">
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:1" BeginTime="0:0:1">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -21,7 +21,7 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_0" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:1" BeginTime="0:0:3">
+        <DoubleAnimation Storyboard.TargetName="Button_Start" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:1" BeginTime="0:0:3">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -32,6 +32,45 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Exit" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" BeginTime="0:0:3.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="SettingStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Button_Exit" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_Start" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_1" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_2" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_3" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_4" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="ExitStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>

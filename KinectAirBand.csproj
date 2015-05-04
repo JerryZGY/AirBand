@@ -83,6 +83,9 @@
       <DependentUpon>PianoKey.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Pages\StartPlaying.xaml.cs">
+      <DependentUpon>StartPlaying.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BodyView.cs" />
     <Compile Include="ViewModels\StateView.cs" />
     <Page Include="Controls\PianoControl.xaml">
@@ -113,6 +116,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Playing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StartPlaying.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\StartPlayingRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +169,10 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\BackgroundN.jpg" />
+    <Resource Include="Resources\Drum.png" />
+    <Resource Include="Resources\Guitar.png" />
+    <Resource Include="Resources\Keyboard.png" />
     <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\About.png" />
     <Resource Include="Resources\Logo.png" />

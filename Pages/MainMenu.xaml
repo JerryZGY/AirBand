@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignWidth="1366" d:DesignHeight="768" Loaded="UserControl_Loaded" Background="Black">
+      d:DesignWidth="1366" d:DesignHeight="768" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <ResourceDictionary Source="MainMenuRes.xaml"/>
     </UserControl.Resources>
@@ -27,7 +27,7 @@
         <!--<Canvas Background="#FFCFCFCF"/>-->
         <Image Grid.ColumnSpan="5" Source="/KinectAirBand;component/Resources/Logo.png" Height="141" Width="250"/>
         <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>
-        <Button Name="Button_0" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}">
+        <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Start_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Start.png"/>
             </Button.Background>
@@ -43,7 +43,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_2" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content="模組" Style="{StaticResource ResourceKey= MenuButton}">
+        <Button Name="Button_2" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content="模組" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_2_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Mod.png"/>
             </Button.Background>
