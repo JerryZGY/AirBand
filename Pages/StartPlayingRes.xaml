@@ -107,6 +107,27 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid Name="Button" Background="#A5FFFFFF">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.States>
+                                    <VisualState Name="Normal">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#A5FFFFFF" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFF09E3B" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFFFFFFF" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup.States>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="2*"/>
                             <RowDefinition Height="*"/>
@@ -115,14 +136,7 @@
                         <Canvas Grid.Row="1" Margin="5" Background="#FF211E1E"/>
                         <ContentPresenter Grid.Row="1" x:Name="contentPresenter" TextBlock.Foreground="#A5FFFFFF" TextBlock.FontSize="28" TextBlock.FontWeight="Bold" TextBlock.FontFamily="華康瘦金體" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="False"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" TargetName="Button" Value="#FFFFFFFF"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -135,6 +149,27 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid Name="Button" Background="#A5FFFFFF">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.States>
+                                    <VisualState Name="Normal">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#A5FFFFFF" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFF09E3B" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFFFFFFF" Duration="0:0:0.01"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup.States>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="3*"/>
@@ -142,14 +177,6 @@
                         <Canvas Margin="10 0 0 0" Height="40" Width="40" Background="{TemplateBinding Background}"/>
                         <ContentPresenter Grid.Column="1" x:Name="contentPresenter" TextBlock.Foreground="#000000" TextBlock.FontSize="28" TextBlock.FontWeight="Bold" TextBlock.FontFamily="華康瘦金體" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="False"/>
                     </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter Property="Background" TargetName="Button" Value="#FFFFFFFF"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

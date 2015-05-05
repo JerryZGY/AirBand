@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="KinectAirBand.Pages.StartPlaying"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:k="http://schemas.microsoft.com/kinect/2014"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
@@ -8,15 +9,17 @@
     <UserControl.Resources>
         <ResourceDictionary Source="StartPlayingRes.xaml"/>
     </UserControl.Resources>
+    <k:KinectRegion x:Name="kinectRegion">
     <Grid Name="Grid_Main" Opacity="1">
-        <Grid.Background>
+        <!--<Grid.Background>
             <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
-        </Grid.Background>
+        </Grid.Background>-->
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Image Grid.RowSpan="3" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
         <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="10" HorizontalAlignment="Center" Opacity="0"/>
         <Button Name="Button_Ensemble" Content="合奏模式" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Ensemble_Click">
             <Button.Background>
@@ -65,4 +68,5 @@
         </Button>
         <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
     </Grid>
+    </k:KinectRegion>
 </UserControl>
