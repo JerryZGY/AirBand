@@ -5,6 +5,13 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectAirBand", "KinectAirBand.csproj", "{8B534FCB-FD0A-45BD-B02B-0B99EA5E6CC7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{42755AC3-44F7-4F7A-88FF-EC6C4C1513EE}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+		Performance2.psess = Performance2.psess
+		Performance3.psess = Performance3.psess
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,5 +22,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

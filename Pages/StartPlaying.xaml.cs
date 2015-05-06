@@ -26,7 +26,7 @@ namespace KinectAirBand.Pages
     /// <summary>
     /// Interaction logic for StartPlaying.xaml
     /// </summary>
-    public partial class StartPlaying : UserControl, ISwitchable
+    public partial class StartPlaying : UserControl, ISwitchable, IDisposable
     {
         public ImageSource ImageSource
         {
@@ -36,33 +36,60 @@ namespace KinectAirBand.Pages
             }
         }
         private WriteableBitmap _colorBitmap = null;
+        private Boolean disposed;
         private Boolean dashed = false;
         private Boolean ensemble = false;
+        private Boolean isLasso = false;
+        private Boolean playing = false;
         private KinectRegion kinectRegion;
         private KinectSensor _sensor;
         private MultiSourceFrameReader _reader;
-        private Boolean isLasso = false;
         private Body[] _bodies;
         private App app = Application.Current as App;
-        private bool playing = false;
         private OutputDevice outDevice;
-        private int outDeviceID = 0;
+        private Int32 outDeviceID = 0;
+        private KinectCoreWindow kinectCoreWindow;
+        private FrameDescription colorFrameDescription;
 
         public StartPlaying ()
         {
             InitializeComponent();
-            Grid_Main.Opacity = 0;
-            this.IsHitTestVisible = false;
-            _sensor = app.KinectSensor;
-            kinectRegion = app.KinectRegion;
-            _sensor.Open();
-            _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
-            _reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
-            FrameDescription colorFrameDescription = _sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
-            _colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
-            KinectCoreWindow kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
-            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
-            outDevice = new OutputDevice(outDeviceID);
+        }
+
+        ~StartPlaying ()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose ()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose (bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                
+            }
+            outDevice.Dispose();
+            _reader.Dispose();
+            outDevice = null;
+            /*kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
+            _colorBitmap = null;
+            kinectRegion = null;
+            _sensor = null;
+            _bodies = null;
+            app = null;
+            kinectCoreWindow = null;
+            _reader = null;
+            colorFrameDescription = null;*/
+
+            disposed = true;
         }
 
         #region ISwitchable Members
@@ -125,12 +152,26 @@ namespace KinectAirBand.Pages
                     }
                 }
             }
+
+            reference = null;
         }
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
+            Grid_Main.Opacity = 0;
+            this.IsHitTestVisible = false;
+            this.disposed = false;
+            _sensor = app.KinectSensor;
+            kinectRegion = app.KinectRegion;
+            kinectCoreWindow = app.KinectCoreWindow;
+            _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+            _reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
+            colorFrameDescription = _sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+            _colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+            outDevice = new OutputDevice(outDeviceID);
             Storyboard storyBoard = ( (Storyboard)this.Resources["EnterStoryboard"] );
-            storyBoard.Completed += (se, ev) => { this.IsHitTestVisible = true; };
+            storyBoard.Completed += (se, ev) => { this.IsHitTestVisible = true; storyBoard = null; };
             storyBoard.Begin();
         }
 
@@ -173,8 +214,10 @@ namespace KinectAirBand.Pages
         private void Button_Back_Click (object sender, RoutedEventArgs e)
         {
             this.IsHitTestVisible = false;
+            Dispose(true);
             Storyboard storyBoard = ( (Storyboard)this.Resources["ExitStoryboard"] );
-            storyBoard.Completed += (se, ev) => { Switcher.Switch(new MainMenu()); };
+            //storyBoard.Completed += (se, ev) => { Switcher.Switch(Switcher.pageSwitcher.PageDictionary[typeof(MainMenu)]); storyBoard = null; };
+            storyBoard.Completed += (se, ev) => { Switcher.Switch(new MainMenu()); storyBoard = null; };
             storyBoard.Begin();
         }
 
@@ -249,5 +292,6 @@ namespace KinectAirBand.Pages
 
             outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, e.NoteID, 0));
         }
+
     }
 }

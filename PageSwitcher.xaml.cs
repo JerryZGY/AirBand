@@ -1,27 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using KinectAirBand.Pages;
 using Microsoft.Kinect;
+using Microsoft.Kinect.Input;
 using Microsoft.Kinect.Wpf.Controls;
 
 namespace KinectAirBand
 {
     public partial class PageSwitcher : Window
     {
+        public Dictionary<Type, UserControl> PageDictionary = new Dictionary<Type,UserControl>();
+
         public PageSwitcher ()
         {
             InitializeComponent();
             KinectRegion.SetKinectRegion(this, kinectRegion);
             App app = ( (App)Application.Current );
             app.KinectRegion = kinectRegion;
+            app.KinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
             kinectRegion.KinectSensor = KinectSensor.GetDefault();
             if(SystemParameters.FullPrimaryScreenWidth > 1366)
                 this.WindowState = WindowState.Normal;
             else
                 this.WindowState = WindowState.Maximized;
             Switcher.pageSwitcher = this;
-            Switcher.Switch(new MainMenu());
+            PageDictionary.Add(typeof(MainMenu), new MainMenu());
+            Switcher.Switch(PageDictionary[typeof(MainMenu)]);
         }
 
         public void Navigate (UserControl nextPage)

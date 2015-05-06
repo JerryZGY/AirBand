@@ -20,11 +20,13 @@ namespace KinectAirBand.Pages
 {
     public partial class MainMenu : UserControl, ISwitchable
     {
+        private Boolean disposed = false;
+        private StartPlaying startPlaying;
+        
         public MainMenu ()
         {
             InitializeComponent();
-            Grid_Main.Opacity = 0;
-            this.IsHitTestVisible = false;
+            GC.Collect();
         }
 
         #region ISwitchable Members
@@ -38,6 +40,8 @@ namespace KinectAirBand.Pages
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
+            Grid_Main.Opacity = 0;
+            this.IsHitTestVisible = false;
             Storyboard storyBoard = ((Storyboard)this.Resources["EnterStoryboard"]);
             storyBoard.Completed += (se, ev) => { this.IsHitTestVisible = true; };
             storyBoard.Begin();
@@ -57,10 +61,14 @@ namespace KinectAirBand.Pages
             switch (button.Name)
             {
                 case "Button_Start":
-                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    /*if (!Switcher.pageSwitcher.PageDictionary.ContainsKey(typeof(StartPlaying)))
+                        Switcher.pageSwitcher.PageDictionary.Add(typeof(StartPlaying), new StartPlaying());
+                    StartExitStoryboard(() => Switcher.Switch(Switcher.pageSwitcher.PageDictionary[typeof(StartPlaying)]));*/
                     break;
                 case "Button_Share":
-                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+
+                    GC.Collect();
+                    //StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
                     break;
                 case "Button_Mod":
                     StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
