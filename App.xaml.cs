@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Kinect;
+using Microsoft.Kinect.Wpf.Controls;
 
 namespace KinectAirBand
 {
@@ -13,5 +15,13 @@ namespace KinectAirBand
     /// </summary>
     public partial class App : Application
     {
+        public KinectRegion KinectRegion { get; set; }
+        public KinectSensor KinectSensor
+        {
+            get
+            {
+                return KinectRegion.KinectSensor;
+            }
+        }
     }
 }

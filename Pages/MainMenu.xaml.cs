@@ -13,6 +13,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Kinect;
+using Microsoft.Kinect.Wpf.Controls;
 
 namespace KinectAirBand.Pages
 {
@@ -54,6 +56,21 @@ namespace KinectAirBand.Pages
             var button = sender as Button;
             switch (button.Name)
             {
+                case "Button_Start":
+                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    break;
+                case "Button_Share":
+                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    break;
+                case "Button_Mod":
+                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    break;
+                case "Button_Setting":
+                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    break;
+                case "Button_About":
+                    StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+                    break;
                 case "Button_Exit":
                     Application.Current.Shutdown();
                     break;
@@ -61,33 +78,5 @@ namespace KinectAirBand.Pages
                     break;
             }
         }
-
-        private void Button_Start_Click (object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            switch (button.Name)
-            {
-                default:
-                    break;
-            }
-            StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
-        }
-
-        private void Button_Mod_Click (object sender, RoutedEventArgs e)
-        {
-            StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
-        }
-
-        private void Button_Setting_Click (object sender, RoutedEventArgs e)
-        {
-            //StartExitStoryboard();
-        }
-
-        private void Button_Exit_Click (object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        
     }
 }

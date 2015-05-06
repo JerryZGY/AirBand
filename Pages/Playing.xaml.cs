@@ -80,8 +80,8 @@ namespace KinectAirBand.Pages
             _pointSourceRTB = new RenderTargetBitmap(displayWidth, displayHeight, 96.0, 96.0, PixelFormats.Pbgra32);
             rootGrid = new Grid();
             _bodyWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
-             _pointWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
-             outDevice = new OutputDevice(0);
+            _pointWriteableBitmap = BitmapFactory.New(displayWidth, displayHeight);
+            outDevice = new OutputDevice(0);
             InitializeComponent();
             cnv.Children.Add(test);
             Canvas.SetLeft(test, 688);

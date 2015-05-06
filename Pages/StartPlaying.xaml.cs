@@ -14,9 +14,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using KinectAirBand.Controls;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Input;
 using Microsoft.Kinect.Wpf.Controls;
+using Sanford.Multimedia.Midi;
+using Sanford.Multimedia.Midi.UI;
 
 namespace KinectAirBand.Pages
 {
@@ -33,25 +36,33 @@ namespace KinectAirBand.Pages
             }
         }
         private WriteableBitmap _colorBitmap = null;
-        private Boolean Dashed = false;
-        private Boolean Ensemble = false;
+        private Boolean dashed = false;
+        private Boolean ensemble = false;
+        private KinectRegion kinectRegion;
         private KinectSensor _sensor;
         private MultiSourceFrameReader _reader;
-        //private Body[] _bodies;
+        private Boolean isLasso = false;
+        private Body[] _bodies;
+        private App app = Application.Current as App;
+        private bool playing = false;
+        private OutputDevice outDevice;
+        private int outDeviceID = 0;
 
         public StartPlaying ()
         {
             InitializeComponent();
             Grid_Main.Opacity = 0;
             this.IsHitTestVisible = false;
-            KinectRegion.SetKinectRegion(this, kinectRegion);
-            _sensor = KinectSensor.GetDefault();
-            kinectRegion.KinectSensor = _sensor;
+            _sensor = app.KinectSensor;
+            kinectRegion = app.KinectRegion;
             _sensor.Open();
             _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
             _reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
             FrameDescription colorFrameDescription = _sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             _colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
+            KinectCoreWindow kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
+            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+            outDevice = new OutputDevice(outDeviceID);
         }
 
         #region ISwitchable Members
@@ -84,6 +95,36 @@ namespace KinectAirBand.Pages
                     }
                 }
             }
+
+            Boolean dataReceived = false;
+
+            using (BodyFrame frame = reference.BodyFrameReference.AcquireFrame())
+            {
+                if (frame != null)
+                {
+                    if (_bodies == null)
+                    {
+                        _bodies = new Body[frame.BodyCount];
+                    }
+                    frame.GetAndRefreshBodyData(_bodies);
+                    dataReceived = true;
+                }
+            }
+
+            if (dataReceived)
+            {
+                if (_bodies != null)
+                {
+                    for (int i = 0; i < _sensor.BodyFrameSource.BodyCount; ++i)
+                    {
+                        Body body = _bodies[i];
+                        if (body.IsTracked)
+                        {
+                            isLasso = ( body.HandRightState == HandState.Lasso || body.HandLeftState == HandState.Lasso );
+                        }
+                    }
+                }
+            }
         }
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
@@ -91,6 +132,42 @@ namespace KinectAirBand.Pages
             Storyboard storyBoard = ( (Storyboard)this.Resources["EnterStoryboard"] );
             storyBoard.Completed += (se, ev) => { this.IsHitTestVisible = true; };
             storyBoard.Begin();
+        }
+
+        private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs args)
+        {
+            KinectPointerPoint kinectPointerPoint = args.CurrentPoint;
+            if (kinectPointerPoint.Properties.IsEngaged)
+            {
+                Point pointRelativeToKinectRegion = new Point(
+                    kinectPointerPoint.Position.X * kinectRegion.ActualWidth,
+                    kinectPointerPoint.Position.Y * kinectRegion.ActualHeight);
+                foreach (PianoKeyWPF key in PianoControl.cnvPiano.Children)
+                {
+                    performLassoClick(pointRelativeToKinectRegion, key);
+                }
+                performLassoClick(pointRelativeToKinectRegion, Button_Dashed);
+                performLassoClick(pointRelativeToKinectRegion, Button_Ensemble);
+                performLassoClick(pointRelativeToKinectRegion, Button_Piano);
+                performLassoClick(pointRelativeToKinectRegion, Button_Guitar);
+                performLassoClick(pointRelativeToKinectRegion, Button_Drum);
+            }
+        }
+
+        private void performLassoClick (Point relative, UIElement relativeTo)
+        {
+            var clickedButton = relativeTo as Button;
+            if (clickedButton != null)
+            {
+                Point relativeToElement = kinectRegion.TranslatePoint(relative, clickedButton);
+                bool insideElement = ( relativeToElement.X >= 0 && relativeToElement.X < clickedButton.ActualWidth
+                    && relativeToElement.Y >= 0 && relativeToElement.Y < clickedButton.ActualHeight );
+                if (insideElement && isLasso && clickedButton.IsHitTestVisible)
+                {
+                    clickedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                    VisualStateManager.GoToState(clickedButton, "Pressed", true);
+                }
+            }
         }
 
         private void Button_Back_Click (object sender, RoutedEventArgs e)
@@ -105,19 +182,19 @@ namespace KinectAirBand.Pages
         {
             var thisButton = sender as Button;
             thisButton.IsHitTestVisible = false;
-            if (!Dashed)
+            if (!dashed)
             {
                 Storyboard storyBoard = ( (Storyboard)this.Resources["DashStoryboard"] );
                 storyBoard.Completed += (se, ev) => { thisButton.IsHitTestVisible = true; };
                 storyBoard.Begin();
-                Dashed = true;
+                dashed = true;
             }
             else
             {
                 Storyboard storyBoard = ( (Storyboard)this.Resources["DashedStoryboard"] );
                 storyBoard.Completed += (se, ev) => { thisButton.IsHitTestVisible = true; };
                 storyBoard.Begin();
-                Dashed = false;
+                dashed = false;
             }
         }
 
@@ -125,12 +202,12 @@ namespace KinectAirBand.Pages
         {
             var thisButton = sender as Button;
             thisButton.IsHitTestVisible = false;
-            if (!Ensemble)
+            if (!ensemble)
             {
                 Storyboard storyBoard = ( (Storyboard)this.Resources["EnsembleStoryboard"] );
                 storyBoard.Completed += (se, ev) => { thisButton.IsHitTestVisible = true; };
                 storyBoard.Begin();
-                Ensemble = true;
+                ensemble = true;
                 Button_Ensemble.Content = "獨奏模式";
                 Button_Ensemble.Background = new ImageBrush() { ImageSource =  ( (BitmapImage)this.Resources["Image_Single"] ) };
             }
@@ -139,10 +216,38 @@ namespace KinectAirBand.Pages
                 Storyboard storyBoard = ( (Storyboard)this.Resources["SingleStoryboard"] );
                 storyBoard.Completed += (se, ev) => { thisButton.IsHitTestVisible = true; };
                 storyBoard.Begin();
-                Ensemble = false;
+                ensemble = false;
                 Button_Ensemble.Content = "合奏模式";
                 Button_Ensemble.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Ensemble"] ) };
             }
+        }
+
+        private void PianoControl_PianoKeyDown (object sender, PianoKeyEventArgs e)
+        {
+            #region Guard
+
+            if (playing)
+            {
+                return;
+            }
+
+            #endregion
+
+            outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, e.NoteID, 127));
+        }
+
+        private void PianoControl_PianoKeyUp (object sender, PianoKeyEventArgs e)
+        {
+            #region Guard
+
+            if (playing)
+            {
+                return;
+            }
+
+            #endregion
+
+            outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, e.NoteID, 0));
         }
     }
 }

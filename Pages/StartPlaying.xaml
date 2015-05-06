@@ -1,7 +1,7 @@
 ﻿<UserControl x:Class="KinectAirBand.Pages.StartPlaying"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:k="http://schemas.microsoft.com/kinect/2014"
+      xmlns:ctrl="clr-namespace:KinectAirBand.Controls"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
@@ -9,11 +9,10 @@
     <UserControl.Resources>
         <ResourceDictionary Source="StartPlayingRes.xaml"/>
     </UserControl.Resources>
-    <k:KinectRegion x:Name="kinectRegion">
     <Grid Name="Grid_Main" Opacity="1">
-        <!--<Grid.Background>
-            <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
-        </Grid.Background>-->
+        <Grid.Background>
+        <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
+    </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -66,7 +65,7 @@
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
             </Button.Background>
         </Button>
+        <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
         <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
     </Grid>
-    </k:KinectRegion>
 </UserControl>

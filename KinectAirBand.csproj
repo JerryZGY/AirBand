@@ -82,6 +82,12 @@
     <Compile Include="Controls\PianoKey.xaml.cs">
       <DependentUpon>PianoKey.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PianoKeyWPF.xaml.cs">
+      <DependentUpon>PianoKeyWPF.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PianoControlWPF.xaml.cs">
+      <DependentUpon>PianoControlWPF.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Pages\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
@@ -96,6 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PianoKey.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PianoKeyWPF.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PianoControlWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

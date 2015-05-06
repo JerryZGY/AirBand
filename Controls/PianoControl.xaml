@@ -6,7 +6,8 @@
              mc:Ignorable="d" 
              d:DesignWidth="1316" d:DesignHeight="191">
         <Grid Width="1366" Height="191">
-            <Canvas Name="cnvPiano"/>
+        <Button Width="60"/>
+        <Canvas Name="cnvPiano"/>
             <Canvas Name="cnvEllipse"/>
     </Grid>
 </UserControl>

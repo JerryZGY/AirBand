@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="KinectAirBand.Controls.PianoControlWPF"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="78" d:DesignWidth="683">
+    <Grid Width="683" Height="78" Background="LightBlue">
+        <Canvas x:Name="cnvPiano"/>
+    </Grid>
+</UserControl>
