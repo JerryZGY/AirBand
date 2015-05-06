@@ -23,7 +23,7 @@ namespace KinectAirBand.Pages
     /// <summary>
     /// Interaction logic for StartPlaying.xaml
     /// </summary>
-    public partial class StartPlaying : UserControl
+    public partial class StartPlaying : UserControl, ISwitchable
     {
         public ImageSource ImageSource
         {
@@ -42,8 +42,6 @@ namespace KinectAirBand.Pages
         public StartPlaying ()
         {
             InitializeComponent();
-            KinectCoreWindow kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
-            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
             Grid_Main.Opacity = 0;
             this.IsHitTestVisible = false;
             KinectRegion.SetKinectRegion(this, kinectRegion);
@@ -56,11 +54,14 @@ namespace KinectAirBand.Pages
             _colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
         }
 
-        private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs e)
+        #region ISwitchable Members
+
+        public void UtilizeState (object state)
         {
-            KinectPointerPoint kinectPointerPoint = e.CurrentPoint;
-            
+            throw new NotImplementedException();
         }
+
+        #endregion
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
         {
@@ -143,6 +144,5 @@ namespace KinectAirBand.Pages
                 Button_Ensemble.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Ensemble"] ) };
             }
         }
-
     }
 }

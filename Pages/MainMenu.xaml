@@ -25,7 +25,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <!--<Canvas Background="#FFCFCFCF"/>-->
-
         <Image Grid.ColumnSpan="5" Source="/KinectAirBand;component/Resources/Logo.png" Height="141" Width="250"/>
         <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>
         <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Start_Click">
@@ -36,7 +35,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_1" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Content="分享" Style="{StaticResource ResourceKey= MenuButton}">
+        <Button Name="Button_Share" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Content="分享" Style="{StaticResource ResourceKey= MenuButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Share.png"/>
             </Button.Background>
@@ -44,7 +43,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_2" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content="模組" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_2_Click">
+        <Button Name="Button_Mod" Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Content="模組" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Mod_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Mod.png"/>
             </Button.Background>
@@ -52,7 +51,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_3" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Content="設定" Style="{StaticResource ResourceKey= MenuButton}">
+        <Button Name="Button_Setting" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2" Content="設定" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Setting_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Setting.png"/>
             </Button.Background>
@@ -60,7 +59,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_4" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Content="關於" Style="{StaticResource ResourceKey= MenuButton}">
+        <Button Name="Button_About" Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Content="關於" Style="{StaticResource ResourceKey= MenuButton}">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/About.png"/>
             </Button.Background>
@@ -68,7 +67,7 @@
                 <TranslateTransform Y="500"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Opacity="0" Style="{StaticResource ResourceKey= ExitButton}" Click="Button_Exit_Click">
+        <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Opacity="0" Style="{StaticResource ResourceKey= ExitButton}" Click="Button_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
             </Button.Background>

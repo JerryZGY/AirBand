@@ -6,27 +6,27 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_2" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_1" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_3" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Start" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_4" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+        <DoubleAnimation Storyboard.TargetName="Button_Share" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_Mod" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_Setting" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_About" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -34,38 +34,6 @@
         <DoubleAnimation Storyboard.TargetName="Button_Exit" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.8" BeginTime="0:0:0.9">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
-    <Storyboard x:Key="SettingStoryboard">
-        <DoubleAnimation Storyboard.TargetName="Button_Exit" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Start" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_1" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_2" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_3" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_4" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="0" To="500" Duration="0:0:0.5" BeginTime="0:0:0.25">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>

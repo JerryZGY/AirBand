@@ -34,11 +34,6 @@ namespace KinectAirBand.Pages
 
         #endregion
 
-        private void Button_Click (object sender, RoutedEventArgs e)
-        {
-            Switcher.Switch(new Playing());
-        }
-
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
             Storyboard storyBoard = ((Storyboard)this.Resources["EnterStoryboard"]);
@@ -46,23 +41,53 @@ namespace KinectAirBand.Pages
             storyBoard.Begin();
         }
 
+        private void StartExitStoryboard (Action callback)
+        {
+            this.IsHitTestVisible = false;
+            Storyboard storyBoard = ( (Storyboard)this.Resources["ExitStoryboard"] );
+            storyBoard.Completed += (se, ev) => callback();
+            storyBoard.Begin();
+        }
+
+        private void Button_Click (object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            switch (button.Name)
+            {
+                case "Button_Exit":
+                    Application.Current.Shutdown();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void Button_Start_Click (object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            switch (button.Name)
+            {
+                default:
+                    break;
+            }
+            StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+        }
+
+        private void Button_Mod_Click (object sender, RoutedEventArgs e)
+        {
+            StartExitStoryboard(() => Switcher.Switch(new StartPlaying()));
+        }
+
+        private void Button_Setting_Click (object sender, RoutedEventArgs e)
+        {
+            //StartExitStoryboard();
+        }
+
         private void Button_Exit_Click (object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void Button_Start_Click (object sender, RoutedEventArgs e)
-        {
-            this.IsHitTestVisible = false;
-            Storyboard storyBoard = ( (Storyboard)this.Resources["ExitStoryboard"] );
-            storyBoard.Completed += (se, ev) => { Switcher.Switch(new StartPlaying()); };
-            storyBoard.Begin();
-        }
-
-        private void Button_2_Click (object sender, RoutedEventArgs e)
-        {
-            Storyboard storyBoard = ( (Storyboard)this.Resources["SettingStoryboard"] );
-            storyBoard.Begin();
-        }
+        
     }
 }
