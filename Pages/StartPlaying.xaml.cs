@@ -47,8 +47,10 @@ namespace KinectAirBand.Pages
         private Int32 outDeviceID;
         private FrameDescription colorFrameDescription;
         private TimeSpan lastTime;
-        private const double DotHeight = 40, DotWidth = 40;
+        private const double dotHeight = 40, dotWidth = 40;
         private List<PianoControlData> dataList;
+        private Int32 trackingBodyIndex;
+        private PianoControlData[] trackingData;
 
         public StartPlaying ()
         {
@@ -86,6 +88,7 @@ namespace KinectAirBand.Pages
             kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
             colorBitmap = null;
             dataList = null;
+            trackingData = null;
             sensor = null;
             bodies = null;
             kinectCoreWindow = null;
@@ -107,6 +110,7 @@ namespace KinectAirBand.Pages
             ensemble = false;
             playing = false;
             outDeviceID = 0;
+            trackingBodyIndex = 0;
             sensor = region.KinectSensor;
             sensor.Open();
 
@@ -115,6 +119,7 @@ namespace KinectAirBand.Pages
             colorFrameDescription = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
             dataList = new List<PianoControlData>();
+            trackingData = new PianoControlData[2];
             kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
             if (outDevice == null)
             {
@@ -173,6 +178,14 @@ namespace KinectAirBand.Pages
                     {
                         dataList[item.i].UpdateBodyData(item.value);
                     }
+                    foreach (var item in dataList)
+                    {
+                        if (item.TrackingId != 0 && trackingBodyIndex < 2)
+                        {
+                            trackingData[trackingBodyIndex] = item;
+                            trackingBodyIndex++;
+                        }
+                    }
                     /*for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
                     {
                         Body body = bodies[i];
@@ -217,86 +230,85 @@ namespace KinectAirBand.Pages
             foreach (var item in dataList)
             {
                 item.GetPointerPosition(point);
-                if (item.pointerPosition != null && item.TrackingId != 0)
+            }
+
+            if (trackingData[0] != null && point.Properties.BodyTrackingId == trackingData[0].TrackingId)
+            {
+                Point screenRelative = new Point(
+                point.Position.X * PianoControl.mainScreen.ActualWidth,
+                point.Position.Y * PianoControl.mainScreen.ActualHeight);
+                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl, trackingData[0].TrackingId, point.Properties.HandType);
+                foreach (PianoKeyWPF relativeTo in PianoControl.cnvPiano.Children)
                 {
-                    if (item.Index <= 2)
+                    Point relativeToElement = PianoControl.mainScreen.TranslatePoint(screenRelative, relativeTo);
+                    Boolean insideElement = (
+                        relativeToElement.X >= 0 &&
+                        relativeToElement.X < relativeTo.ActualWidth &&
+                        relativeToElement.Y >= 0 &&
+                        relativeToElement.Y < relativeTo.ActualHeight );
+                    if (point.Properties.HandType == HandType.RIGHT && insideElement)
                     {
-                        Point screenRelative = new Point(
-                        item.pointerPosition.X * PianoControl.mainScreen.ActualWidth,
-                        item.pointerPosition.Y * PianoControl.mainScreen.ActualHeight);
-                        RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl, item.TrackingId, point.Properties.HandType);
-                        foreach (PianoKeyWPF relativeTo in PianoControl.cnvPiano.Children)
+                        if (trackingData[0].IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
                         {
-                            Point relativeToElement = PianoControl.mainScreen.TranslatePoint(screenRelative, relativeTo);
-                            Boolean insideElement = (
-                                relativeToElement.X >= 0 &&
-                                relativeToElement.X < relativeTo.ActualWidth &&
-                                relativeToElement.Y >= 0 &&
-                                relativeToElement.Y < relativeTo.ActualHeight );
-                            if (point.Properties.HandType == HandType.RIGHT && insideElement)
-                            {
-                                if (item.IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.PressPianoKey();
-                                }
-                                else if (!item.IsRightHandLasso && relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.ReleasePianoKey();
-                                }
-                            }
-                            else if (point.Properties.HandType == HandType.LEFT && insideElement)
-                            {
-                                if (item.IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.PressPianoKey();
-                                }
-                                else if (!item.IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.ReleasePianoKey();
-                                }
-                            }
+                            relativeTo.PressPianoKey();
+                        }
+                        else if (!trackingData[0].IsRightHandLasso && relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.ReleasePianoKey();
                         }
                     }
-                    else if (item.Index > 2)
+                    else if (point.Properties.HandType == HandType.LEFT && insideElement)
                     {
-                        Point screenRelative = new Point(
-                        item.pointerPosition.X * PianoControl1.mainScreen.ActualWidth,
-                        item.pointerPosition.Y * PianoControl1.mainScreen.ActualHeight);
-                        RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl1, item.TrackingId, point.Properties.HandType);
-                        foreach (PianoKeyWPF relativeTo in PianoControl1.cnvPiano.Children)
+                        if (trackingData[0].IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
                         {
-                            Point relativeToElement = PianoControl1.mainScreen.TranslatePoint(screenRelative, relativeTo);
-                            Boolean insideElement = (
-                                relativeToElement.X >= 0 &&
-                                relativeToElement.X < relativeTo.ActualWidth &&
-                                relativeToElement.Y >= 0 &&
-                                relativeToElement.Y < relativeTo.ActualHeight );
-                            if (point.Properties.HandType == HandType.RIGHT && insideElement)
-                            {
-                                if (item.IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.PressPianoKey();
-                                }
-                                else if (!item.IsRightHandLasso && relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.ReleasePianoKey();
-                                }
-                            }
-                            else if (point.Properties.HandType == HandType.LEFT && insideElement)
-                            {
-                                if (item.IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.PressPianoKey();
-                                }
-                                else if (!item.IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
-                                {
-                                    relativeTo.ReleasePianoKey();
-                                }
-                            }
+                            relativeTo.PressPianoKey();
+                        }
+                        else if (!trackingData[0].IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.ReleasePianoKey();
                         }
                     }
                 }
             }
+            else if (trackingData[1] != null && point.Properties.BodyTrackingId == trackingData[1].TrackingId)
+            {
+                Point screenRelative = new Point(
+                point.Position.X * PianoControl1.mainScreen.ActualWidth,
+                point.Position.Y * PianoControl1.mainScreen.ActualHeight);
+                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl1, trackingData[1].TrackingId, point.Properties.HandType);
+                foreach (PianoKeyWPF relativeTo in PianoControl1.cnvPiano.Children)
+                {
+                    Point relativeToElement = PianoControl1.mainScreen.TranslatePoint(screenRelative, relativeTo);
+                    Boolean insideElement = (
+                        relativeToElement.X >= 0 &&
+                        relativeToElement.X < relativeTo.ActualWidth &&
+                        relativeToElement.Y >= 0 &&
+                        relativeToElement.Y < relativeTo.ActualHeight );
+                    if (point.Properties.HandType == HandType.RIGHT && insideElement)
+                    {
+                        if (trackingData[1].IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.PressPianoKey();
+                        }
+                        else if (!trackingData[1].IsRightHandLasso && relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.ReleasePianoKey();
+                        }
+                    }
+                    else if (point.Properties.HandType == HandType.LEFT && insideElement)
+                    {
+                        if (trackingData[1].IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.PressPianoKey();
+                        }
+                        else if (!trackingData[1].IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
+                        {
+                            relativeTo.ReleasePianoKey();
+                        }
+                    }
+                }
+            }
+
             /*if (point.Properties.IsEngaged)
             {
                 Point regionRelative = new Point(point.Position.X * region.ActualWidth, point.Position.Y * region.ActualHeight);
@@ -345,8 +357,8 @@ namespace KinectAirBand.Pages
             Ellipse cursorEllipse = new Ellipse()
             {
                 HorizontalAlignment = HorizontalAlignment.Left,
-                Height = DotHeight,
-                Width = DotWidth,
+                Height = dotHeight,
+                Width = dotWidth,
                 Margin = new Thickness(5)
             };
 
@@ -359,8 +371,8 @@ namespace KinectAirBand.Pages
                 cursorEllipse.Fill = isEngaged ? Brushes.Green : Brushes.Yellow;
             else
                 cursorEllipse.Fill = isEngaged ? Brushes.Red : Brushes.Blue;
-            Canvas.SetLeft(cursor, position.X * control.mainScreen.ActualWidth - DotWidth / 2);
-            Canvas.SetTop(cursor, position.Y * control.mainScreen.ActualHeight - DotHeight / 2);
+            Canvas.SetLeft(cursor, position.X * control.mainScreen.ActualWidth - dotWidth / 2);
+            Canvas.SetTop(cursor, position.Y * control.mainScreen.ActualHeight - dotHeight / 2);
         }
 
         /*private void performLassoClick (Point relative, UIElement relativeTo)

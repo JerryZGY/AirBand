@@ -20,6 +20,14 @@ namespace KinectAirBand
             this.Index = index;
         }
 
+        public Body Body
+        {
+            get
+            {
+                return this.body;
+            }
+        }
+
         public Int32 Index
         {
             get
