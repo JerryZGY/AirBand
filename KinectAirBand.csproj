@@ -75,6 +75,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\ISwitchable.cs" />
+    <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
     <Compile Include="Controls\PianoControl.xaml.cs">
       <DependentUpon>PianoControl.xaml</DependentUpon>
@@ -95,7 +96,7 @@
     <Compile Include="Pages\StartPlaying.xaml.cs">
       <DependentUpon>StartPlaying.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BodyView.cs" />
+    <Compile Include="PianoControlData.cs" />
     <Compile Include="ViewModels\StateView.cs" />
     <Page Include="Controls\PianoControl.xaml">
       <SubType>Designer</SubType>

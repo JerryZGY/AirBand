@@ -8,11 +8,6 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Dashed" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -23,7 +18,7 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Drum" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -35,18 +30,12 @@
         </DoubleAnimation>
     </Storyboard>
     <Storyboard x:Key="SingleStoryboard">
-        
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-619" To="0" Duration="0:0:0.8">
             <DoubleAnimation.EasingFunction>
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-619" To="0" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Drum" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-619" To="0" Duration="0:0:0.8">
             <DoubleAnimation.EasingFunction>
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -68,32 +57,17 @@
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Drum" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="0" To="-619" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Line_Ensemble" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
-    <Storyboard x:Key="DashStoryboard">
-        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-200" To="0" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
-    <Storyboard x:Key="DashedStoryboard">
-        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="0" To="-200" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
     <Storyboard x:Key="ExitStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+        <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -136,7 +110,6 @@
                         <Canvas Grid.Row="1" Margin="5" Background="#FF211E1E"/>
                         <ContentPresenter Grid.Row="1" x:Name="contentPresenter" TextBlock.Foreground="#A5FFFFFF" TextBlock.FontSize="28" TextBlock.FontWeight="Bold" TextBlock.FontFamily="華康瘦金體" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="False"/>
                     </Grid>
-
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -180,5 +153,9 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <Style TargetType="TextBlock">
+        <Setter Property="FontSize" Value="50" />
+        <Setter Property="Foreground" Value="Brown" />
     </Style>
 </ResourceDictionary>

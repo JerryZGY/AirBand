@@ -23,9 +23,9 @@ namespace KinectAirBand.Controls
     /// </summary>
     public partial class PianoControlWPF : UserControl
     {
-        private const int LowNoteID = 21;
+        private const int LowNoteID = 48;
 
-        private const int HighNoteID = 109;
+        private const int HighNoteID = 96;
 
         private delegate void NoteMessageCallback(ChannelMessage message);
 
@@ -122,20 +122,19 @@ namespace KinectAirBand.Controls
                     key.NoteOffColor = Colors.White;
 
                     whiteKeyCount++;
-                    key.Width = 13;
-                    key.Height = 78;
+                    key.Width = 48.78;
+                    key.Height = 256;
 
                     key.Margin = new Thickness(nextLeft, 0, 0, 0);
-                    nextLeft += 13;
+                    nextLeft += 48.78;
                     key.SetValue(Canvas.ZIndexProperty, 0);
                 }
                 else
                 {
                     key.NoteOffColor = Colors.Black;
-
-                    key.Width = 8.125;
-                    key.Height = 48.75;
-                    key.Margin = new Thickness(nextLeft - 3, 0, 0, 0);
+                    key.Width = 30.4875;
+                    key.Height = 160;
+                    key.Margin = new Thickness(nextLeft - 15.24375, 0, 0, 0);
                     key.SetValue(Canvas.ZIndexProperty, 10);
                 }
 

@@ -25,13 +25,11 @@ namespace KinectAirBand.Controls
         private PianoControlWPF.KeyType keyType = PianoControlWPF.KeyType.White;
         private PianoControlWPF owner;
         private bool on = false;
-
         private LinearGradientBrush whiteKeyOnBrush;
         private LinearGradientBrush blackKeyOnBrush;
-
         private SolidColorBrush whiteKeyOffBrush = new SolidColorBrush(Colors.White);
-
         private int noteID = 60;
+        public System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
 
         public PianoKeyWPF (PianoControlWPF owner, PianoControlWPF.KeyType keyType)
         {
@@ -43,20 +41,40 @@ namespace KinectAirBand.Controls
             blackKeyOnBrush = new LinearGradientBrush();
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.LightGray, 0.0));
             blackKeyOnBrush.GradientStops.Add(new GradientStop(Colors.Black, 1.0));
+            releaseTimer.Enabled = false;
             InitializeComponent();
         }
 
         public void PressPianoKey ()
         {
-            brdInner.Dispatcher.Invoke(
+            
+            this.Dispatcher.Invoke(
           System.Windows.Threading.DispatcherPriority.Normal,
             new Action(
                 delegate()
                 {
                     if (keyType == PianoControlWPF.KeyType.White)
-                        brdInner.Background = whiteKeyOnBrush;
+                    {
+                        this.Background = whiteKeyOnBrush;
+                        releaseTimer.Enabled = true;
+                        releaseTimer.Tick += (s, e) =>
+                        {
+                            this.Background = whiteKeyOffBrush;
+                            ReleasePianoKey();
+                            releaseTimer.Enabled = false;
+                        };
+                    }
                     else
-                        brdInner.Background = blackKeyOnBrush;
+                    {
+                        this.Background = blackKeyOnBrush;
+                        releaseTimer.Enabled = true;
+                        releaseTimer.Tick += (s, e) =>
+                        {
+                            this.Background = whiteKeyOffBrush;
+                            ReleasePianoKey();
+                            releaseTimer.Enabled = false;
+                        };
+                    }
                 }
             ));
 
@@ -66,12 +84,12 @@ namespace KinectAirBand.Controls
 
         public void ReleasePianoKey ()
         {
-            brdInner.Dispatcher.Invoke(
+            this.Dispatcher.Invoke(
           System.Windows.Threading.DispatcherPriority.Normal,
             new Action(
                 delegate()
                 {
-                    brdInner.Background = whiteKeyOffBrush;
+                    this.Background = whiteKeyOffBrush;
                 }
             ));
 
@@ -118,7 +136,7 @@ namespace KinectAirBand.Controls
                     brush = whiteKeyOnBrush;
                 else
                     brush = blackKeyOnBrush;
-                brdInner.Background = brush;
+                this.Background = brush;
             }
         }
 
@@ -131,7 +149,7 @@ namespace KinectAirBand.Controls
             set
             {
                 whiteKeyOffBrush.Color = value;
-                brdInner.Background = whiteKeyOffBrush;
+                this.Background = whiteKeyOffBrush;
             }
         }
 

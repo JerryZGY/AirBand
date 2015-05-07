@@ -1,29 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using Microsoft.Kinect;
-using Microsoft.Kinect.Input;
-using Microsoft.Kinect.Wpf.Controls;
+﻿using System.Windows;
 
 namespace KinectAirBand
 {
-    /// <summary>
-    /// App.xaml 的互動邏輯
-    /// </summary>
     public partial class App : Application
     {
-        public KinectRegion KinectRegion { get; set; }
-        public KinectCoreWindow KinectCoreWindow { get; set; }
-        public KinectSensor KinectSensor
+        private void Application_Exit (object sender, ExitEventArgs e)
         {
-            get
-            {
-                return KinectRegion.KinectSensor;
-            }
+            ( Switcher.PageDictionary["StartPlaying"] as KinectAirBand.Pages.StartPlaying ).Dispose();
         }
     }
 }
