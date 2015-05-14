@@ -45,6 +45,11 @@
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="PianoControl1" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
     <Storyboard x:Key="EnsembleStoryboard">
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="0" To="-619" Duration="0:0:0.8">
@@ -62,16 +67,23 @@
                 <QuadraticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="PianoControl1" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
     <Storyboard x:Key="ExitStoryboard">
         <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Line_Ensemble" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5"/>
+        <DoubleAnimation Storyboard.TargetName="PianoControl1" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5"/>
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
-            <DoubleAnimation.EasingFunction>
-                <QuarticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
+        <DoubleAnimation.EasingFunction>
+            <QuarticEase EasingMode="EaseOut"/>
+        </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
     <Style x:Key="InstrumentButton" TargetType="{x:Type Button}">

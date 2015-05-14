@@ -37,7 +37,7 @@ namespace KinectAirBand.Pages
         }
         private WriteableBitmap colorBitmap = null;
         private Boolean disposed;
-        private Boolean ensemble;
+        private Boolean isEnsembleMode;
         private Boolean playing;
         private KinectSensor sensor;
         private KinectCoreWindow kinectCoreWindow;
@@ -47,10 +47,11 @@ namespace KinectAirBand.Pages
         private Int32 outDeviceID;
         private FrameDescription colorFrameDescription;
         private TimeSpan lastTime;
-        private const double dotHeight = 40, dotWidth = 40;
+        private const double dotHeight = 30, dotWidth = 30;
         private List<PianoControlData> dataList;
         private Int32 trackingBodyIndex;
         private PianoControlData[] trackingData;
+        private List<ToneTriggerHandler> toneTriggerList;
 
         public StartPlaying ()
         {
@@ -94,6 +95,7 @@ namespace KinectAirBand.Pages
             kinectCoreWindow = null;
             reader = null;
             colorFrameDescription = null;
+            toneTriggerList = null;
 
             disposed = true;
         }
@@ -107,7 +109,7 @@ namespace KinectAirBand.Pages
             kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
             region.KinectSensor = KinectSensor.GetDefault();
             region.Loaded += (se, ev) => region.SetKinectTwoPersonSystemEngagement();
-            ensemble = false;
+            isEnsembleMode = false;
             playing = false;
             outDeviceID = 0;
             trackingBodyIndex = 0;
@@ -120,6 +122,7 @@ namespace KinectAirBand.Pages
             colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
             dataList = new List<PianoControlData>();
             trackingData = new PianoControlData[2];
+            toneTriggerList = new List<ToneTriggerHandler>();
             kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
             if (outDevice == null)
             {
@@ -130,6 +133,7 @@ namespace KinectAirBand.Pages
             for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
             {
                 dataList.Add(new PianoControlData(i));
+                toneTriggerList.Add(new ToneTriggerHandler());
             }
         }
 
@@ -176,6 +180,13 @@ namespace KinectAirBand.Pages
                 {
                     foreach (var item in bodies.Select((value, i) => new { i, value }))
                     {
+                        if (item.value.IsTracked)
+                        {
+                            toneTriggerList[item.i].UpdateBodyData(item.value);
+                            toneTriggerList[item.i].CheckToneDoTrigger();
+                            toneTriggerList[item.i].CheckToneReTrigger();
+                            toneTriggerList[item.i].CheckToneMeTrigger();
+                        }
                         dataList[item.i].UpdateBodyData(item.value);
                     }
                     foreach (var item in dataList)
@@ -186,33 +197,6 @@ namespace KinectAirBand.Pages
                             trackingBodyIndex++;
                         }
                     }
-                    /*for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
-                    {
-                        Body body = bodies[i];
-                        if (body.IsTracked && body.TrackingId != bodyId[0] && body.TrackingId != bodyId[1] && bodyId[0] == 0)
-                        {
-                            bodyId[0] = body.TrackingId;
-                        }
-                        else if (body.IsTracked && body.TrackingId != bodyId[0] && body.TrackingId != bodyId[1] && bodyId[1] == 0)
-                        {
-                            bodyId[1] = body.TrackingId;
-                        }
-
-                        if (body.TrackingId == bodyId[0])
-                        {
-                            isRightLasso = body.HandRightState == HandState.Lasso;
-                            isLeftLasso = body.HandLeftState == HandState.Lasso;
-                            isRightClosed = body.HandRightState == HandState.Closed;
-                            isLeftClosed = body.HandLeftState == HandState.Closed;
-                        }
-                        else if (body.TrackingId == bodyId[1])
-                        {
-                            isRightLasso1 = body.HandRightState == HandState.Lasso;
-                            isLeftLasso1 = body.HandLeftState == HandState.Lasso;
-                            isRightClosed1 = body.HandRightState == HandState.Closed;
-                            isLeftClosed1 = body.HandLeftState == HandState.Closed;
-                        }
-                    }*/
                 }
             }
         }
@@ -237,7 +221,7 @@ namespace KinectAirBand.Pages
                 Point screenRelative = new Point(
                 point.Position.X * PianoControl.mainScreen.ActualWidth,
                 point.Position.Y * PianoControl.mainScreen.ActualHeight);
-                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl, trackingData[0].TrackingId, point.Properties.HandType);
+                RenderPointer(point.Position, PianoControl, trackingData[0].TrackingId, point.Properties.HandType);
                 foreach (PianoKeyWPF relativeTo in PianoControl.cnvPiano.Children)
                 {
                     Point relativeToElement = PianoControl.mainScreen.TranslatePoint(screenRelative, relativeTo);
@@ -275,7 +259,7 @@ namespace KinectAirBand.Pages
                 Point screenRelative = new Point(
                 point.Position.X * PianoControl1.mainScreen.ActualWidth,
                 point.Position.Y * PianoControl1.mainScreen.ActualHeight);
-                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl1, trackingData[1].TrackingId, point.Properties.HandType);
+                RenderPointer(point.Position, PianoControl1, trackingData[1].TrackingId, point.Properties.HandType);
                 foreach (PianoKeyWPF relativeTo in PianoControl1.cnvPiano.Children)
                 {
                     Point relativeToElement = PianoControl1.mainScreen.TranslatePoint(screenRelative, relativeTo);
@@ -337,7 +321,7 @@ namespace KinectAirBand.Pages
             }*/
         }
 
-        private void RenderPointer (bool isEngaged, PointF position, PianoControlWPF control, UInt64 trackingId, HandType handType)
+        private void RenderPointer (PointF position, PianoControlWPF control, UInt64 trackingId, HandType handType)
         {
             StackPanel cursor = null;
             if (cursor == null)
@@ -368,9 +352,9 @@ namespace KinectAirBand.Pages
             cursor.Children.Add(new TextBlock() { Text = "HandType: " + handType });
             
             if (control == PianoControl)
-                cursorEllipse.Fill = isEngaged ? Brushes.Green : Brushes.Yellow;
+                cursorEllipse.Fill = ( handType == HandType.LEFT) ? Brushes.Green : Brushes.Yellow;
             else
-                cursorEllipse.Fill = isEngaged ? Brushes.Red : Brushes.Blue;
+                cursorEllipse.Fill = ( handType == HandType.LEFT ) ? Brushes.Red : Brushes.Blue;
             Canvas.SetLeft(cursor, position.X * control.mainScreen.ActualWidth - dotWidth / 2);
             Canvas.SetTop(cursor, position.Y * control.mainScreen.ActualHeight - dotHeight / 2);
         }
@@ -488,26 +472,40 @@ namespace KinectAirBand.Pages
             switch (button.Name)
             {
                 case "Button_Ensemble":
-                    if (!ensemble)
+                    if (isEnsembleMode)
                     {
-                        StoryboardHandler.InitHitStoryBoard(this, "EnsembleStoryboard");
-                        button.Content = "獨奏模式";
-                        button.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Single"] ) };
+                        setEnsembleButtonMode(true);
+                        StoryboardHandler.InitHitStoryBoard(this, "SingleStoryboard");
+
                     }
                     else
                     {
-                        StoryboardHandler.InitHitStoryBoard(this, "SingleStoryboard");
-                        button.Content = "合奏模式";
-                        button.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Ensemble"] ) };
+                        setEnsembleButtonMode(false);
+                        StoryboardHandler.InitHitStoryBoard(this, "EnsembleStoryboard");
                     }
-                    ensemble = !ensemble;
                     break;
                 case "Button_Back":
+                    setEnsembleButtonMode(true);
                     StoryboardHandler.InitHitStoryBoard(this, "ExitStoryboard", () => Switcher.Switch("MainMenu"));
                     break;
                 default:
                     break;
             }
+        }
+
+        private void setEnsembleButtonMode (Boolean isEnsembleMode)
+        {
+            if (!isEnsembleMode)
+            {
+                Button_Ensemble.Content = "獨奏模式";
+                Button_Ensemble.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Single"] ) };
+            }
+            else
+            {
+                Button_Ensemble.Content = "合奏模式";
+                Button_Ensemble.Background = new ImageBrush() { ImageSource = ( (BitmapImage)this.Resources["Image_Ensemble"] ) };
+            }
+            this.isEnsembleMode = !isEnsembleMode;
         }
 
         private void PianoControl_PianoKeyDown (object sender, PianoKeyEventArgs e)

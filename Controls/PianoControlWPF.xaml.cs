@@ -25,7 +25,7 @@ namespace KinectAirBand.Controls
     {
         private const int LowNoteID = 48;
 
-        private const int HighNoteID = 96;
+        private const int HighNoteID = 72;//72
 
         private delegate void NoteMessageCallback(ChannelMessage message);
 
@@ -85,8 +85,6 @@ namespace KinectAirBand.Controls
 
             CreatePianoKeys();
 
-            //InitializePianoKeys();
-
             context = SynchronizationContext.Current;
 
             noteOnCallback = delegate(ChannelMessage message)
@@ -122,19 +120,19 @@ namespace KinectAirBand.Controls
                     key.NoteOffColor = Colors.White;
 
                     whiteKeyCount++;
-                    key.Width = 48.78;
-                    key.Height = 256;
+                    key.Width = 97.57;
+                    key.Height = 255;
 
                     key.Margin = new Thickness(nextLeft, 0, 0, 0);
-                    nextLeft += 48.78;
+                    nextLeft += 97.57;
                     key.SetValue(Canvas.ZIndexProperty, 0);
                 }
                 else
                 {
                     key.NoteOffColor = Colors.Black;
-                    key.Width = 30.4875;
+                    key.Width = 60.98125;
                     key.Height = 160;
-                    key.Margin = new Thickness(nextLeft - 15.24375, 0, 0, 0);
+                    key.Margin = new Thickness(nextLeft - 30.490625, 0, 0, 0);
                     key.SetValue(Canvas.ZIndexProperty, 10);
                 }
 

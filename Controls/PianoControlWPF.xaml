@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="256" d:DesignWidth="1366" Opacity="0.6">
-    <Grid Width="1366" Height="256" Background="LightBlue">
+             d:DesignHeight="255" d:DesignWidth="1366">
+    <Grid Width="1366" Height="255" Background="LightBlue" Opacity="0.6">
         <Canvas Name="cnvPiano"/>
         <Canvas Name="mainScreen" Background="Transparent" IsHitTestVisible="False"/>
     </Grid>

@@ -18,12 +18,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image Grid.RowSpan="3" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
-            <ctrl:PianoControlWPF x:Name="PianoControl" HorizontalAlignment="Center" VerticalAlignment="Center" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
-            <ctrl:PianoControlWPF x:Name="PianoControl1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
-            <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="10" HorizontalAlignment="Center" Opacity="0"/>
-            <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}">
+            <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
+            <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
+            <ctrl:PianoControlWPF x:Name="PianoControl1" Grid.Row="2" Grid.RowSpan="2" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Top" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
+            <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="5" HorizontalAlignment="Center" Opacity="0" Visibility="Collapsed"/>
+            <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Visibility="Collapsed">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
                 </Button.Background>
@@ -31,7 +32,7 @@
                     <TranslateTransform X="200"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}">
+            <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Visibility="Collapsed">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
                 </Button.Background>
@@ -39,7 +40,7 @@
                     <TranslateTransform X="200"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Ensemble" Grid.Row="2" Content="合奏模式" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button Name="Button_Ensemble" Grid.Row="3" Content="合奏模式" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Ensemble.png"/>
                 </Button.Background>
@@ -47,7 +48,7 @@
                     <TranslateTransform X="200"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Back" Grid.Row="2" Grid.Column="2" Content="返回" Opacity="0" Style="{StaticResource ResourceKey= BackButton}" Click="Button_Click">
+            <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Style="{StaticResource ResourceKey= BackButton}" Click="Button_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
                 </Button.Background>
