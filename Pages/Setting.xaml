@@ -4,8 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
+             d:DesignHeight="600" d:DesignWidth="600" Margin="0 34">
+    <Grid Background="#CCFFFFFF" Height="600" Width="600">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="13*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Text="設定" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Text="主音量"/>
+        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50"/>
+        <TextBlock Name="MusicVolumeValue"/>
+        <Button Grid.Row="2" Grid.ColumnSpan="2" Content="返回" Click="Button_Click"/>
     </Grid>
 </UserControl>

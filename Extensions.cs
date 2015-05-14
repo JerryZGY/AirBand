@@ -11,7 +11,7 @@ namespace KinectAirBand
 {
     public static class Extensions
     {
-        private static void DrawBody (IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext)
+        public static void DrawBody (IReadOnlyDictionary<JointType, Joint> joints, IDictionary<JointType, Point> jointPoints, DrawingContext drawingContext)
         {
             var trackedJointBrush = new SolidColorBrush(Color.FromArgb(255, 68, 192, 68));
             var inferredJointBrush = Brushes.Yellow;

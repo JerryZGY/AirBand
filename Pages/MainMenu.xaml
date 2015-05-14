@@ -8,10 +8,11 @@
     <UserControl.Resources>
         <ResourceDictionary Source="MainMenuRes.xaml"/>
     </UserControl.Resources>
+    <Grid>
         <Grid Name="Grid_Main" Opacity="1">
-            <Grid.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Background.jpg"/>
-            </Grid.Background>
+            <Grid.Effect>
+                <BlurEffect Radius="0" KernelType="Gaussian" RenderingBias="Performance"/>
+            </Grid.Effect>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -27,6 +28,7 @@
             <!--<Canvas Background="#FFCFCFCF"/>
             <Image Grid.ColumnSpan="5" Source="/KinectAirBand;component/Resources/Logo.png" Height="141" Width="250"/>
             <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>-->
+            <Image Name="Image_BackgroundEffect" Grid.ColumnSpan="5" Grid.RowSpan="3" Source="/KinectAirBand;component/Resources/Background.jpg"/>
             <Image Name="Image_Logo" Grid.ColumnSpan="5" Grid.RowSpan="2" VerticalAlignment="Top" Source="/KinectAirBand;component/Resources/Logo.png" Height="400" Width="400">
                 <Image.RenderTransform>
                     <TranslateTransform Y="-400"/>
@@ -82,6 +84,20 @@
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
                 </Button.Background>
             </Button>
+            <MediaElement Name="Music" Grid.Row="3" Grid.Column="4" Source="../Resources/Title.m4a" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="Music_MediaEnded" Visibility="Collapsed"/>
             <TextBlock Grid.Row="3" Text="主選單" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
+            <Grid  Grid.ColumnSpan="5" Grid.RowSpan="3" Background="Wheat" Opacity="0.5" Visibility="Hidden"/>
         </Grid>
+        <StackPanel Name="StackPanel_Content" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" Margin="0 50" Height="668" Visibility="Collapsed">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#33FF0000"/>
+                    <GradientStop Color="#0CFF0000" Offset="0.02"/>
+                    <GradientStop Color="#0CFF0000" Offset="0.5"/>
+                    <GradientStop Color="#0CFF0000" Offset="0.98"/>
+                    <GradientStop Color="#33FF0000" Offset="1"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+        </StackPanel>
+    </Grid>
 </UserControl>

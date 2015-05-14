@@ -9,7 +9,7 @@ namespace KinectAirBand
 {
     public class ToneTriggerHandler
     {
-        private const Int32 range = 20;
+        private const Double range = 0.05;
         float HLX, HLY, HLZ, HRX, HRY, HRZ, WLX, WLY, WLZ, WRX, WRY, WRZ, ELX, ELY, ELZ, ERX, ERY, ERZ, SLX, SLY, SLZ, SRX, SRY, SRZ;
 
         public void UpdateBodyData (Body body)
@@ -60,6 +60,20 @@ namespace KinectAirBand
         public Boolean CheckToneReTrigger ()
         {
             var returnValue = false;
+            if (( HLX - ( SRX + ERX ) / 2 ) >= -range && ( HLX - ( SRX + ERX ) / 2 ) <= range)
+            {
+                if (( HLY - ( SRY + ERY) / 2 ) >= -range && ( HLY - ( SRY + ERY ) / 2 ) <= range)
+                {
+                    if (( HLZ - ( SRZ + ERZ ) / 2 ) >= -range && ( HLZ - ( SRZ + ERZ ) / 2 ) <= range)
+                        returnValue = true;
+                }
+            }
+            return returnValue;
+        }
+
+        public Boolean CheckToneMiTrigger ()
+        {
+            var returnValue = false;
             if (( HLX - ERX ) >= -range && ( HLX - ERX ) <= range)
             {
                 if (( HLY - ERY ) >= -range && ( HLY - ERY ) <= range)
@@ -71,7 +85,21 @@ namespace KinectAirBand
             return returnValue;
         }
 
-        public Boolean CheckToneMeTrigger ()
+        public Boolean CheckToneFaTrigger ()
+        {
+            var returnValue = false;
+            if (( HLX - ( WRX + ERX ) / 2 ) >= -range && ( HLX - ( WRX + ERX ) / 2 ) <= range)
+            {
+                if (( HLY - ( WRY + ERY ) / 2 ) >= -range && ( HLY - ( WRY + ERY ) / 2 ) <= range)
+                {
+                    if (( HLZ - ( WRZ + ERZ ) / 2 ) >= -range && ( HLZ - ( WRZ + ERZ ) / 2 ) <= range)
+                        returnValue = true;
+                }
+            }
+            return returnValue;
+        }
+
+        public Boolean CheckToneSoTrigger ()
         {
             var returnValue = false;
             if (( HLX - WRX ) >= -range && ( HLX - WRX ) <= range)

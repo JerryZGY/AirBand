@@ -56,8 +56,39 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
+    <Storyboard x:Key="BackgroundEffectStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Image_BackgroundEffect" Storyboard.TargetProperty="Opacity" From="0.2" To="1" AutoReverse="True" RepeatBehavior="Forever" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseInOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="EnterContentStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)" From="0" To="30" Duration="0:0:0.01">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="StackPanel_Content" Storyboard.TargetProperty="Height" From="0" To="668" Duration="0:0:0.2">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="ExitContentStoryboard">
+        <DoubleAnimation Storyboard.TargetName="StackPanel_Content" Storyboard.TargetProperty="Height" From="668" To="0" Duration="0:0:0.1">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)" From="30" To="0" Duration="0:0:0.01">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
     <Storyboard x:Key="LogoEffectStoryboard">
-        <DoubleAnimation Storyboard.TargetName="Image_LogoEffect" Storyboard.TargetProperty="Opacity" From="0" To="1" AutoReverse="True" RepeatBehavior="Forever" Duration="0:0:0.2"/>
+        <DoubleAnimation Storyboard.TargetName="Image_LogoEffect" Storyboard.TargetProperty="Opacity" From="0.2" To="0.6" AutoReverse="True" RepeatBehavior="Forever" Duration="0:0:0.2"/>
     </Storyboard>
     <Style x:Key="MenuButton" TargetType="{x:Type Button}">
         <Setter Property="Height" Value="200"/>
@@ -84,6 +115,9 @@
                         <Trigger Property="IsPressed" Value="true">
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
+                        <EventTrigger RoutedEvent="PreviewMouseDown">
+                            <SoundPlayerAction Source="../Resources/Sound/Click.wav" />
+                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -111,6 +145,9 @@
                         <Trigger Property="IsPressed" Value="true">
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
+                        <EventTrigger RoutedEvent="PreviewMouseDown">
+                            <SoundPlayerAction Source="../Resources/Sound/Click.wav" />
+                        </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

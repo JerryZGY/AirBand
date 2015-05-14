@@ -78,8 +78,9 @@ namespace KinectAirBand.Controls
                 }
             ));
 
+            if (!on)
+                owner.OnPianoKeyDown(new PianoKeyEventArgs(noteID));
             on = true;
-            owner.OnPianoKeyDown(new PianoKeyEventArgs(noteID));
         }
 
         public void ReleasePianoKey ()

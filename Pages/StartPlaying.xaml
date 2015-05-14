@@ -11,16 +11,18 @@
     </UserControl.Resources>
     <k:KinectRegion Name="region">
         <Grid Name="Grid_Main" Opacity="1">
-            <Grid.Background>
-            <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
-        </Grid.Background>
+            <!--<Grid.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
+            </Grid.Background>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
+            <Viewbox Grid.RowSpan="4" Height="768" Width="1366">
+                <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
+            </Viewbox>
             <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
             <ctrl:PianoControlWPF x:Name="PianoControl1" Grid.Row="2" Grid.RowSpan="2" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Top" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
             <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="5" HorizontalAlignment="Center" Opacity="0" Visibility="Collapsed"/>

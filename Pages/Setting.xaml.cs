@@ -23,6 +23,23 @@ namespace KinectAirBand.Pages
         public Setting ()
         {
             InitializeComponent();
+            MusicVolume.ValueChanged += Slider_ValueChanged;
+        }
+
+        private void Button_Click (object sender, RoutedEventArgs e)
+        {
+            this.IsHitTestVisible = false;
+            StoryboardHandler.InitNotHitStoryBoard(Switcher.PageDictionary["MainMenu"], "ExitContentStoryboard", () =>
+            {
+                ( (Grid)Switcher.PageDictionary["MainMenu"].FindName("Grid_Main") ).IsHitTestVisible = true;
+                this.IsHitTestVisible = true;
+            });
+        }
+
+        private void Slider_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            ( (MediaElement)Switcher.PageDictionary["MainMenu"].FindName("Music") ).Volume = e.NewValue / 100;
+            MusicVolumeValue.Text = ( (int)e.NewValue ).ToString();
         }
     }
 }

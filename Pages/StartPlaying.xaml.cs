@@ -53,6 +53,8 @@ namespace KinectAirBand.Pages
         private Int32 trackingBodyIndex;
         private PianoControlData[] trackingData;
         private List<ToneTriggerHandler> toneTriggerList;
+        private DrawingGroup drawingGroup;
+        private DrawingImage imageSource;
 
         public StartPlaying ()
         {
@@ -86,7 +88,7 @@ namespace KinectAirBand.Pages
                     reader.Dispose();
                 }
 
-                kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
+                //kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
                 colorBitmap = null;
                 dataList = null;
                 trackingData = null;
@@ -125,7 +127,10 @@ namespace KinectAirBand.Pages
             dataList = new List<PianoControlData>();
             trackingData = new PianoControlData[2];
             toneTriggerList = new List<ToneTriggerHandler>();
-            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+            //kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+
+            this.drawingGroup = new DrawingGroup();
+            this.imageSource = new DrawingImage(this.drawingGroup);
 
             if (outDevice == null)
             {
@@ -183,29 +188,51 @@ namespace KinectAirBand.Pages
             {
                 if (bodies != null)
                 {
-                    foreach (var item in bodies.Select((value, i) => new { i, value }))
+                    using (DrawingContext dc = this.drawingGroup.Open())
                     {
-                        if (item.value.IsTracked)
+                        foreach (var item in bodies.Select((value, i) => new { i, value }))
                         {
-                            toneTriggerList[item.i].UpdateBodyData(item.value);
-                            toneTriggerList[item.i].CheckToneDoTrigger();
-                            toneTriggerList[item.i].CheckToneReTrigger();
-                            toneTriggerList[item.i].CheckToneMeTrigger();
+                            if (item.value.IsTracked)
+                            {
+                                IReadOnlyDictionary<JointType, Joint> joints = item.value.Joints;
+                                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
+                                foreach (JointType jointType in joints.Keys)
+                                {
+                                    ColorSpacePoint colorSpacePoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(joints[jointType].Position);
+                                    jointPoints[jointType] = new Point(colorSpacePoint.X, colorSpacePoint.Y);
+                                }
+                                Extensions.DrawBody(joints, jointPoints, dc);
+                                toneTriggerList[item.i].UpdateBodyData(item.value);
+                                if (toneTriggerList[item.i].CheckToneDoTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[12] ).PressPianoKey();
+                                if (toneTriggerList[item.i].CheckToneReTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[14] ).PressPianoKey();
+                                if (toneTriggerList[item.i].CheckToneMiTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[16] ).PressPianoKey();
+                                if (toneTriggerList[item.i].CheckToneFaTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[17] ).PressPianoKey();
+                                if (toneTriggerList[item.i].CheckToneSoTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[19] ).PressPianoKey();
+                                /*if (toneTriggerList[item.i].CheckToneLaTrigger())
+                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[21] ).PressPianoKey();*/
+                            }
+                            dataList[item.i].UpdateBodyData(item.value);
                         }
-                        dataList[item.i].UpdateBodyData(item.value);
-                    }
-                    foreach (var item in dataList)
-                    {
-                        if (item.TrackingId != 0 && trackingBodyIndex < 2)
+                        foreach (var item in dataList)
                         {
-                            trackingData[trackingBodyIndex] = item;
-                            trackingBodyIndex++;
+                            if (item.TrackingId != 0 && trackingBodyIndex < 2)
+                            {
+                                trackingData[trackingBodyIndex] = item;
+                                trackingBodyIndex++;
+                            }
                         }
+                        this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, colorFrameDescription.Width, colorFrameDescription.Height));
                     }
                 }
             }
+            test.Source = this.imageSource;
         }
-
+        
         private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs args)
         {
             KinectPointerPoint point = args.CurrentPoint;
@@ -297,33 +324,6 @@ namespace KinectAirBand.Pages
                     }
                 }
             }
-
-            /*if (point.Properties.IsEngaged)
-            {
-                Point regionRelative = new Point(point.Position.X * region.ActualWidth, point.Position.Y * region.ActualHeight);
-                performLassoClick(regionRelative, Button_Ensemble);
-                performLassoClick(regionRelative, Button_Piano);
-                performLassoClick(regionRelative, Button_Guitar);
-            }*/
-
-            /*if (point.Properties.BodyTrackingId == bodyId[0])
-            {
-                Point screenRelative = new Point(point.Position.X * PianoControl.mainScreen.ActualWidth, point.Position.Y * PianoControl.mainScreen.ActualHeight);
-                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl);
-                foreach (PianoKeyWPF pitem in PianoControl.cnvPiano.Children)
-                {
-                    performLassoPianoClick(screenRelative, pitem, point.Properties.HandType, PianoControl);
-                }
-            }
-            else if (point.Properties.BodyTrackingId == bodyId[1])
-            {
-                Point screenRelative = new Point(point.Position.X * PianoControl1.mainScreen.ActualWidth, point.Position.Y * PianoControl1.mainScreen.ActualHeight);
-                RenderPointer(point.Properties.IsEngaged, point.Position, PianoControl1);
-                foreach (PianoKeyWPF pitem in PianoControl1.cnvPiano.Children)
-                {
-                    performLassoPianoClick(screenRelative, pitem, point.Properties.HandType, PianoControl1);
-                }
-            }*/
         }
 
         private void RenderPointer (PointF position, PianoControlWPF control, UInt64 trackingId, HandType handType)
@@ -491,6 +491,7 @@ namespace KinectAirBand.Pages
                     break;
                 case "Button_Back":
                     setEnsembleButtonMode(true);
+                    Dispose(true);
                     StoryboardHandler.InitHitStoryBoard(this, "ExitStoryboard", () => Switcher.Switch("MainMenu"));
                     break;
                 default:
@@ -523,8 +524,8 @@ namespace KinectAirBand.Pages
             }
 
             #endregion
-
-            outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, e.NoteID, 127));
+            if (!disposed)
+                outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, e.NoteID, 127));
         }
 
         private void PianoControl_PianoKeyUp (object sender, PianoKeyEventArgs e)
@@ -537,8 +538,8 @@ namespace KinectAirBand.Pages
             }
 
             #endregion
-
-            outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, e.NoteID, 0));
+            if (!disposed)
+                outDevice.Send(new ChannelMessage(ChannelCommand.NoteOff, 0, e.NoteID, 0));
         }
     }
 }

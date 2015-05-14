@@ -10,11 +10,6 @@ namespace KinectAirBand
 {
     public static class StoryboardHandler
     {
-        public static void EnterStoryBoard (FrameworkElement element, FrameworkElement visibleElement)
-        {
-            StoryboardHandler.InitHitStoryBoard(element, "EnterStoryboard", () => visibleElement.Visibility = System.Windows.Visibility.Visible);
-        }
-
         public static void ExitStoryBoard (FrameworkElement element, FrameworkElement visibleElement, Action callback)
         {
             visibleElement.Visibility = System.Windows.Visibility.Collapsed;
@@ -51,6 +46,22 @@ namespace KinectAirBand
                 callback();
                 element.IsHitTestVisible = true;
             };
+            storyBoard.Begin();
+        }
+
+        public static void InitNotHitStoryBoard (FrameworkElement element, String name, Action callback)
+        {
+            callback();
+            Storyboard storyBoard = ( (Storyboard)element.Resources[name] );
+            storyBoard.Completed += (se, ev) => callback();
+            storyBoard.Begin();
+        }
+
+        public static void InitNotHitStoryBoard (FrameworkElement element, FrameworkElement notHitElement, String name, Action callback)
+        {
+            callback();
+            notHitElement.IsHitTestVisible = false;
+            Storyboard storyBoard = ( (Storyboard)element.Resources[name] );
             storyBoard.Begin();
         }
     }

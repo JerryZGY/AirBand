@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace KinectAirBand.Pages
@@ -8,13 +9,18 @@ namespace KinectAirBand.Pages
         public MainMenu ()
         {
             InitializeComponent();
+            StoryboardHandler.InitStoryBoard(this, "BackgroundEffectStoryboard");
             StoryboardHandler.InitStoryBoard(this, "LogoEffectStoryboard");
         }
 
         private void MainMenu_Loaded (object sender, RoutedEventArgs e)
         {
             Grid_Main.Opacity = 0;
-            StoryboardHandler.EnterStoryBoard(this, Image_LogoEffect);
+            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
+            {
+                Image_LogoEffect.Visibility = System.Windows.Visibility.Visible;
+                Music.Play();
+            });
         }
 
         private void Button_Click (object sender, RoutedEventArgs e)
@@ -30,6 +36,13 @@ namespace KinectAirBand.Pages
                 case "Button_Mod":
                     break;
                 case "Button_Setting":
+                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
+                    {
+                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
+                        StackPanel_Content.Children.Clear();
+                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Setting"]);
+                        
+                    });
                     break;
                 case "Button_About":
                     break;
@@ -39,6 +52,12 @@ namespace KinectAirBand.Pages
                 default:
                     break;
             }
+        }
+
+        private void Music_MediaEnded (object sender, RoutedEventArgs e)
+        {
+            Music.Position = TimeSpan.Zero;
+            Music.Play();
         }
     }
 }
