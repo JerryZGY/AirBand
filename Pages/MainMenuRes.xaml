@@ -6,6 +6,11 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Image_Logo" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="-400" To="0" Duration="0:0:0.6" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Start" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" From="500" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -44,11 +49,15 @@
         <DoubleAnimation Storyboard.TargetName="Button_Mod" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" To="500" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Setting" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" To="500" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_About" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" To="500" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Image_Logo" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.Y)" To="-400" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="LogoEffectStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Image_LogoEffect" Storyboard.TargetProperty="Opacity" From="0" To="1" AutoReverse="True" RepeatBehavior="Forever" Duration="0:0:0.2"/>
     </Storyboard>
     <Style x:Key="MenuButton" TargetType="{x:Type Button}">
         <Setter Property="Height" Value="200"/>

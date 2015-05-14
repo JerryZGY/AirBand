@@ -8,12 +8,13 @@ namespace KinectAirBand.Pages
         public MainMenu ()
         {
             InitializeComponent();
+            StoryboardHandler.InitStoryBoard(this, "LogoEffectStoryboard");
         }
 
         private void MainMenu_Loaded (object sender, RoutedEventArgs e)
         {
             Grid_Main.Opacity = 0;
-            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
+            StoryboardHandler.EnterStoryBoard(this, Image_LogoEffect);
         }
 
         private void Button_Click (object sender, RoutedEventArgs e)
@@ -22,7 +23,7 @@ namespace KinectAirBand.Pages
             switch (button.Name)
             {
                 case "Button_Start":
-                    StoryboardHandler.InitHitStoryBoard(this, "ExitStoryboard", () => Switcher.Switch("StartPlaying"));
+                    StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("StartPlaying"));
                     break;
                 case "Button_Share":
                     break;

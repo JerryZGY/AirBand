@@ -37,6 +37,7 @@ namespace KinectAirBand.Pages
         }
         private WriteableBitmap colorBitmap = null;
         private Boolean disposed;
+        private Boolean isLoaded = false;
         private Boolean isEnsembleMode;
         private Boolean playing;
         private KinectSensor sensor;
@@ -76,28 +77,29 @@ namespace KinectAirBand.Pages
             if (disposed)
                 return;
 
-            if (disposing)
+            if (isLoaded)
             {
-                if (outDevice != null)
+                if (disposing && isLoaded)
                 {
                     outDevice.Close();
                     outDevice.Dispose();
+                    reader.Dispose();
                 }
-                reader.Dispose();
+
+                kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
+                colorBitmap = null;
+                dataList = null;
+                trackingData = null;
+                sensor = null;
+                bodies = null;
+                kinectCoreWindow = null;
+                reader = null;
+                colorFrameDescription = null;
+                toneTriggerList = null;
+
+                disposed = true;
+                isLoaded = false;
             }
-
-            kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
-            colorBitmap = null;
-            dataList = null;
-            trackingData = null;
-            sensor = null;
-            bodies = null;
-            kinectCoreWindow = null;
-            reader = null;
-            colorFrameDescription = null;
-            toneTriggerList = null;
-
-            disposed = true;
         }
 
         #endregion
@@ -124,17 +126,20 @@ namespace KinectAirBand.Pages
             trackingData = new PianoControlData[2];
             toneTriggerList = new List<ToneTriggerHandler>();
             kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+
             if (outDevice == null)
             {
                 outDevice = new OutputDevice(outDeviceID);
             }
-            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
 
             for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
             {
                 dataList.Add(new PianoControlData(i));
                 toneTriggerList.Add(new ToneTriggerHandler());
             }
+
+            isLoaded = true;
+            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)

@@ -10,6 +10,23 @@ namespace KinectAirBand
 {
     public static class StoryboardHandler
     {
+        public static void EnterStoryBoard (FrameworkElement element, FrameworkElement visibleElement)
+        {
+            StoryboardHandler.InitHitStoryBoard(element, "EnterStoryboard", () => visibleElement.Visibility = System.Windows.Visibility.Visible);
+        }
+
+        public static void ExitStoryBoard (FrameworkElement element, FrameworkElement visibleElement, Action callback)
+        {
+            visibleElement.Visibility = System.Windows.Visibility.Collapsed;
+            StoryboardHandler.InitHitStoryBoard(element, "ExitStoryboard", () => callback());
+        }
+
+        public static void InitStoryBoard (FrameworkElement element, String name)
+        {
+            Storyboard storyBoard = ( (Storyboard)element.Resources[name] );
+            storyBoard.Begin();
+        }
+
         public static void InitStoryBoard (FrameworkElement element, String name, Action callback)
         {
             Storyboard storyBoard = ( (Storyboard)element.Resources[name] );

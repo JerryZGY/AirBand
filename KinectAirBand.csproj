@@ -77,6 +77,7 @@
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
+    <Compile Include="Common\ToneTriggerHandler.cs" />
     <Compile Include="Controls\PianoControl.xaml.cs">
       <DependentUpon>PianoControl.xaml</DependentUpon>
     </Compile>
@@ -191,6 +192,7 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Logo.png" />
     <Resource Include="Resources\Single.png" />
     <Resource Include="Resources\Ensemble.png" />
     <Resource Include="Resources\Dashed.png" />
@@ -200,7 +202,6 @@
     <Resource Include="Resources\Guitar.png" />
     <Resource Include="Resources\Exit.png" />
     <Resource Include="Resources\About.png" />
-    <Resource Include="Resources\Logo.png" />
     <Resource Include="Resources\Setting.png" />
     <Resource Include="Resources\Mod.png" />
     <Resource Include="Resources\Share.png" />

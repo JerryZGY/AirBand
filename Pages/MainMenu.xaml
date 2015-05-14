@@ -24,9 +24,19 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--<Canvas Background="#FFCFCFCF"/>-->
+            <!--<Canvas Background="#FFCFCFCF"/>
             <Image Grid.ColumnSpan="5" Source="/KinectAirBand;component/Resources/Logo.png" Height="141" Width="250"/>
-            <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>
+            <TextBlock Grid.ColumnSpan="5" Grid.RowSpan="2" Text="Kinect Air Band" FontSize="100" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" FontFamily="True Lies"/>-->
+            <Image Name="Image_Logo" Grid.ColumnSpan="5" Grid.RowSpan="2" VerticalAlignment="Top" Source="/KinectAirBand;component/Resources/Logo.png" Height="400" Width="400">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="-400"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image Name="Image_LogoEffect" Grid.ColumnSpan="5" Grid.RowSpan="2" VerticalAlignment="Top" Source="/KinectAirBand;component/Resources/Logo.png" Height="400" Width="400" Visibility="Collapsed">
+                <Image.Effect>
+                    <DropShadowEffect BlurRadius="0" Color="White" Direction="90"/>
+                </Image.Effect>
+            </Image>
             <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Start.png"/>
