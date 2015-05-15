@@ -9,7 +9,7 @@ namespace KinectAirBand
 {
     public class ToneTriggerHandler
     {
-        private const Double range = 0.05;
+        private const Double range = 0.1;
         float HLX, HLY, HLZ, HRX, HRY, HRZ, WLX, WLY, WLZ, WRX, WRY, WRZ, ELX, ELY, ELZ, ERX, ERY, ERZ, SLX, SLY, SLZ, SRX, SRY, SRZ;
 
         public void UpdateBodyData (Body body)

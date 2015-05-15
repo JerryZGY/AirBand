@@ -11,7 +11,7 @@
     <Grid>
         <Grid Name="Grid_Main" Opacity="1">
             <Grid.Effect>
-                <BlurEffect Radius="0" KernelType="Gaussian" RenderingBias="Performance"/>
+                <BlurEffect Radius="0" KernelType="Gaussian"/>
             </Grid.Effect>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>

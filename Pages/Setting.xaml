@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600" Margin="0 34">
+    <UserControl.Resources>
+        <ResourceDictionary Source="SettingRes.xaml"/>
+    </UserControl.Resources>
     <Grid Background="#CCFFFFFF" Height="600" Width="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -16,8 +19,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.ColumnSpan="2" Text="設定" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="1" Text="主音量"/>
-        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50"/>
+        <StackPanel Grid.Row="1">
+            <Label Grid.Row="1" Content="主音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Grid.Row="1" Content="副音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
+        </StackPanel>
+        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Style="{StaticResource ResourceKey= SettingSlider}"/>
         <TextBlock Name="MusicVolumeValue"/>
         <Button Grid.Row="2" Grid.ColumnSpan="2" Content="返回" Click="Button_Click"/>
     </Grid>
