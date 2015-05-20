@@ -23,7 +23,7 @@
             <Label Grid.Row="1" Content="主音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
             <Label Grid.Row="1" Content="副音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
         </StackPanel>
-        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Style="{StaticResource ResourceKey= SettingSlider}"/>
+        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Style="{StaticResource ResourceKey= SettingSlider}" Tag="100%"/>
         <TextBlock Name="MusicVolumeValue"/>
         <Button Grid.Row="2" Grid.ColumnSpan="2" Content="返回" Click="Button_Click"/>
     </Grid>

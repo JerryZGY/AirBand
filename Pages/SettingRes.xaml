@@ -16,6 +16,7 @@
     <Style x:Key="SettingSlider" TargetType="{x:Type Slider}">
         <Setter Property="Height" Value="40"/>
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+        <Setter Property="Tag" Value="100%"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -24,10 +25,11 @@
                             <Border x:Name="TrackBackground" Background="Black" Height="4" Margin="20 0"/>
                             <Track x:Name="PART_Track">
                                 <Track.Thumb>
-                                    <Thumb x:Name="Thumb" Height="20" Width="40" Focusable="False" OverridesDefaultStyle="True">
+                                    <Thumb x:Name="Thumb" Height="20" Width="40" Focusable="False" OverridesDefaultStyle="True" Tag="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}">
                                         <Thumb.Template>
-                                            <ControlTemplate>
-                                                <TextBlock Background="#99000000" Foreground="White" FontSize="10" HorizontalAlignment="Center" Text="{TemplateBinding Value}"/>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Label
+                                                <TextBlock Background="#99000000" Height="20" Width="40" Foreground="White" FontSize="15" HorizontalAlignment="Center" Text="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}" DataContext="{TemplateBinding Tag}"/>
                                             </ControlTemplate>
                                         </Thumb.Template>    
                                     </Thumb>

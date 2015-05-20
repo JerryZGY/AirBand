@@ -39,7 +39,7 @@ namespace KinectAirBand.Pages
         private void Slider_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ( (MediaElement)Switcher.PageDictionary["MainMenu"].FindName("Music") ).Volume = e.NewValue / 100;
-            MusicVolumeValue.Text = ( (int)e.NewValue ).ToString();
+            MusicVolume.Tag = String.Format("{0}%", (int)e.NewValue);
         }
     }
 }
