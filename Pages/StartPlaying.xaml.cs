@@ -56,9 +56,10 @@ namespace KinectAirBand.Pages
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
 
-        public StartPlaying ()
+        public StartPlaying (EnvironmentVariablesViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
 
         ~StartPlaying ()

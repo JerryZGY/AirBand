@@ -20,11 +20,20 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.ColumnSpan="2" Text="設定" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center"/>
         <StackPanel Grid.Row="1">
-            <Label Grid.Row="1" Content="主音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
-            <Label Grid.Row="1" Content="副音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="主選單靜音" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="主選單音量" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="無邊界模式" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="演奏去背模式" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="演奏背景" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="鋼琴感測距離" Style="{StaticResource ResourceKey= SettingLabel}"/>
+            <Label Content="吉他感測距離" Style="{StaticResource ResourceKey= SettingLabel}"/>
         </StackPanel>
-        <Slider Name="MusicVolume" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="100" Value="50" Style="{StaticResource ResourceKey= SettingSlider}" Tag="100%"/>
-        <TextBlock Name="MusicVolumeValue"/>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <ToggleButton IsChecked="{Binding MainVolumeMute, Mode=TwoWay}"/>
+            <Slider Value="{Binding MainVolume, Converter={StaticResource VolumeConverter}, Mode=TwoWay}"/>
+            <ToggleButton IsChecked="{Binding FullScreen, Mode=TwoWay}"/>
+            <ToggleButton IsChecked="{Binding BackgroundRemoval, Mode=TwoWay}"/>
+        </StackPanel>
         <Button Grid.Row="2" Grid.ColumnSpan="2" Content="返回" Click="Button_Click"/>
     </Grid>
 </UserControl>

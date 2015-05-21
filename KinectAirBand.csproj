@@ -85,6 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\VolumeConverter.cs" />
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
@@ -109,6 +110,7 @@
       <DependentUpon>StartPlaying.xaml</DependentUpon>
     </Compile>
     <Compile Include="PianoControlData.cs" />
+    <Compile Include="ViewModels\EnvironmentVariablesViewModel.cs" />
     <Compile Include="ViewModels\StateView.cs" />
     <Page Include="Controls\PianoControl.xaml">
       <SubType>Designer</SubType>

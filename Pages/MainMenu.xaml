@@ -84,7 +84,7 @@
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
                 </Button.Background>
             </Button>
-            <MediaElement Name="Music" Grid.Row="3" Grid.Column="4" Source="../Resources/Title.m4a" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="Music_MediaEnded" Visibility="Collapsed"/>
+            <MediaElement Name="Music" Grid.Row="3" Grid.Column="4" Volume="{Binding MainVolume, Mode=OneWay}" Source="../Resources/Title.m4a" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="Music_MediaEnded" Visibility="Collapsed" IsMuted="{Binding MainVolumeMute, Mode=OneWay}"/>
             <TextBlock Grid.Row="3" Text="主選單" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
             <Grid  Grid.ColumnSpan="5" Grid.RowSpan="3" Background="Wheat" Opacity="0.5" Visibility="Hidden"/>
         </Grid>

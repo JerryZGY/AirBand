@@ -6,9 +6,11 @@ namespace KinectAirBand.Pages
 {
     public partial class MainMenu : UserControl
     {
-        public MainMenu ()
+
+        public MainMenu (EnvironmentVariablesViewModel viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
             StoryboardHandler.InitStoryBoard(this, "BackgroundEffectStoryboard");
             StoryboardHandler.InitStoryBoard(this, "LogoEffectStoryboard");
         }

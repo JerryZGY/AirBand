@@ -20,10 +20,10 @@ namespace KinectAirBand.Pages
     /// </summary>
     public partial class Setting : UserControl
     {
-        public Setting ()
+        public Setting (EnvironmentVariablesViewModel viewModel)
         {
             InitializeComponent();
-            MusicVolume.ValueChanged += Slider_ValueChanged;
+            this.DataContext = viewModel;
         }
 
         private void Button_Click (object sender, RoutedEventArgs e)
@@ -34,12 +34,6 @@ namespace KinectAirBand.Pages
                 ( (Grid)Switcher.PageDictionary["MainMenu"].FindName("Grid_Main") ).IsHitTestVisible = true;
                 this.IsHitTestVisible = true;
             });
-        }
-
-        private void Slider_ValueChanged (object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            ( (MediaElement)Switcher.PageDictionary["MainMenu"].FindName("Music") ).Volume = e.NewValue / 100;
-            MusicVolume.Tag = String.Format("{0}%", (int)e.NewValue);
         }
     }
 }

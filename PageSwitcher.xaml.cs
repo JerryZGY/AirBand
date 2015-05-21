@@ -9,12 +9,6 @@ namespace KinectAirBand
         public PageSwitcher ()
         {
             InitializeComponent();
-
-            if(SystemParameters.FullPrimaryScreenWidth > 1366)
-                this.WindowState = WindowState.Normal;
-            else
-                this.WindowState = WindowState.Maximized;
-
             Switcher.pageSwitcher = this;
             Switcher.Switch("MainMenu");
         }
