@@ -46,11 +46,14 @@ namespace KinectAirBand
         {
             get
             {
+                Switcher.pageSwitcher.Left = 0;
+                Switcher.pageSwitcher.Top = 0;
                 return fullScreen;
             }
             set
             {
                 fullScreen = value;
+                Switcher.pageSwitcher.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                 Switcher.pageSwitcher.WindowState = (fullScreen) ? WindowState.Maximized : WindowState.Normal;
                 OnPropertyChanged("FullScreen");
             }

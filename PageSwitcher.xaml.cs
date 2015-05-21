@@ -11,6 +11,7 @@ namespace KinectAirBand
             InitializeComponent();
             Switcher.pageSwitcher = this;
             Switcher.Switch("MainMenu");
+            Switcher.viewModel.FullScreen = !( SystemParameters.FullPrimaryScreenWidth > 1366 );
         }
 
         public void Navigate (UserControl nextPage)

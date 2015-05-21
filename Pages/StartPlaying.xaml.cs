@@ -195,15 +195,26 @@ namespace KinectAirBand.Pages
                         {
                             if (item.value.IsTracked)
                             {
-                                IReadOnlyDictionary<JointType, Joint> joints = item.value.Joints;
+                                /*IReadOnlyDictionary<JointType, Joint> joints = item.value.Joints;
                                 Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
                                 foreach (JointType jointType in joints.Keys)
                                 {
                                     ColorSpacePoint colorSpacePoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(joints[jointType].Position);
                                     jointPoints[jointType] = new Point(colorSpacePoint.X, colorSpacePoint.Y);
                                 }
-                                Extensions.DrawBody(joints, jointPoints, dc);
+                                Extensions.DrawBody(joints, jointPoints, dc);*/
                                 toneTriggerList[item.i].UpdateBodyData(item.value);
+
+                                var a = PianoControl.cnvPiano.Children[12] as PianoKeyWPF;
+                                var x = item.value.Joints[JointType.ShoulderLeft].Position.X * Canvas_Control.ActualWidth + Canvas_Control.ActualWidth / 2;
+                                var y = item.value.Joints[JointType.ShoulderLeft].Position.Y * Canvas_Control.ActualHeight + Canvas_Control.ActualHeight / 2;
+                                a.Margin = new Thickness(0, 0, 0, 0);
+                                Canvas.SetLeft(a, x);
+                                Canvas.SetTop(a, y);
+                                X.Content = x.ToString();
+                                Y.Content = y.ToString();
+                                
+
                                 if (toneTriggerList[item.i].CheckToneDoTrigger())
                                     ( (PianoKeyWPF)PianoControl.cnvPiano.Children[12] ).PressPianoKey();
                                 if (toneTriggerList[item.i].CheckToneReTrigger())
