@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -9,11 +10,8 @@ namespace KinectAirBand
 {
     public class EnvironmentVariablesViewModel : ViewModelBase
     {
-        private Boolean mainVolumeMute = false;
-        private Double mainVolume = 0.1;
-        private Boolean fullScreen = false;
-        private Boolean backgroundRemoval = false;
 
+        private Boolean mainVolumeMute = false;
         public Boolean MainVolumeMute
         {
             get
@@ -27,6 +25,7 @@ namespace KinectAirBand
             }
         }
 
+        private Double mainVolume = 0.1;
         public Double MainVolume
         {
             get
@@ -40,6 +39,7 @@ namespace KinectAirBand
             }
         }
 
+        private Boolean fullScreen = false;
         public Boolean FullScreen
         {
             get
@@ -52,11 +52,12 @@ namespace KinectAirBand
             {
                 fullScreen = value;
                 Switcher.pageSwitcher.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                Switcher.pageSwitcher.WindowState = (fullScreen) ? WindowState.Maximized : WindowState.Normal;
+                Switcher.pageSwitcher.WindowState = ( fullScreen ) ? WindowState.Maximized : WindowState.Normal;
                 OnPropertyChanged("FullScreen");
             }
         }
 
+        private Boolean backgroundRemoval = false;
         public Boolean BackgroundRemoval
         {
             get
@@ -67,6 +68,26 @@ namespace KinectAirBand
             {
                 backgroundRemoval = value;
                 OnPropertyChanged("BackgroundRemoval");
+            }
+        }
+
+        private Int32 background = 0;
+        public String Background
+        {
+            get
+            {
+                var test = System.IO.Directory.GetFileSystemEntries(@"Resources/Background", "*.jpg")
+                   .Select((index, value) => new { index, value })
+                   .ToDictionary(item => item.value, item =>
+                   {
+                       return String.Format("../{0}", item.index);
+                   })[background];
+                return test;
+            }
+            set
+            {
+                background = Convert.ToInt32(value);
+                OnPropertyChanged("Background");
             }
         }
     }

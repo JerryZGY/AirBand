@@ -42,6 +42,12 @@ namespace KinectAirBand.Pages
                     });
                     break;
                 case "Button_Mod":
+                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
+                    {
+                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
+                        StackPanel_Content.Children.Clear();
+                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Mod"]);
+                    });
                     break;
                 case "Button_Setting":
                     StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
