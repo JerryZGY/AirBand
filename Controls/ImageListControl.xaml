@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="278" Background="#66000000" Style="{DynamicResource UserControl}">
+             d:DesignHeight="111" d:DesignWidth="278" Background="#66000000" Style="{DynamicResource UserControl}" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <Style x:Key="SelectButton" TargetType="{x:Type Button}">
             <Setter Property="Height" Value="40"/>
@@ -24,9 +24,6 @@
                             <Trigger Property="IsPressed" Value="true">
                                 <Setter Property="Fill" TargetName="BackRectangle" Value="#E5FFFFFF"/>
                             </Trigger>
-                            <EventTrigger RoutedEvent="PreviewMouseDown">
-                                <SoundPlayerAction Source="../../Resources/Sound/Click.wav" />
-                            </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -55,8 +52,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Name="Button_Prev" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/LeftArrow.png" Click="Button_Prev_Click"/>
-        <Image Name="Image" Grid.Column="1" Width="198" Source="..\Resources\Background\CYCU00.jpg"/>
-        <Button Name="Button_Next" Grid.Column="2" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/RightArrow.png" Click="Button_Next_Click"/>
+        <Button Name="Button_Prev" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/LeftArrow.png" Click="Button_Click"/>
+        <Image Name="Image" Grid.Column="1" Width="198" Source="/KinectAirBand;component/Resources/Background.jpg" Stretch="Uniform"/>
+        <Button Name="Button_Next" Grid.Column="2" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/RightArrow.png" Click="Button_Click"/>
     </Grid>
 </UserControl>

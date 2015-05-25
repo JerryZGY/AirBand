@@ -25,5 +25,23 @@ namespace KinectAirBand.Pages
             InitializeComponent();
             this.DataContext = viewModel;
         }
+
+        private void Button_Click (object sender, RoutedEventArgs e)
+        {
+            Button button = sender as Button;
+            switch (button.Name)
+            {
+                case "Button_Check":
+                    this.IsHitTestVisible = false;
+                    StoryboardHandler.InitNotHitStoryBoard(Switcher.PageDictionary["MainMenu"], "ExitContentStoryboard", () =>
+                    {
+                        ( (Grid)Switcher.PageDictionary["MainMenu"].FindName("Grid_Main") ).IsHitTestVisible = true;
+                        this.IsHitTestVisible = true;
+                    });
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

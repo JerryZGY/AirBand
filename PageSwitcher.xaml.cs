@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace KinectAirBand
 {
@@ -12,6 +13,22 @@ namespace KinectAirBand
             Switcher.pageSwitcher = this;
             Switcher.Switch("MainMenu");
             Switcher.viewModel.FullScreen = !( SystemParameters.FullPrimaryScreenWidth > 1366 );
+            Control.IsTabStopProperty.OverrideMetadata(typeof(Control), new FrameworkPropertyMetadata(false));
+            this.InputBindings.Add(new InputBinding(RightClickCommand(), new MouseGesture(MouseAction.RightClick)));
+        }
+
+        private ICommand RightClickCommand ()
+        {
+            return new RightClickCommand(() =>
+            {
+                this.IsHitTestVisible = false;
+                StoryboardHandler.InitNotHitStoryBoard(Switcher.PageDictionary["MainMenu"], "ExitContentStoryboard", () =>
+                {
+                    ( (Grid)Switcher.PageDictionary["MainMenu"].FindName("Grid_Main") ).IsHitTestVisible = true;
+                    Switcher.viewModel.ContentEntered = false;
+                    this.IsHitTestVisible = true;
+                });
+            });
         }
 
         public void Navigate (UserControl nextPage)

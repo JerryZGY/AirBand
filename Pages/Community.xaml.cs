@@ -36,6 +36,7 @@ namespace KinectAirBand.Pages
                     StoryboardHandler.InitNotHitStoryBoard(Switcher.PageDictionary["MainMenu"], "ExitContentStoryboard", () =>
                     {
                         ( (Grid)Switcher.PageDictionary["MainMenu"].FindName("Grid_Main") ).IsHitTestVisible = true;
+                        Switcher.viewModel.ContentEntered = false;
                         this.IsHitTestVisible = true;
                     });
                     break;

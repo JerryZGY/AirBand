@@ -115,7 +115,7 @@
                         <Trigger Property="IsPressed" Value="true">
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
-                        <EventTrigger RoutedEvent="PreviewMouseDown">
+                        <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
                             <SoundPlayerAction Source="../Resources/Sound/Click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>

@@ -88,6 +88,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Pages\ContentMenuBase.cs" />
+    <Compile Include="Common\RightClickCommand.cs" />
+    <Compile Include="Common\PianoControlData.cs" />
     <Compile Include="Controls\CommunityControl.xaml.cs">
       <DependentUpon>CommunityControl.xaml</DependentUpon>
     </Compile>
@@ -125,7 +128,6 @@
     <Compile Include="Pages\StartPlaying.xaml.cs">
       <DependentUpon>StartPlaying.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PianoControlData.cs" />
     <Compile Include="ViewModels\FacebookViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentVariablesViewModel.cs" />
     <Compile Include="ViewModels\StateView.cs" />
@@ -251,51 +253,28 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
-    <Content Include="Resources\Background\CYCU00.jpg">
+    <Content Include="Resources\Background\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU01.jpg">
+    <Content Include="Resources\Background\BG01.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU02.jpg">
+    <Content Include="Resources\Background\BG02.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU03.jpg">
+    <Content Include="Resources\Background\BG03.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU04.jpg">
+    <Content Include="Resources\Background\BG04.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU05.jpg">
+    <Content Include="Resources\Background\BG05.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU06.jpg">
+    <Content Include="Resources\Background\BG06.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\Background\CYCU07.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU08.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU09.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU10.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU11.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU12.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU13.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Background\CYCU14.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\Violin.png" />
     <Resource Include="Resources\LeftArrow.png" />
     <Resource Include="Resources\RightArrow.png" />
     <Resource Include="Resources\YouTube.jpg" />
@@ -308,7 +287,6 @@
     <Resource Include="Resources\Ensemble.png" />
     <Resource Include="Resources\Dashed.png" />
     <Resource Include="Resources\Piano.png" />
-    <Resource Include="Resources\BackgroundN.jpg" />
     <Resource Include="Resources\Drum.png" />
     <Resource Include="Resources\Guitar.png" />
     <Resource Include="Resources\Exit.png" />

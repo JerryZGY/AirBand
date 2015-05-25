@@ -25,19 +25,32 @@ namespace KinectAirBand.Controls
         public ImageListControl ()
         {
             InitializeComponent();
-            backgroundArray = System.IO.Directory.GetFiles(@"Resources\Background", "*.jpg").Select(x => { return String.Format(@"..\{0}", x); }).ToArray();
         }
 
-        private void Button_Prev_Click (object sender, RoutedEventArgs e)
+        private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
-            index = ( index > 0 ) ? ( index - 1 ) : ( backgroundArray.Count() - 1 );
-            Image.Source = new BitmapImage(new Uri(backgroundArray[index], UriKind.Relative));
+            backgroundArray = System.IO.Directory.GetFileSystemEntries(@"Resources/Background", "*.jpg").ToArray();
         }
 
-        private void Button_Next_Click (object sender, RoutedEventArgs e)
+        private void Button_Click (object sender, RoutedEventArgs e)
         {
-            index = ( index < backgroundArray.Count() - 1 ) ? ( index + 1 ) : 0;
-            Image.Source = new BitmapImage(new Uri(backgroundArray[index], UriKind.Relative));
+            Button button = sender as Button;
+            switch (button.Name)
+            {
+                case "Button_Prev":
+                    index = ( index > 0 ) ? ( index - 1 ) : ( backgroundArray.Count() - 1 );
+                    break;
+                case "Button_Next":
+                    index = ( index < backgroundArray.Count() - 1 ) ? ( index + 1 ) : 0;
+                    break;
+            }
+            var src = new BitmapImage();
+            src.BeginInit();
+            src.UriSource = new Uri(backgroundArray[index], UriKind.Relative);
+            src.CacheOption = BitmapCacheOption.OnLoad;
+            src.EndInit();
+            Image.Source = src;
+            Switcher.viewModel.Background = src;
         }
     }
 }

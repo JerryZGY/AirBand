@@ -5,11 +5,26 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace KinectAirBand
 {
     public class EnvironmentVariablesViewModel : ViewModelBase
     {
+        private Boolean contentEntered = false;
+        public Boolean ContentEntered
+        {
+            get
+            {
+                return contentEntered;
+            }
+            set
+            {
+                contentEntered = value;
+                OnPropertyChanged("ContentEntered");
+            }
+        }
 
         private Boolean mainVolumeMute = false;
         public Boolean MainVolumeMute
@@ -71,22 +86,16 @@ namespace KinectAirBand
             }
         }
 
-        private Int32 background = 0;
-        public String Background
+        private BitmapImage background = new BitmapImage(new Uri("/KinectAirBand;component/Resources/Background.jpg", UriKind.Relative));
+        public BitmapImage Background
         {
             get
             {
-                var test = System.IO.Directory.GetFileSystemEntries(@"Resources/Background", "*.jpg")
-                   .Select((index, value) => new { index, value })
-                   .ToDictionary(item => item.value, item =>
-                   {
-                       return String.Format("../{0}", item.index);
-                   })[background];
-                return test;
+                return background;
             }
             set
             {
-                background = Convert.ToInt32(value);
+                background = value;
                 OnPropertyChanged("Background");
             }
         }

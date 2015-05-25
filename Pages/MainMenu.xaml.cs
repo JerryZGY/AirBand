@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace KinectAirBand.Pages
 {
@@ -15,7 +16,7 @@ namespace KinectAirBand.Pages
             StoryboardHandler.InitStoryBoard(this, "LogoEffectStoryboard");
         }
 
-        private void MainMenu_Loaded (object sender, RoutedEventArgs e)
+        private void loaded (object sender, RoutedEventArgs e)
         {
             Grid_Main.Opacity = 0;
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
@@ -34,28 +35,13 @@ namespace KinectAirBand.Pages
                     StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("StartPlaying"));
                     break;
                 case "Button_Community":
-                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
-                    {
-                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
-                        StackPanel_Content.Children.Clear();
-                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Community"]);
-                    });
+                    EnterContent("Community");
                     break;
                 case "Button_Mod":
-                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
-                    {
-                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
-                        StackPanel_Content.Children.Clear();
-                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Mod"]);
-                    });
+                    EnterContent("Mod");
                     break;
                 case "Button_Setting":
-                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
-                    {
-                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
-                        StackPanel_Content.Children.Clear();
-                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Setting"]);
-                    });
+                    EnterContent("Setting");
                     break;
                 case "Button_About":
                     break;
@@ -67,10 +53,29 @@ namespace KinectAirBand.Pages
             }
         }
 
+        private void EnterContent (String contentName)
+        {
+            StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
+            {
+                StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
+                StackPanel_Content.Children.Clear();
+                StackPanel_Content.Children.Add(Switcher.PageDictionary[contentName]);
+                Switcher.viewModel.ContentEntered = true;
+            });
+        }
+
         private void Music_MediaEnded (object sender, RoutedEventArgs e)
         {
             Music.Position = TimeSpan.Zero;
             Music.Play();
+        }
+
+        private void previewKeyDown (object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+            }
         }
     }
 }

@@ -8,14 +8,20 @@
     <Grid Background="#99FFFFFF" Height="600" Width="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="模組" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <StackPanel Grid.Row="1">
-            <Button Tag=""/>
-        </StackPanel>
-        <Button Name="Button_Check" Grid.Row="3" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.ColumnSpan="2" Text="樂器選擇" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Image Grid.Row="1" Source="/KinectAirBand;component/Resources/Piano.png" Height="128"/>
+        <Image Grid.Row="2" Source="/KinectAirBand;component/Resources/Guitar.png" Height="128"/>
+        <Image Grid.Row="1" Grid.Column="1" Source="/KinectAirBand;component/Resources/Drum.png" Height="128"/>
+        <Image Grid.Row="2" Grid.Column="1" Source="/KinectAirBand;component/Resources/Violin.png" Height="128"/>
+        <Button Name="Button_Check" Grid.Row="5" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
     </Grid>
 </UserControl>

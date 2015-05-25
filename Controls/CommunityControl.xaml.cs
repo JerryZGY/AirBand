@@ -25,6 +25,7 @@ namespace KinectAirBand.Controls
         {
             InitializeComponent();
             this.DataContext = this;
+            WB.DataContext = Switcher.viewModel;
         }
 
         public static readonly DependencyProperty UrlProperty = DependencyProperty.Register("Url", typeof(string), typeof(CommunityControl), new PropertyMetadata(""));
@@ -102,15 +103,6 @@ namespace KinectAirBand.Controls
                 me = FBClient.Get("me/picture?width=100&height=100&redirect=false");
                 Url = me.data.url;
                 StoryboardHandler.InitStoryBoard(this, "ToggleOutStoryboard");
-            }
-        }
-
-        private void UserControl_LostFocus (object sender, RoutedEventArgs e)
-        {
-            if (accessToken == null && (Boolean)toggleButton.IsChecked)
-            {
-                StoryboardHandler.InitStoryBoard(this, "RestoreStoryboard");
-                toggleButton.IsChecked = false;
             }
         }
     }

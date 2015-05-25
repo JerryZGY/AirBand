@@ -51,7 +51,6 @@ namespace KinectAirBand.Pages
         private int displayWidth;
         private int displayHeight;
         Grid rootGrid;
-        Image bodyImage;
         private RenderTargetBitmap _bodySourceRTB;
         private RenderTargetBitmap _pointSourceRTB;
         private byte[] bodyBytespixels = null;
@@ -60,7 +59,6 @@ namespace KinectAirBand.Pages
         private readonly WriteableBitmap _pointWriteableBitmap;
         Line test = new Line() { X1 = 0, Y1 = 0, X2 = 0, Y2 = 344, StrokeThickness = 20, Stroke = Brushes.Red };
         private OutputDevice outDevice;
-        private int pressedKey = 0;
 
         public Playing ()
         {
