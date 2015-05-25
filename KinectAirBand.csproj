@@ -38,6 +38,9 @@
     </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Kinect.Wpf.Controls, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Sanford.Collections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -85,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\CommunityControl.xaml.cs">
+      <DependentUpon>CommunityControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Common\VolumeConverter.cs" />
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
@@ -103,6 +110,9 @@
       <DependentUpon>PianoControlWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Pages\Community.xaml.cs">
+      <DependentUpon>Community.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
@@ -110,8 +120,13 @@
       <DependentUpon>StartPlaying.xaml</DependentUpon>
     </Compile>
     <Compile Include="PianoControlData.cs" />
+    <Compile Include="ViewModels\FacebookViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentVariablesViewModel.cs" />
     <Compile Include="ViewModels\StateView.cs" />
+    <Page Include="Controls\CommunityControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\PianoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,11 +154,23 @@
     <Compile Include="PageSwitcher.xaml.cs">
       <DependentUpon>PageSwitcher.xaml</DependentUpon>
     </Compile>
+    <Page Include="Pages\Community.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResDictionary\CommonRes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResDictionary\CommunityRes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\MainMenuRes.xaml">
+    <Page Include="ResDictionary\MainMenuRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -155,7 +182,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SettingRes.xaml">
+    <Page Include="ResDictionary\SettingRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -163,7 +190,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\StartPlayingRes.xaml">
+    <Page Include="ResDictionary\StartPlayingRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +220,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -209,6 +237,9 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\YouTube.jpg" />
+    <Resource Include="Resources\Facebook.jpg" />
+    <Resource Include="Resources\Check.png" />
     <Resource Include="Resources\Sound\Click.wav" />
     <Resource Include="Resources\Title.m4a" />
     <Resource Include="Resources\Logo.png" />

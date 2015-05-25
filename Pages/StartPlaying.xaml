@@ -7,7 +7,7 @@
       xmlns:k="http://schemas.microsoft.com/kinect/2014"
       mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Loaded="StartPlaying_Loaded">
     <UserControl.Resources>
-        <ResourceDictionary Source="StartPlayingRes.xaml"/>
+        <ResourceDictionary Source="../ResDictionary/StartPlayingRes.xaml"/>
     </UserControl.Resources>
     <k:KinectRegion Name="region">
         <Grid Name="Grid_Main" Opacity="1">
@@ -57,11 +57,7 @@
                     <TranslateTransform X="200"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Style="{StaticResource ResourceKey= BackButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
-                </Button.Background>
-            </Button>
+            <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png"/>
             <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
         </Grid>
     </k:KinectRegion>

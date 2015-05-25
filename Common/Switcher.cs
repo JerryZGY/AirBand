@@ -13,6 +13,7 @@ namespace KinectAirBand
         {
             {"MainMenu", new MainMenu(viewModel)},
             {"StartPlaying", new StartPlaying(viewModel)},
+            {"Community", new Community(viewModel)},
             {"Setting", new Setting(viewModel)}
         };
 

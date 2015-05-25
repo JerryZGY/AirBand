@@ -6,7 +6,7 @@
       mc:Ignorable="d" 
       d:DesignWidth="1366" d:DesignHeight="768" Loaded="MainMenu_Loaded">
     <UserControl.Resources>
-        <ResourceDictionary Source="MainMenuRes.xaml"/>
+        <ResourceDictionary Source="../ResDictionary/MainMenuRes.xaml"/>
     </UserControl.Resources>
     <Grid>
         <Grid Name="Grid_Main" Opacity="1">
@@ -47,7 +47,7 @@
                     <TranslateTransform Y="500"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Share" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Content="分享" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Click">
+            <Button Name="Button_Community" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Content="社群" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Share.png"/>
                 </Button.Background>
@@ -79,11 +79,7 @@
                     <TranslateTransform Y="500"/>
                 </Button.RenderTransform>
             </Button>
-            <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Opacity="0" Style="{StaticResource ResourceKey= ExitButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Exit.png"/>
-                </Button.Background>
-            </Button>
+            <Button Name="Button_Exit" Grid.Row="2" Grid.Column="2" Content="離開" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png"/>
             <MediaElement Name="Music" Grid.Row="3" Grid.Column="4" Volume="{Binding MainVolume, Mode=OneWay}" Source="../Resources/Title.m4a" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="Music_MediaEnded" Visibility="Collapsed" IsMuted="{Binding MainVolumeMute, Mode=OneWay}"/>
             <TextBlock Grid.Row="3" Text="主選單" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom" Background="#A5000000"/>
             <Grid  Grid.ColumnSpan="5" Grid.RowSpan="3" Background="Wheat" Opacity="0.5" Visibility="Hidden"/>

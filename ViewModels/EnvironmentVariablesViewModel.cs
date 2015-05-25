@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +7,12 @@ using System.Windows;
 
 namespace KinectAirBand
 {
-    public class EnvironmentVariablesViewModel : INotifyPropertyChanged
+    public class EnvironmentVariablesViewModel : ViewModelBase
     {
         private Boolean mainVolumeMute = false;
-        private Double mainVolume = 0.5;
+        private Double mainVolume = 0.1;
         private Boolean fullScreen = false;
         private Boolean backgroundRemoval = false;
-        public event PropertyChangedEventHandler PropertyChanged;
 
         public Boolean MainVolumeMute
         {
@@ -70,12 +68,6 @@ namespace KinectAirBand
                 backgroundRemoval = value;
                 OnPropertyChanged("BackgroundRemoval");
             }
-        }
-
-        protected virtual void OnPropertyChanged (String propertyName)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

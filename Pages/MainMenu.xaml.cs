@@ -33,7 +33,13 @@ namespace KinectAirBand.Pages
                 case "Button_Start":
                     StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("StartPlaying"));
                     break;
-                case "Button_Share":
+                case "Button_Community":
+                    StoryboardHandler.InitNotHitStoryBoard(this, Grid_Main, "EnterContentStoryboard", () =>
+                    {
+                        StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
+                        StackPanel_Content.Children.Clear();
+                        StackPanel_Content.Children.Add(Switcher.PageDictionary["Community"]);
+                    });
                     break;
                 case "Button_Mod":
                     break;
@@ -43,7 +49,6 @@ namespace KinectAirBand.Pages
                         StackPanel_Content.Visibility = System.Windows.Visibility.Visible;
                         StackPanel_Content.Children.Clear();
                         StackPanel_Content.Children.Add(Switcher.PageDictionary["Setting"]);
-                        
                     });
                     break;
                 case "Button_About":
