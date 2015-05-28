@@ -15,7 +15,8 @@ namespace KinectAirBand
             {"StartPlaying", new StartPlaying(viewModel)},
             {"Community", new Community(viewModel)},
             {"Mod", new Mod(viewModel)},
-            {"Setting", new Setting(viewModel)}
+            {"Setting", new Setting(viewModel)},
+            {"About", new About(viewModel)}
         };
 
         public static void Switch (String switchPage)

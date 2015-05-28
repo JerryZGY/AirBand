@@ -32,7 +32,7 @@ namespace KinectAirBand.Pages
         {
             get
             {
-                return colorBitmap;
+                return bitmap;
             }
         }
         private WriteableBitmap colorBitmap = null;
@@ -50,11 +50,18 @@ namespace KinectAirBand.Pages
         private TimeSpan lastTime;
         private const double dotHeight = 30, dotWidth = 30;
         private List<PianoControlData> dataList;
-        private Int32 trackingBodyIndex;
         private PianoControlData[] trackingData;
         private List<ToneTriggerHandler> toneTriggerList;
         private DrawingGroup drawingGroup;
         private DrawingImage imageSource;
+        private WriteableBitmap bitmap = null;
+
+        private double centerXPoint = 0;
+        private double centerYPoint = 0;
+        Rectangle[] pianoKeys = new Rectangle[8];
+        DepthSpacePoint[] colorMappedToDepthPoints = new DepthSpacePoint[1920 * 1080];
+        private uint bitmapBackBufferSize;
+        private Body trackingBody = null;
 
         public StartPlaying (EnvironmentVariablesViewModel viewModel)
         {
@@ -117,11 +124,10 @@ namespace KinectAirBand.Pages
             isEnsembleMode = false;
             playing = false;
             outDeviceID = 0;
-            trackingBodyIndex = 0;
             sensor = region.KinectSensor;
             sensor.Open();
 
-            reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
+            reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
             reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
             colorFrameDescription = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             colorBitmap = new WriteableBitmap(colorFrameDescription.Width, colorFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
@@ -146,104 +152,262 @@ namespace KinectAirBand.Pages
 
             isLoaded = true;
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
+
+            pianoKeys = pianoKeys.Select(x =>
+            {
+                x = new Rectangle()
+                {
+                    Fill = Brushes.White,
+                    Width = 48.78,
+                    Height = 255,
+                    Opacity = 0.8,
+                    
+                };
+                return x;
+            }).ToArray();
+
+            this.bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
+            // Calculate the WriteableBitmap back buffer size
+            this.bitmapBackBufferSize = (uint)( ( this.bitmap.BackBufferStride * ( this.bitmap.PixelHeight - 1 ) ) + ( this.bitmap.PixelWidth * 4) );
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
         {
-            MultiSourceFrame reference = e.FrameReference.AcquireFrame();
-            using (ColorFrame colorFrame = reference.ColorFrameReference.AcquireFrame())
-            {
-                if (colorFrame != null)
-                {
-                    FrameDescription colorFrameDescription = colorFrame.FrameDescription;
-                    using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
-                    {
-                        colorBitmap.Lock();
-                        if (( colorFrameDescription.Width == this.colorBitmap.PixelWidth ) && ( colorFrameDescription.Height == colorBitmap.PixelHeight ))
-                        {
-                            colorFrame.CopyConvertedFrameDataToIntPtr(this.colorBitmap.BackBuffer, (uint)( colorFrameDescription.Width * colorFrameDescription.Height * 4 ), ColorImageFormat.Bgra);
-                            colorBitmap.AddDirtyRect(new Int32Rect(0, 0, colorBitmap.PixelWidth, colorBitmap.PixelHeight));
-                        }
-                        colorBitmap.Unlock();
-                        test.Source = colorBitmap;
-                    }
-                }
-            }
+            MultiSourceFrame multiSourceFrame = e.FrameReference.AcquireFrame();
 
-            Boolean dataReceived = false;
-
-            using (BodyFrame frame = reference.BodyFrameReference.AcquireFrame())
+            using (var frame = multiSourceFrame.BodyFrameReference.AcquireFrame())
             {
                 if (frame != null)
                 {
-                    if (bodies == null)
-                    {
-                        bodies = new Body[frame.BodyCount];
-                    }
+                    canvas.Children.Clear();
+                    pointCanvas.Children.Clear();
+
+                    bodies = new Body[frame.BodyFrameSource.BodyCount];
+
                     frame.GetAndRefreshBodyData(bodies);
-                    dataReceived = true;
-                }
-            }
 
-            if (dataReceived)
-            {
-                if (bodies != null)
-                {
-                    using (DrawingContext dc = this.drawingGroup.Open())
+                    foreach (var body in bodies)
                     {
-                        foreach (var item in bodies.Select((value, i) => new { i, value }))
+                        if (body.IsTracked)
                         {
-                            if (item.value.IsTracked)
-                            {
-                                /*IReadOnlyDictionary<JointType, Joint> joints = item.value.Joints;
-                                Dictionary<JointType, Point> jointPoints = new Dictionary<JointType, Point>();
-                                foreach (JointType jointType in joints.Keys)
-                                {
-                                    ColorSpacePoint colorSpacePoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(joints[jointType].Position);
-                                    jointPoints[jointType] = new Point(colorSpacePoint.X, colorSpacePoint.Y);
-                                }
-                                Extensions.DrawBody(joints, jointPoints, dc);*/
-                                toneTriggerList[item.i].UpdateBodyData(item.value);
+                            trackingBody = body;
+                            //(head-150) (head-100) (head-50) (head) (head+50) (head+100) (head+150)
+                            //   leftThree, leftTwo, leftOne, center, rightOne, rightTwo, rightThree
+                            // COORDINATE MAPPING
+                            Joint joint = body.Joints[JointType.Head];
+                            Joint hand = body.Joints[JointType.HandRight];
 
-                                var a = PianoControl.cnvPiano.Children[12] as PianoKeyWPF;
-                                var x = item.value.Joints[JointType.ShoulderLeft].Position.X * Canvas_Control.ActualWidth + Canvas_Control.ActualWidth / 2;
-                                var y = item.value.Joints[JointType.ShoulderLeft].Position.Y * Canvas_Control.ActualHeight + Canvas_Control.ActualHeight / 2;
-                                a.Margin = new Thickness(0, 0, 0, 0);
-                                Canvas.SetLeft(a, x);
-                                Canvas.SetTop(a, y);
-                                X.Content = x.ToString();
-                                Y.Content = y.ToString();
+                            // 3D space point
+                            ColorSpacePoint colorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(joint.Position);
+                            ColorSpacePoint handColorPoint = sensor.CoordinateMapper.MapCameraPointToColorSpace(hand.Position);
+                            // 2D space point
+                            centerXPoint = float.IsInfinity(colorPoint.X) ? 0 : colorPoint.X / 1920 * canvas.ActualWidth - 48.75 / 2;
+                            centerYPoint = float.IsInfinity(colorPoint.Y) ? 0 : colorPoint.Y / 1080 * canvas.ActualHeight - 255 / 2;
+
+                            Point handPoint = new Point();
+                            handPoint.X = float.IsInfinity(handColorPoint.X) ? 0 : handColorPoint.X / 1920 * canvas.ActualWidth - 25;
+                            handPoint.Y = float.IsInfinity(handColorPoint.Y) ? 0 : handColorPoint.Y / 1080 * canvas.ActualHeight - 25;
                                 
+                            var rightHand = new Ellipse() { Fill = Brushes.Red, Width = 50, Height = 50 };
+                            Canvas.SetLeft(rightHand, handPoint.X);
+                            Canvas.SetTop(rightHand, handPoint.Y);
+                            pointCanvas.Children.Add(rightHand);
+                            Rect rightHandRect = new Rect(handPoint.X, handPoint.Y, rightHand.ActualWidth, rightHand.ActualHeight);
 
-                                if (toneTriggerList[item.i].CheckToneDoTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[12] ).PressPianoKey();
-                                if (toneTriggerList[item.i].CheckToneReTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[14] ).PressPianoKey();
-                                if (toneTriggerList[item.i].CheckToneMiTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[16] ).PressPianoKey();
-                                if (toneTriggerList[item.i].CheckToneFaTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[17] ).PressPianoKey();
-                                if (toneTriggerList[item.i].CheckToneSoTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[19] ).PressPianoKey();
-                                /*if (toneTriggerList[item.i].CheckToneLaTrigger())
-                                    ( (PianoKeyWPF)PianoControl.cnvPiano.Children[21] ).PressPianoKey();*/
-                            }
-                            dataList[item.i].UpdateBodyData(item.value);
-                        }
-                        foreach (var item in dataList)
-                        {
-                            if (item.TrackingId != 0 && trackingBodyIndex < 2)
+                            for (int i = 0; i < pianoKeys.Length; i++)
                             {
-                                trackingData[trackingBodyIndex] = item;
-                                trackingBodyIndex++;
+                                switch (i)
+                                {
+                                    case 0:
+                                        var x = centerXPoint - 50;
+                                        var y = centerYPoint + 200;
+                                        pianoKeys[i].RenderTransformOrigin = new Point(0, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = -80 };
+                                        Canvas.SetLeft(pianoKeys[i], x);
+                                        Canvas.SetTop(pianoKeys[i], y);
+                                        HitTestResult result = VisualTreeHelper.HitTest(pianoKeys[i], handPoint);
+                                        Rect keyRect = new Rect(x, y, pianoKeys[i].ActualWidth, pianoKeys[i].ActualHeight);
+                                        //if (rightHandRect.IntersectsWith(keyRect))
+                                            //( (PianoKeyWPF)PianoControl.cnvPiano.Children[12] ).PressPianoKey();
+                                        break;
+                                    case 1:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(0, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = -60 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint - 80);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 150);
+                                        //( (PianoKeyWPF)PianoControl.cnvPiano.Children[14] ).PressPianoKey();
+                                        break;
+                                    case 2:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(0, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = -40 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint - 80);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 100);
+                                        //( (PianoKeyWPF)PianoControl.cnvPiano.Children[16] ).PressPianoKey();
+                                        break;
+                                    case 3:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(0, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = -30 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint - 50);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 50);
+                                        //( (PianoKeyWPF)PianoControl.cnvPiano.Children[17] ).PressPianoKey();
+                                        break;
+                                    case 4:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(1, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = 30 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint + 50);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 50);
+                                        //( (PianoKeyWPF)PianoControl.cnvPiano.Children[19] ).PressPianoKey();
+                                        break;
+                                    case 5:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(1, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = 40 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint + 80);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 100);
+                                        //( (PianoKeyWPF)PianoControl.cnvPiano.Children[21] ).PressPianoKey();
+                                        break;
+                                    case 6:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(1, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = 60 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint + 80);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 150);
+                                        break;
+                                    case 7:
+                                        pianoKeys[i].RenderTransformOrigin = new Point(1, 1);
+                                        pianoKeys[i].RenderTransform = new RotateTransform() { Angle = 80 };
+                                        Canvas.SetLeft(pianoKeys[i], centerXPoint + 50);
+                                        Canvas.SetTop(pianoKeys[i], centerYPoint + 200);
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                canvas.Children.Add(pianoKeys[i]);
                             }
                         }
-                        this.drawingGroup.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, colorFrameDescription.Width, colorFrameDescription.Height));
                     }
                 }
             }
-            test.Source = this.imageSource;
+
+
+            int depthWidth = 0;
+            int depthHeight = 0;
+
+            DepthFrame depthFrame = null;
+            ColorFrame colorFrame = null;
+            BodyIndexFrame bodyIndexFrame = null;
+            bool isBitmapLocked = false;
+            // If the Frame has expired by the time we process this event, return.
+            if (multiSourceFrame == null)
+            {
+                return;
+            }
+            // We use a try/finally to ensure that we clean up before we exit the function.  
+            // This includes calling Dispose on any Frame objects that we may have and unlocking the bitmap back buffer.
+            try
+            {
+                depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame();
+                colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
+                bodyIndexFrame = multiSourceFrame.BodyIndexFrameReference.AcquireFrame();
+                // If any frame has expired by the time we process this event, return.
+                // The "finally" statement will Dispose any that are not null.
+                if (( depthFrame == null ) || ( colorFrame == null ) || ( bodyIndexFrame == null ))
+                {
+                    return;
+                }
+                // Process Depth
+                FrameDescription depthFrameDescription = depthFrame.FrameDescription;
+                depthWidth = depthFrameDescription.Width;
+                depthHeight = depthFrameDescription.Height;
+                // Access the depth frame data directly via LockImageBuffer to avoid making a copy
+                using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+                {
+                    sensor.CoordinateMapper.MapColorFrameToDepthSpaceUsingIntPtr(
+                        depthFrameData.UnderlyingBuffer,
+                        depthFrameData.Size,
+                        this.colorMappedToDepthPoints);
+                }
+                // We're done with the DepthFrame 
+                depthFrame.Dispose();
+                depthFrame = null;
+                // Process Color
+                // Lock the bitmap for writing
+                this.bitmap.Lock();
+                isBitmapLocked = true;
+                colorFrame.CopyConvertedFrameDataToIntPtr(this.bitmap.BackBuffer, this.bitmapBackBufferSize, ColorImageFormat.Bgra);
+                // We're done with the ColorFrame 
+                colorFrame.Dispose();
+                colorFrame = null;
+                // We'll access the body index data directly to avoid a copy
+                using (KinectBuffer bodyIndexData = bodyIndexFrame.LockImageBuffer())
+                {
+                    unsafe
+                    {
+                        byte* bodyIndexDataPointer = (byte*)bodyIndexData.UnderlyingBuffer;
+                        int colorMappedToDepthPointCount = this.colorMappedToDepthPoints.Length;
+                        fixed (DepthSpacePoint* colorMappedToDepthPointsPointer = this.colorMappedToDepthPoints)
+                        {
+                            // Treat the color data as 4-byte pixels
+                            uint* bitmapPixelsPointer = (uint*)this.bitmap.BackBuffer;
+                            // Loop over each row and column of the color image
+                            // Zero out any pixels that don't correspond to a body index
+                            for (int colorIndex = 0; colorIndex < colorMappedToDepthPointCount; ++colorIndex)
+                            {
+                                float colorMappedToDepthX = colorMappedToDepthPointsPointer[colorIndex].X;
+                                float colorMappedToDepthY = colorMappedToDepthPointsPointer[colorIndex].Y;
+                                // The sentinel value is -inf, -inf, meaning that no depth pixel corresponds to this color pixel.
+                                if (!float.IsNegativeInfinity(colorMappedToDepthX) &&
+                                    !float.IsNegativeInfinity(colorMappedToDepthY))
+                                {
+                                    // Make sure the depth pixel maps to a valid point in color space
+                                    int depthX = (int)( colorMappedToDepthX + 0.5f );
+                                    int depthY = (int)( colorMappedToDepthY + 0.5f );
+                                    // If the point is not valid, there is no body index there.
+                                    if (( depthX >= 0 ) && ( depthX < depthWidth ) && ( depthY >= 0 ) && ( depthY < depthHeight ))
+                                    {
+                                        int depthIndex = ( depthY * depthWidth ) + depthX;
+                                        // If we are tracking a body for the current pixel, do not zero out the pixel
+                                        if (bodyIndexDataPointer[depthIndex] != 0xff)
+                                        {
+                                            continue;
+                                        }
+                                    }
+                                }
+                                bitmapPixelsPointer[colorIndex] = 0;
+                            }
+                        }
+                        this.bitmap.AddDirtyRect(new Int32Rect(0, 0, this.bitmap.PixelWidth, this.bitmap.PixelHeight));
+                    }
+                }
+            }
+            finally
+            {
+                if (isBitmapLocked)
+                {
+                    this.bitmap.Unlock();
+                }
+                if (depthFrame != null)
+                {
+                    depthFrame.Dispose();
+                }
+                if (colorFrame != null)
+                {
+                    colorFrame.Dispose();
+                }
+                if (bodyIndexFrame != null)
+                {
+                    bodyIndexFrame.Dispose();
+                }
+                test.Source = bitmap;
+            }
         }
+
+        public Rect GetBounds (FrameworkElement of, FrameworkElement from)
+        {
+            // Might throw an exception if of and from are not in the same visual tree
+            GeneralTransform transform = of.TransformToVisual(from);
+
+            return transform.TransformBounds(new Rect(0, 0, of.ActualWidth, of.ActualHeight));
+        }
+
         
         private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs args)
         {
@@ -251,100 +415,67 @@ namespace KinectAirBand.Pages
             if (lastTime == TimeSpan.Zero || lastTime != point.Properties.BodyTimeCounter)
             {
                 lastTime = point.Properties.BodyTimeCounter;
-                PianoControl.mainScreen.Children.Clear();
-                PianoControl1.mainScreen.Children.Clear();
             }
 
-            foreach (var item in dataList)
+            Point screenRelative = new Point(
+            point.Position.X * canvas.ActualWidth,
+            point.Position.Y * canvas.ActualHeight);
+            RenderPointer(point.Position, canvas, point.Properties.HandType);
+            var i = 0;
+            foreach (var relativeTo in pianoKeys)
             {
-                item.GetPointerPosition(point);
-            }
+                Point relativeToElement = canvas.TranslatePoint(screenRelative, relativeTo);
+                Boolean insideElement = (
+                    relativeToElement.X >= 0 &&
+                    relativeToElement.X < relativeTo.ActualWidth &&
+                    relativeToElement.Y >= 0 &&
+                    relativeToElement.Y < relativeTo.ActualHeight );
+                if (point.Properties.HandType == HandType.RIGHT && insideElement)
+                {
+                    if (trackingBody.HandRightState == HandState.Lasso)
+                        switch (i)
+                        {
+                            case 0:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[12] ).PressPianoKey();
+                                break;
+                            case 1:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[14] ).PressPianoKey();
+                                break;
+                            case 2:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[16] ).PressPianoKey();
+                                break;
+                            case 3:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[17] ).PressPianoKey();
+                                break;
+                            case 4:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[19] ).PressPianoKey();
+                                break;
+                            case 5:
+                                ( (PianoKeyWPF)PianoControl.cnvPiano.Children[21] ).PressPianoKey();
+                                break;
+                            case 6:
+                                break;
+                            case 7:
+                                break;
+                            default:
+                                break;
+                        }
+                }
+                else if (point.Properties.HandType == HandType.LEFT && insideElement)
+                {
 
-            if (trackingData[0] != null && point.Properties.BodyTrackingId == trackingData[0].TrackingId)
-            {
-                Point screenRelative = new Point(
-                point.Position.X * PianoControl.mainScreen.ActualWidth,
-                point.Position.Y * PianoControl.mainScreen.ActualHeight);
-                RenderPointer(point.Position, PianoControl, trackingData[0].TrackingId, point.Properties.HandType);
-                foreach (PianoKeyWPF relativeTo in PianoControl.cnvPiano.Children)
-                {
-                    Point relativeToElement = PianoControl.mainScreen.TranslatePoint(screenRelative, relativeTo);
-                    Boolean insideElement = (
-                        relativeToElement.X >= 0 &&
-                        relativeToElement.X < relativeTo.ActualWidth &&
-                        relativeToElement.Y >= 0 &&
-                        relativeToElement.Y < relativeTo.ActualHeight );
-                    if (point.Properties.HandType == HandType.RIGHT && insideElement)
-                    {
-                        if (trackingData[0].IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.PressPianoKey();
-                        }
-                        else if (!trackingData[0].IsRightHandLasso && relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.ReleasePianoKey();
-                        }
-                    }
-                    else if (point.Properties.HandType == HandType.LEFT && insideElement)
-                    {
-                        if (trackingData[0].IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.PressPianoKey();
-                        }
-                        else if (!trackingData[0].IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.ReleasePianoKey();
-                        }
-                    }
                 }
-            }
-            else if (trackingData[1] != null && point.Properties.BodyTrackingId == trackingData[1].TrackingId)
-            {
-                Point screenRelative = new Point(
-                point.Position.X * PianoControl1.mainScreen.ActualWidth,
-                point.Position.Y * PianoControl1.mainScreen.ActualHeight);
-                RenderPointer(point.Position, PianoControl1, trackingData[1].TrackingId, point.Properties.HandType);
-                foreach (PianoKeyWPF relativeTo in PianoControl1.cnvPiano.Children)
-                {
-                    Point relativeToElement = PianoControl1.mainScreen.TranslatePoint(screenRelative, relativeTo);
-                    Boolean insideElement = (
-                        relativeToElement.X >= 0 &&
-                        relativeToElement.X < relativeTo.ActualWidth &&
-                        relativeToElement.Y >= 0 &&
-                        relativeToElement.Y < relativeTo.ActualHeight );
-                    if (point.Properties.HandType == HandType.RIGHT && insideElement)
-                    {
-                        if (trackingData[1].IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.PressPianoKey();
-                        }
-                        else if (!trackingData[1].IsRightHandLasso && relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.ReleasePianoKey();
-                        }
-                    }
-                    else if (point.Properties.HandType == HandType.LEFT && insideElement)
-                    {
-                        if (trackingData[1].IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.PressPianoKey();
-                        }
-                        else if (!trackingData[1].IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
-                        {
-                            relativeTo.ReleasePianoKey();
-                        }
-                    }
-                }
+                i++;
             }
         }
 
-        private void RenderPointer (PointF position, PianoControlWPF control, UInt64 trackingId, HandType handType)
+        private void RenderPointer (PointF position, Canvas canvas, HandType handType)
         {
             StackPanel cursor = null;
             if (cursor == null)
             {
                 cursor = new StackPanel();
-                control.mainScreen.Children.Add(cursor);
+                canvas.Children.Add(cursor);
             }
 
             cursor.Children.Clear();
@@ -365,15 +496,11 @@ namespace KinectAirBand.Pages
 
             sp.Children.Add(cursorEllipse);
             cursor.Children.Add(sp);
-            cursor.Children.Add(new TextBlock() { Text = "BodyTrackingId: " + trackingId });
             cursor.Children.Add(new TextBlock() { Text = "HandType: " + handType });
             
-            if (control == PianoControl)
-                cursorEllipse.Fill = ( handType == HandType.LEFT) ? Brushes.Green : Brushes.Yellow;
-            else
-                cursorEllipse.Fill = ( handType == HandType.LEFT ) ? Brushes.Red : Brushes.Blue;
-            Canvas.SetLeft(cursor, position.X * control.mainScreen.ActualWidth - dotWidth / 2);
-            Canvas.SetTop(cursor, position.Y * control.mainScreen.ActualHeight - dotHeight / 2);
+            cursorEllipse.Fill = ( handType == HandType.LEFT) ? Brushes.Green : Brushes.Yellow;
+            Canvas.SetLeft(cursor, position.X * canvas.ActualWidth - dotWidth / 2);
+            Canvas.SetTop(cursor, position.Y * canvas.ActualHeight - dotHeight / 2);
         }
 
         /*private void performLassoClick (Point relative, UIElement relativeTo)
@@ -388,97 +515,6 @@ namespace KinectAirBand.Pages
                 {
                     clickedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     VisualStateManager.GoToState(clickedButton, "Pressed", true);
-                }
-            }
-        }*/
-
-        /*private void performLassoPianoClick (Point screenRelative, UIElement relativeTo, HandType handType, PianoControlWPF control, PianoControlData item)
-        {
-            Point relativeToElement = PianoControl.mainScreen.TranslatePoint(screenRelative, relativeTo);
-            Boolean insideElement = (
-                relativeToElement.X >= 0 &&
-                relativeToElement.X < relativeTo.ActualWidth &&
-                relativeToElement.Y >= 0 &&
-                relativeToElement.Y < relativeTo.ActualHeight );
-            if (handType == HandType.RIGHT && insideElement)
-            {
-                if (item.IsRightHandLasso && !relativeTo.IsPianoKeyPressed)
-                {
-                    relativeTo.PressPianoKey();
-                }
-                else if (!item.IsRightHandLasso && relativeTo.IsPianoKeyPressed)
-                {
-                    relativeTo.ReleasePianoKey();
-                }
-            }
-            else if (handType == HandType.LEFT && insideElement)
-            {
-                if (item.IsLeftHandLasso && !relativeTo.IsPianoKeyPressed)
-                {
-                    relativeTo.PressPianoKey();
-                }
-                else if (!item.IsLeftHandLasso && relativeTo.IsPianoKeyPressed)
-                {
-                    relativeTo.ReleasePianoKey();
-                }
-            }
-
-
-            var clickedButton = relativeTo as PianoKeyWPF;
-            if (clickedButton != null)
-            {
-                Point relativeToElement = control.mainScreen.TranslatePoint(relative, clickedButton);
-                bool insideElement = ( relativeToElement.X >= 0 && relativeToElement.X < clickedButton.ActualWidth
-                    && relativeToElement.Y >= 0 && relativeToElement.Y < clickedButton.ActualHeight );
-                if (control == PianoControl)
-                {
-                    if (handType == HandType.RIGHT && insideElement)
-                    {
-                        if (item.IsRightHandLasso && !clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.PressPianoKey();
-                        }
-                        else if (!item.IsRightHandLasso && clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.ReleasePianoKey();
-                        }
-                    }
-                    else if (handType == HandType.LEFT)
-                    {
-                        if (insideElement && isLeftLasso && !clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.PressPianoKey();
-                        }
-                        else if (insideElement && isLeftClosed && clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.ReleasePianoKey();
-                        }
-                    }
-                }
-                else if (control == PianoControl1)
-                {
-                    if (handType == HandType.RIGHT)
-                    {
-                        if (insideElement && isRightLasso1 && clickedButton.IsHitTestVisible && !clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.PressPianoKey();
-                        }
-                        else if (insideElement && isRightClosed1 && clickedButton.IsHitTestVisible && clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.ReleasePianoKey();
-                        }
-                    }
-                    else if (handType == HandType.LEFT)
-                    {
-                        if (insideElement && isLeftLasso1 && !clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.PressPianoKey();
-                        }
-                        else if (insideElement && isLeftClosed1 && clickedButton.IsPianoKeyPressed)
-                        {
-                            clickedButton.ReleasePianoKey();
-                        }
-                    }
                 }
             }
         }*/

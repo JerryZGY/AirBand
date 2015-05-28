@@ -25,16 +25,14 @@
             <Label Content="主選單音量"/>
             <Label Content="無邊界模式"/>
             <Label Content="演奏去背模式"/>
-            <Label Content="演奏背景" Height="111"/>
-            <Label Content="鋼琴感測距離"/>
-            <Label Content="吉他感測距離"/>
+            <Label Content="背景" Height="111"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <ToggleButton IsChecked="{Binding MainVolumeMute, Mode=TwoWay}"/>
             <Slider Value="{Binding MainVolume, Converter={StaticResource VolumeConverter}, Mode=TwoWay}"/>
             <ToggleButton IsChecked="{Binding FullScreen, Mode=TwoWay}"/>
             <ToggleButton IsChecked="{Binding BackgroundRemoval, Mode=TwoWay}"/>
-            <c:ImageListControl Height="111" Margin="2,2,20,2" IsEnabled="{Binding BackgroundRemoval, Mode=OneWay}"/>
+            <c:ImageListControl Height="111" Margin="2,2,20,2"/>
         </StackPanel>
         <Button Grid.Row="2" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
     </Grid>

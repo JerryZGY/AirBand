@@ -10,7 +10,7 @@
         <ResourceDictionary Source="../ResDictionary/StartPlayingRes.xaml"/>
     </UserControl.Resources>
     <k:KinectRegion Name="region">
-        <Grid Name="Grid_Main" Opacity="1">
+        <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
             <!--<Grid.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
             </Grid.Background>-->
@@ -20,14 +20,40 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Viewbox Grid.RowSpan="4" Height="768" Width="1366">
-                <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
+            <Viewbox Grid.RowSpan="4">
+                <Grid Width="1366" Height="768">
+                    <Image Source="{Binding Background, Mode=OneWay}"/>
+                    <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
+                    <Canvas Grid.RowSpan="4" Name="canvas">
+                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="-40"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="650" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="-30"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="Red" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="650" Canvas.Top="240">
+
+                        </Rectangle>
+                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="750" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="30"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="850" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="40"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                    </Canvas>
+                    <Canvas Grid.RowSpan="4" Name="pointCanvas"/>
+                </Grid>
             </Viewbox>
-            <Canvas Name="Canvas_Control" Grid.RowSpan="4">
-                
-            </Canvas>
-            <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
-            <ctrl:PianoControlWPF x:Name="PianoControl1" Grid.Row="2" Grid.RowSpan="2" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Top" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp"/>
+
+            <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp" Visibility="Collapsed"/>
             <StackPanel Grid.Row="2" Grid.RowSpan="2">
                 <Label Name="X" Content="TEST" FontSize="50" Foreground="Red"/>
                 <Label Name="Y" Content="TEST" FontSize="50" Foreground="Red"/>

@@ -44,6 +44,7 @@ namespace KinectAirBand.Pages
                     EnterContent("Setting");
                     break;
                 case "Button_About":
+                    EnterContent("About");
                     break;
                 case "Button_Exit":
                     Application.Current.Shutdown();
