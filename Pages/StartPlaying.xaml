@@ -11,9 +11,6 @@
     </UserControl.Resources>
     <k:KinectRegion Name="region">
         <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
-            <!--<Grid.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/BackgroundN.jpg"/>
-            </Grid.Background>-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -23,41 +20,70 @@
             <Viewbox Grid.RowSpan="4">
                 <Grid Width="1366" Height="768">
                     <Image Source="{Binding Background, Mode=OneWay}"/>
-                    <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
-                    <Canvas Grid.RowSpan="4" Name="canvas">
-                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
+                    <Canvas Grid.RowSpan="4" Name="canvas" Opacity="0.8">
+                        <!--<Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
                             <Rectangle.RenderTransform>
-                                <RotateTransform Angle="-40"/>
+                                <RotateTransform Angle="-22.5"/>
                             </Rectangle.RenderTransform>
                         </Rectangle>
-                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="650" Canvas.Top="240">
+                        <Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
                             <Rectangle.RenderTransform>
-                                <RotateTransform Angle="-30"/>
+                                <RotateTransform Angle="-45"/>
                             </Rectangle.RenderTransform>
                         </Rectangle>
-                        <Rectangle Fill="Red" Opacity="0.8" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="650" Canvas.Top="240">
-
-                        </Rectangle>
-                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="750" Canvas.Top="240">
+                        <Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
                             <Rectangle.RenderTransform>
-                                <RotateTransform Angle="30"/>
+                                <RotateTransform Angle="-67.5"/>
                             </Rectangle.RenderTransform>
                         </Rectangle>
-                        <Rectangle Fill="White" Opacity="0.8" RenderTransformOrigin="1,1" Width="50" Height="200" Canvas.Left="850" Canvas.Top="240">
+                        <Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
                             <Rectangle.RenderTransform>
-                                <RotateTransform Angle="40"/>
+                                <RotateTransform Angle="22.5"/>
                             </Rectangle.RenderTransform>
                         </Rectangle>
+                        <Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="45"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
+                        <Rectangle Fill="White" Opacity="0.5" RenderTransformOrigin="0,1" Width="50" Height="200" Canvas.Left="550" Canvas.Top="240">
+                            <Rectangle.RenderTransform>
+                                <RotateTransform Angle="67.5"/>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>-->
                     </Canvas>
+                    <Image Grid.RowSpan="4" Name="test" Source="{Binding ImageSource}" Stretch="Fill"/>
                     <Canvas Grid.RowSpan="4" Name="pointCanvas"/>
                 </Grid>
             </Viewbox>
-
             <ctrl:PianoControlWPF x:Name="PianoControl" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" PianoKeyDown="PianoControl_PianoKeyDown" PianoKeyUp="PianoControl_PianoKeyUp" Visibility="Collapsed"/>
-            <StackPanel Grid.Row="2" Grid.RowSpan="2">
-                <Label Name="X" Content="TEST" FontSize="50" Foreground="Red"/>
-                <Label Name="Y" Content="TEST" FontSize="50" Foreground="Red"/>
-            </StackPanel>
+            <Grid Grid.Row="1" Grid.RowSpan="3" Background="#4C000000">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Label Content="定位點 X 分量：" FontSize="42" Foreground="Red"/>
+                    <Label Content="定位點 Y 分量：" FontSize="42" Foreground="Red"/>
+                    <Label Content="變異點 X 分量：" FontSize="42" Foreground="Red"/>
+                    <Label Content="變異點 Y 分量：" FontSize="42" Foreground="Red"/>
+                    <Label Content="定位變異內積：" FontSize="42" Foreground="Red"/>
+                    <Label Content="定位變異夾角：" FontSize="42" Foreground="Red"/>
+                    <Label Content="自訂夾角度數：" FontSize="42" Foreground="Red"/>
+                    <Label Content="碰撞偵測結果：" FontSize="42" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <Label Name="LCDX" FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="LCDY" FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="VCDX" FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="VCDY" FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="DOT"  FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="_ANG"  FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="ANG" FontSize="30" Foreground="Red" Height="63"/>
+                    <Label Name="RES" FontSize="42" Foreground="Red" Height="63"/>
+                </StackPanel>
+            </Grid>
+            
             <Line Name="Line_Ensemble" Grid.RowSpan="3" Y1="0" Y2="768" Stroke="#A5FFFFFF" StrokeThickness="5" HorizontalAlignment="Center" Opacity="0" Visibility="Collapsed"/>
             <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Visibility="Collapsed">
                 <Button.Background>
