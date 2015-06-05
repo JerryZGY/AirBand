@@ -16,7 +16,7 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+        <DoubleAnimation Storyboard.TargetName="Button_Clear" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -27,23 +27,11 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
-    <Storyboard x:Key="SingleStoryboard">
-        <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-619" To="0" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="-619" To="0" Duration="0:0:0.8">
-            <DoubleAnimation.EasingFunction>
-                <QuadraticEase EasingMode="EaseOut"/>
-            </DoubleAnimation.EasingFunction>
-        </DoubleAnimation>
-    </Storyboard>
     <Storyboard x:Key="ExitStoryboard">
         <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
-        <DoubleAnimation Storyboard.TargetName="Button_Ensemble" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Button_Clear" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
         <DoubleAnimation.EasingFunction>
             <QuarticEase EasingMode="EaseOut"/>

@@ -17,10 +17,8 @@ using System.Windows.Shapes;
 using KinectAirBand.Controls;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Input;
-using Microsoft.Kinect.Toolkit.Input;
 using Microsoft.Kinect.Wpf.Controls;
 using Sanford.Multimedia.Midi;
-using Sanford.Multimedia.Midi.UI;
 
 namespace KinectAirBand.Pages
 {
@@ -85,6 +83,7 @@ namespace KinectAirBand.Pages
                 reader = null;
                 colorFrameDesc = null;
                 bitmap = null;
+                Image_BackgroundRemoval.Source = null;
                 disposed = true;
                 isLoaded = false;
             }
@@ -99,12 +98,8 @@ namespace KinectAirBand.Pages
             sensor = KinectSensor.GetDefault();
             sensor.Open();
             reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
-            reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
             colorFrameDesc = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             bodyList = new List<BodyViewModel>();
-            bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
-            bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
-            Image_BackgroundRemoval.Source = bitmap;
 
             if (outDevice == null)
             {
@@ -116,12 +111,20 @@ namespace KinectAirBand.Pages
                 bodyList.Add(new BodyViewModel(i));
             }
 
-            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
-
-            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
+            StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
+            {
+                if (!isLoaded)
+                {
+                    reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
+                    bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
+                    bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
+                    Image_BackgroundRemoval.Source = bitmap;
+                    kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+                }
+                isLoaded = true;
+            });
 
             disposed = false;
-            isLoaded = true;
         }
 
         private void reader_MultiSourceFrameArrived (object sender, MultiSourceFrameArrivedEventArgs e)
@@ -138,7 +141,8 @@ namespace KinectAirBand.Pages
 
                     foreach (var item in bodies.Select((value, i) => new {i ,value}))
                     {
-                        bodyList[item.i].UpdateBodyView(item.value);
+                        BodyViewModel body = bodyList[item.i];
+                        body.SetBodyData(item.value);
                         if (item.value.IsTracked)
                         {
                             //2維中心點
@@ -154,14 +158,18 @@ namespace KinectAirBand.Pages
                             //右手狀態
                             HandState rightHandState = item.value.HandRightState;
                             //更新體感數據
-                            bodyList[item.i].UpdateBodyData(centerPoint, locatePoint, variabPoint, shouldPoint, leftHandState, rightHandState);
-
-                            /*Ellipse rightHand = new Ellipse() { Fill = Brushes.Red, Width = 20, Height = 20 };
-                            Canvas.SetLeft(rightHand, variabPoint.X);
-                            Canvas.SetTop(rightHand, variabPoint.Y);
-                            pointCanvas.Children.Add(rightHand);
-                            pointCanvas.Children.Add(
+                            body.UpdateBodyData(centerPoint, locatePoint, variabPoint, shouldPoint, leftHandState, rightHandState);
+                            if (body.Instrument != null)
+                                body.UpdateInstrument();
+                            /*pointCanvas.Children.Add(
                                 new Line() { Stroke = Brushes.Green, X1 = centerPoint.X - radius, Y1 = centerPoint.Y, X2 = centerPoint.X + radius, Y2 = centerPoint.Y, StrokeThickness = 20 });*/
+                        }
+                        else
+                        {
+                            if (body.Instrument != null)
+                            {
+                                body.ClearInstrument(Grid_Controls);
+                            }
                         }
                     }
                 }
@@ -279,8 +287,8 @@ namespace KinectAirBand.Pages
             RenderPointer(point.Position, Canvas_Pointer, point.Properties.HandType);
             if (point.Properties.IsEngaged)
             {
-                performLassoClick(screenRelative, trackingId, Button_Ensemble);
-                performLassoClick(screenRelative, trackingId, Button_Back);
+                performLassoClick(screenRelative, trackingId, Button_Piano);
+                performLassoClick(screenRelative, trackingId, Button_Clear);
             }
         }
 
@@ -331,7 +339,7 @@ namespace KinectAirBand.Pages
                 Boolean isLasso = bodyList.Where(x => x.TrackingId == trackingId).First().RightHandState == HandState.Lasso;
                 if (insideElement && clickedButton.IsHitTestVisible)
                 {
-                    VisualStateManager.GoToState(clickedButton, "MouseOver", true);
+                    VisualStateManager.GoToState(clickedButton, "MouseOver", false);
                 }
                 if (insideElement && isLasso && clickedButton.IsHitTestVisible)
                 {
@@ -348,18 +356,26 @@ namespace KinectAirBand.Pages
         private void Button_Click (object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
+            BodyViewModel body = null;
+            if (e.OriginalSource.GetType() == typeof(UInt64))
+            {
+                body = bodyList.Where(x => x.TrackingId == Convert.ToUInt64(e.OriginalSource)).First();
+            }
+
             switch (button.Name)
             {
-                case "Button_Ensemble":
-                    if (e.OriginalSource.GetType() == typeof(UInt64))
+                case "Button_Piano":
+                    if (body != null && (body.Instrument == null || body.Instrument.GetType() != typeof(PianoControl)))
                     {
-                        UInt64 trackingId = Convert.ToUInt64(e.OriginalSource);
-                        if (bodyList.Where(x => x.TrackingId == trackingId).First() != null)
-                        {
-                            Grid_Controls.Children.Add(new Controls.PianoControl(outDevice, bodyList.Where(x => x.TrackingId == trackingId).First()));
-                        }
+                        body.SetInstrument(new PianoControl(outDevice, body));
+                        Grid_Controls.Children.Add(body.Instrument);
                     }
-                    //Grid_Controls.Children.Add
+                    break;
+                case "Button_Clear":
+                    if (body != null && body.Instrument != null)
+                    {
+                        body.ClearInstrument(Grid_Controls);
+                    }
                     break;
                 case "Button_Back":
                     Dispose(true);

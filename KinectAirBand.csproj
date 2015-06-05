@@ -111,7 +111,6 @@
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
-    <Compile Include="Common\ToneTriggerHandler.cs" />
     <Compile Include="Controls\PianoKeyWPF.xaml.cs">
       <DependentUpon>PianoKeyWPF.xaml</DependentUpon>
     </Compile>

@@ -44,7 +44,7 @@ namespace KinectAirBand.Controls
         //琴鍵釋放計時器
         private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
         //琴鍵音調表
-        public Int32[] keysMap = 
+        private Int32[] keysMap = 
         {
             60, 62, 64, 65, 67, 69, 71, 72
         };
@@ -136,42 +136,86 @@ namespace KinectAirBand.Controls
 
         private void pressKey (Double variabX, Double dot)
         {
-            if (variabX > 0)
+            if (body.RightHandState == HandState.Lasso)
             {
-                if (dot > 0.85 && dot < 0.95)
+                if (variabX > 0)
                 {
-                    PressPianoKey(4);
+                    if (dot > 0.85 && dot < 0.95)
+                    {
+                        PressPianoKey(4);
+                    }
+                    else if (dot > 0.65 && dot < 0.85)
+                    {
+                        PressPianoKey(5);
+                    }
+                    else if (dot > 0.35 && dot < 0.65)
+                    {
+                        PressPianoKey(6);
+                    }
+                    else if (dot > 0 && dot < 0.35)
+                    {
+                        PressPianoKey(7);
+                    }
                 }
-                else if (dot > 0.65 && dot < 0.85)
+                else
                 {
-                    PressPianoKey(5);
-                }
-                else if (dot > 0.35 && dot < 0.65)
-                {
-                    PressPianoKey(6);
-                }
-                else if (dot > 0 && dot < 0.35)
-                {
-                    PressPianoKey(7);
+                    if (dot > 0.85 && dot < 0.95)
+                    {
+                        PressPianoKey(3);
+                    }
+                    else if (dot > 0.65 && dot < 0.85)
+                    {
+                        PressPianoKey(2);
+                    }
+                    else if (dot > 0.35 && dot < 0.65)
+                    {
+                        PressPianoKey(1);
+                    }
+                    else if (dot > 0 && dot < 0.35)
+                    {
+                        PressPianoKey(0);
+                    }
                 }
             }
             else
             {
-                if (dot > 0.85 && dot < 0.95)
+                if (variabX > 0)
                 {
-                    PressPianoKey(3);
+                    if (dot > 0.85 && dot < 0.95)
+                    {
+                        ReleasePianoKey(4);
+                    }
+                    else if (dot > 0.65 && dot < 0.85)
+                    {
+                        ReleasePianoKey(5);
+                    }
+                    else if (dot > 0.35 && dot < 0.65)
+                    {
+                        ReleasePianoKey(6);
+                    }
+                    else if (dot > 0 && dot < 0.35)
+                    {
+                        ReleasePianoKey(7);
+                    }
                 }
-                else if (dot > 0.65 && dot < 0.85)
+                else
                 {
-                    PressPianoKey(2);
-                }
-                else if (dot > 0.35 && dot < 0.65)
-                {
-                    PressPianoKey(1);
-                }
-                else if (dot > 0 && dot < 0.35)
-                {
-                    PressPianoKey(0);
+                    if (dot > 0.85 && dot < 0.95)
+                    {
+                        ReleasePianoKey(3);
+                    }
+                    else if (dot > 0.65 && dot < 0.85)
+                    {
+                        ReleasePianoKey(2);
+                    }
+                    else if (dot > 0.35 && dot < 0.65)
+                    {
+                        ReleasePianoKey(1);
+                    }
+                    else if (dot > 0 && dot < 0.35)
+                    {
+                        ReleasePianoKey(0);
+                    }
                 }
             }
         }

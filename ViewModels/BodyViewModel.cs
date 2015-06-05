@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using KinectAirBand.Controls;
 using Microsoft.Kinect;
 
 namespace KinectAirBand
@@ -104,16 +106,16 @@ namespace KinectAirBand
             }
         }
 
-        private Int32 instrumentId;
-        public Int32 InstrumentId
+        private UserControl instrument;
+        public UserControl Instrument
         {
             get
             {
-                return instrumentId;
+                return instrument;
             }
         }
 
-        public void UpdateBodyView (Body body)
+        public void SetBodyData (Body body)
         {
             isTracked = body.IsTracked;
             trackingId = body.TrackingId;
@@ -129,9 +131,24 @@ namespace KinectAirBand
             this.rightHandState = rightHandState;
         }
 
-        public void SetInstrument (Int32 instrumentId)
+        public void SetInstrument (UserControl instrument)
         {
-            this.instrumentId = instrumentId;
+            this.instrument = instrument;
+        }
+
+        public void UpdateInstrument ()
+        {
+            Dictionary<Type, Action> @switch = new Dictionary<Type, Action>
+            {
+                { typeof(PianoControl), () => ((PianoControl)instrument).UpdatePianoKeys(this)}
+            };
+            @switch[instrument.GetType()]();
+        }
+
+        public void ClearInstrument (Grid canvas)
+        {
+            canvas.Children.Remove(this.Instrument);
+            this.instrument = null;
         }
     }
 }
