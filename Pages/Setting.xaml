@@ -34,6 +34,6 @@
             <ToggleButton IsChecked="{Binding BackgroundRemoval, Mode=TwoWay}"/>
             <c:ImageListControl Height="111" Margin="2,2,20,2"/>
         </StackPanel>
-        <Button Grid.Row="2" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
+        <Button Grid.Row="2" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>
 </UserControl>

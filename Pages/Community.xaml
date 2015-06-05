@@ -6,19 +6,23 @@
              xmlns:c="clr-namespace:KinectAirBand.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600" Margin="0 34">
-    <UserControl.Resources>
-        <ResourceDictionary Source="../ResDictionary/CommunityRes.xaml"/>
-    </UserControl.Resources>
     <Grid Background="#99FFFFFF" Height="600" Width="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MaxHeight="515"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <TextBlock Text="社群" FontSize="28" FontWeight="Bold" FontFamily="華康瘦金體" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <c:CommunityControl Grid.Row="1" Title="Facebook" Desc="連接您的Facebook帳號來分享演奏資訊" Url="/KinectAirBand;component/Resources/Facebook.jpg" Enable="True"/>
-        <c:CommunityControl Grid.Row="2" Title="YouTube" Desc="連接您的YouTube帳號以進行實況轉播" Url="/KinectAirBand;component/Resources/YouTube.jpg" Enable="False"/>
-        <Button Name="Button_Check" Grid.Row="3" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <c:CommunityControl Grid.Row="0" Title="Facebook" Desc="連接您的Facebook帳號來分享演奏資訊" Url="/KinectAirBand;component/Resources/Facebook.jpg" Enable="True"/>
+            <c:CommunityControl Grid.Row="1" Title="YouTube" Desc="連接您的YouTube帳號以進行實況轉播" Url="/KinectAirBand;component/Resources/YouTube.jpg" Enable="False"/>
+            <c:CommunityControl Grid.Row="2" Title="AirBand" Desc="連接AirBand平台使用我們的線上服務" Url="/KinectAirBand;component/Resources/AirBand.jpg" Enable="False"/>
+        </Grid>
+        <Button Name="Button_Check" Grid.Row="4" Grid.ColumnSpan="2" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>
 </UserControl>

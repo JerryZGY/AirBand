@@ -116,7 +116,7 @@
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="../Resources/Sound/Click.wav" />
+                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

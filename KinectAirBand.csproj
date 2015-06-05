@@ -192,10 +192,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResDictionary\CommunityRes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\MainMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -267,6 +263,7 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\AirBand.jpg" />
     <Content Include="Resources\Background\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -294,7 +291,7 @@
     <Resource Include="Resources\YouTube.jpg" />
     <Resource Include="Resources\Facebook.jpg" />
     <Resource Include="Resources\Check.png" />
-    <Resource Include="Resources\Sound\Click.wav" />
+    <Resource Include="Resources\Click.wav" />
     <Resource Include="Resources\Title.m4a" />
     <Resource Include="Resources\Logo.png" />
     <Resource Include="Resources\Single.png" />

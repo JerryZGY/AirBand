@@ -22,6 +22,6 @@
         <Image Grid.Row="2" Source="/KinectAirBand;component/Resources/Guitar.png" Height="128"/>
         <Image Grid.Row="1" Grid.Column="1" Source="/KinectAirBand;component/Resources/Drum.png" Height="128"/>
         <Image Grid.Row="2" Grid.Column="1" Source="/KinectAirBand;component/Resources/Violin.png" Height="128"/>
-        <Button Name="Button_Check" Grid.Row="5" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Check.png"/>
+        <Button Name="Button_Check" Grid.Row="5" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>
 </UserControl>

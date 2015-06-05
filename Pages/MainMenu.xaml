@@ -36,7 +36,7 @@
                     <DropShadowEffect BlurRadius="0" Color="White" Direction="90"/>
                 </Image.Effect>
             </Image>
-            <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="開始" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Click">
+            <Button Name="Button_Start" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Content="演奏" Style="{StaticResource ResourceKey= MenuButton}" Click="Button_Click">
                 <Button.Background>
                     <ImageBrush ImageSource="/KinectAirBand;component/Resources/Start.png"/>
                 </Button.Background>
