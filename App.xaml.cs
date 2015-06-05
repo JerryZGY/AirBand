@@ -6,7 +6,7 @@ namespace KinectAirBand
     {
         private void Application_Exit (object sender, ExitEventArgs e)
         {
-            ( Switcher.PageDictionary["StartPlaying"] as KinectAirBand.Pages.StartPlaying ).Dispose();
+            ( Switcher.PageDictionary["Playing"] as KinectAirBand.Pages.Playing ).Dispose();
         }
     }
 }

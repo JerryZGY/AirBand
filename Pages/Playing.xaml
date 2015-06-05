@@ -1,124 +1,58 @@
 ﻿<UserControl x:Class="KinectAirBand.Pages.Playing"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:local="clr-namespace:KinectAirBand"
-             xmlns:ctrl="clr-namespace:KinectAirBand.Controls"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:properties="clr-namespace:KinectAirBand.Properties"
-             mc:Ignorable="d" 
-             d:DesignWidth="1366" d:DesignHeight="768">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ctrl="clr-namespace:KinectAirBand.Controls"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Loaded="Playing_Loaded">
     <UserControl.Resources>
-        <Style x:Key="StartButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="128"/>
-            <Setter Property="Height" Value="128"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualStateGroup.States>
-                                        <VisualState Name="Normal">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState Name="Pressed">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" To="0.9" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" To="0.9" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState Name="MouseOver">
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" To="1.1" Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetName="ButtonGrid" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" To="1.1" Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup.States>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Grid Name="ButtonGrid" RenderTransformOrigin="0.5,0.5" Background="{TemplateBinding Background}" >
-                                <Grid.RenderTransform>
-                                    <ScaleTransform/>
-                                </Grid.RenderTransform>
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="TitleStyle" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="30"/>
-        </Style>
-        <Style x:Key="StateStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value=" Meiryo UI"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="20"/>
-        </Style>
-        <DataTemplate DataType="{x:Type local:StateView}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding BodyIndex, StringFormat='Body Index: {0}'}" Style="{StaticResource TitleStyle}" Grid.ColumnSpan="2"/>
-                <TextBlock Text="Left" Style="{StaticResource TitleStyle}" Grid.Row="1"/>
-                <TextBlock Text="{Binding LeftHandX, StringFormat='X: {0}'}" Style="{StaticResource StateStyle}" Grid.Row="2"/>
-                <TextBlock Text="{Binding LeftHandY, StringFormat='Y: {0}'}" Style="{StaticResource StateStyle}" Grid.Row="3"/>
-                <TextBlock Text="{Binding LeftHandZ, StringFormat='Z: {0}'}" Style="{StaticResource StateStyle}" Grid.Row="4"/>
-                <TextBlock Text="Right" Style="{StaticResource TitleStyle}" Grid.Column="1" Grid.Row="1"/>
-                <TextBlock Text="{Binding RightHandX, StringFormat='X: {0}'}" Style="{StaticResource StateStyle}" Grid.Column="1" Grid.Row="2"/>
-                <TextBlock Text="{Binding RightHandY, StringFormat='Y: {0}'}" Style="{StaticResource StateStyle}" Grid.Column="1" Grid.Row="3"/>
-                <TextBlock Text="{Binding RightHandZ, StringFormat='Z: {0}'}" Style="{StaticResource StateStyle}" Grid.Column="1" Grid.Row="4"/>
-            </Grid>
-        </DataTemplate>
+        <ResourceDictionary Source="../ResDictionary/PlayingRes.xaml"/>
     </UserControl.Resources>
-        <Grid>
+    <Canvas Name="Region">
+        <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2.5*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Viewbox Grid.RowSpan="2">
-            <Grid Name="viewGrid" Width="1366" Height="768">
-                <ctrl:PianoControl x:Name="PianoControl"/>
-                <Canvas Name="cnv"/>
-                <Image Source="{Binding ImageSource}" Stretch="Fill"/>
-                <Image Source="{Binding BodyImageSource}" Stretch="Fill"/>
-                <Image Source="{Binding PointImageSource}" Stretch="Fill"/>
-            </Grid>
+            <Viewbox Grid.RowSpan="4">
+                <Grid Width="1366" Height="768">
+                    <Image Source="{Binding Background, Mode=OneWay}"/>
+                    <Grid Name="Grid_Controls"/>
+                    <Image Grid.RowSpan="4" Name="Image_BackgroundRemoval" Stretch="Fill"/>
+                
+                </Grid>
             </Viewbox>
-            <Grid Name="Grid_State" Grid.Row="1" Background="Black" Opacity="0.7">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-            </Grid>
-            <TextBlock Name="tb1" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="50"/>
-            <TextBlock Name="tb2" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="50"/>
-            <Button Style="{DynamicResource StartButtonStyle}" VerticalAlignment="Top" Content="Test" FontSize="36" Visibility="Collapsed">
+            <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Visibility="Collapsed">
                 <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Keyboard.png" Stretch="UniformToFill"/>
+                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
                 </Button.Background>
+                <Button.RenderTransform>
+                    <TranslateTransform X="200"/>
+                </Button.RenderTransform>
             </Button>
+            <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Visibility="Collapsed">
+                <Button.Background>
+                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
+                </Button.Background>
+                <Button.RenderTransform>
+                    <TranslateTransform X="200"/>
+                </Button.RenderTransform>
+            </Button>
+            <Button Name="Button_Ensemble" Grid.Row="3" Content="合奏模式" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
+                <Button.Background>
+                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Ensemble.png"/>
+                </Button.Background>
+                <Button.RenderTransform>
+                    <TranslateTransform X="200"/>
+                </Button.RenderTransform>
+            </Button>
+            <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+            <Canvas Name="Canvas_Pointer" Grid.RowSpan="4">
+                <Image Name="Pointer" Source="/KinectAirBand;component/Resources/Target.png" Width="48" Height="48"/>
+            </Canvas>
+            <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         </Grid>
+    </Canvas>
 </UserControl>

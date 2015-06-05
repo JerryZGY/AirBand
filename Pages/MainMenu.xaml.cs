@@ -32,7 +32,7 @@ namespace KinectAirBand.Pages
             switch (button.Name)
             {
                 case "Button_Start":
-                    StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("StartPlaying"));
+                    StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("Playing"));
                     break;
                 case "Button_Community":
                     EnterContent("Community");

@@ -89,14 +89,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Controls\Piano.xaml.cs">
-      <DependentUpon>Piano.xaml</DependentUpon>
+    <Compile Include="Controls\PianoControl.xaml.cs">
+      <DependentUpon>PianoControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\RightClickCommand.cs" />
-    <Compile Include="Common\PianoControlData.cs" />
     <Compile Include="Controls\CommunityControl.xaml.cs">
       <DependentUpon>CommunityControl.xaml</DependentUpon>
     </Compile>
@@ -106,33 +105,27 @@
     <Compile Include="Pages\Mod.xaml.cs">
       <DependentUpon>Mod.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\BodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Common\VolumeConverter.cs" />
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
     <Compile Include="Common\ToneTriggerHandler.cs" />
-    <Compile Include="Controls\PianoControl.xaml.cs">
-      <DependentUpon>PianoControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PianoKey.xaml.cs">
-      <DependentUpon>PianoKey.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\PianoKeyWPF.xaml.cs">
       <DependentUpon>PianoKeyWPF.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PianoControlWPF.xaml.cs">
       <DependentUpon>PianoControlWPF.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Extensions.cs" />
     <Compile Include="Pages\Community.xaml.cs">
       <DependentUpon>Community.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\StartPlaying.xaml.cs">
-      <DependentUpon>StartPlaying.xaml</DependentUpon>
+    <Compile Include="Pages\Playing.xaml.cs">
+      <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FacebookViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentVariablesViewModel.cs" />
@@ -145,15 +138,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Piano.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\PianoControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PianoKey.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -200,10 +185,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\Playing.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Pages\Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,11 +193,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\StartPlaying.xaml">
+    <Page Include="Pages\Playing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResDictionary\StartPlayingRes.xaml">
+    <Page Include="ResDictionary\PlayingRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,9 +205,6 @@
   <ItemGroup>
     <Compile Include="Pages\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Playing.xaml.cs">
-      <DependentUpon>Playing.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -263,6 +241,7 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Target.png" />
     <Resource Include="Resources\AirBand.jpg" />
     <Content Include="Resources\Background\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

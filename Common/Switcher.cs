@@ -12,7 +12,7 @@ namespace KinectAirBand
         public static Dictionary<String,UserControl> PageDictionary = new Dictionary<String,UserControl>()
         {
             {"MainMenu", new MainMenu(viewModel)},
-            {"StartPlaying", new StartPlaying(viewModel)},
+            {"Playing", new Playing(viewModel)},
             {"Community", new Community(viewModel)},
             {"Mod", new Mod(viewModel)},
             {"Setting", new Setting(viewModel)},
