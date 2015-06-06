@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
-using Sanford.Multimedia.Midi.UI;
 
 namespace KinectAirBand.Controls
 {
@@ -27,10 +26,6 @@ namespace KinectAirBand.Controls
         private const Int32 angle = 90;
         //琴鍵數量
         private const Int32 keysCount = 8;
-        //控制項寬度
-        private const Int32 controlWidth = 1366;
-        //控制項高度
-        private const Int32 controlHeight = 768;
         //初始旋轉角度
         private const Double initialValue = -90;
         //間隔旋轉角度
@@ -105,7 +100,7 @@ namespace KinectAirBand.Controls
         /// <param name="variabY">變異點Y座標(VY)</param>
         /// <param name="radius">自定義半徑(R)</param>
         /// <param name="angle">自定義角度(A)</param>
-        private Boolean IsPointInSector (
+        private Boolean isPointInSector (
             Double centerX, Double centerY, Double locateX, Double locateY,
             Double variabX, Double variabY, Double radius, Double angle)
         {
@@ -127,95 +122,96 @@ namespace KinectAirBand.Controls
             //取得定位點與變異點之內積 DOT = _LCD ‧ _VCD
             Double dot = _lcdX * _vcdX + _lcdY * _vcdY;
             //根據DOT判斷琴鍵觸發
-            pressKey(_vcdX, dot);
+            if (body.RightHandState == HandState.Open)
+                pressKeys(_vcdX, dot);
+            else
+                releaseKeys(_vcdX, dot);
             //取得定位點與變異點之夾角角度 _angel = Acos( _LCD ‧ _VCD ) * ( 180 / π )
             Double _angle = Math.Acos(dot) * ( 180 / Math.PI );
             //如果夾角角度小於自定義角度，表示變異點落在扇形以內，回傳判斷結果，函式結束
             return ( _angle < angle );
         }
 
-        private void pressKey (Double variabX, Double dot)
+        private void pressKeys (Double variabX, Double dot)
         {
-            if (body.RightHandState == HandState.Lasso)
+            if (variabX > 0)
             {
-                if (variabX > 0)
+                if (dot > 0.85 && dot < 0.95)
                 {
-                    if (dot > 0.85 && dot < 0.95)
-                    {
-                        PressPianoKey(4);
-                    }
-                    else if (dot > 0.65 && dot < 0.85)
-                    {
-                        PressPianoKey(5);
-                    }
-                    else if (dot > 0.35 && dot < 0.65)
-                    {
-                        PressPianoKey(6);
-                    }
-                    else if (dot > 0 && dot < 0.35)
-                    {
-                        PressPianoKey(7);
-                    }
+                    PressPianoKey(4);
                 }
-                else
+                else if (dot > 0.65 && dot < 0.85)
                 {
-                    if (dot > 0.85 && dot < 0.95)
-                    {
-                        PressPianoKey(3);
-                    }
-                    else if (dot > 0.65 && dot < 0.85)
-                    {
-                        PressPianoKey(2);
-                    }
-                    else if (dot > 0.35 && dot < 0.65)
-                    {
-                        PressPianoKey(1);
-                    }
-                    else if (dot > 0 && dot < 0.35)
-                    {
-                        PressPianoKey(0);
-                    }
+                    PressPianoKey(5);
+                }
+                else if (dot > 0.35 && dot < 0.65)
+                {
+                    PressPianoKey(6);
+                }
+                else if (dot > 0 && dot < 0.35)
+                {
+                    PressPianoKey(7);
                 }
             }
             else
             {
-                if (variabX > 0)
+                if (dot > 0.85 && dot < 0.95)
                 {
-                    if (dot > 0.85 && dot < 0.95)
-                    {
-                        ReleasePianoKey(4);
-                    }
-                    else if (dot > 0.65 && dot < 0.85)
-                    {
-                        ReleasePianoKey(5);
-                    }
-                    else if (dot > 0.35 && dot < 0.65)
-                    {
-                        ReleasePianoKey(6);
-                    }
-                    else if (dot > 0 && dot < 0.35)
-                    {
-                        ReleasePianoKey(7);
-                    }
+                    PressPianoKey(3);
                 }
-                else
+                else if (dot > 0.65 && dot < 0.85)
                 {
-                    if (dot > 0.85 && dot < 0.95)
-                    {
-                        ReleasePianoKey(3);
-                    }
-                    else if (dot > 0.65 && dot < 0.85)
-                    {
-                        ReleasePianoKey(2);
-                    }
-                    else if (dot > 0.35 && dot < 0.65)
-                    {
-                        ReleasePianoKey(1);
-                    }
-                    else if (dot > 0 && dot < 0.35)
-                    {
-                        ReleasePianoKey(0);
-                    }
+                    PressPianoKey(2);
+                }
+                else if (dot > 0.35 && dot < 0.65)
+                {
+                    PressPianoKey(1);
+                }
+                else if (dot > 0 && dot < 0.35)
+                {
+                    PressPianoKey(0);
+                }
+            }
+        }
+
+        private void releaseKeys (Double variabX, Double dot)
+        {
+            if (variabX > 0)
+            {
+                if (dot > 0.85 && dot < 0.95)
+                {
+                    ReleasePianoKey(4);
+                }
+                else if (dot > 0.65 && dot < 0.85)
+                {
+                    ReleasePianoKey(5);
+                }
+                else if (dot > 0.35 && dot < 0.65)
+                {
+                    ReleasePianoKey(6);
+                }
+                else if (dot > 0 && dot < 0.35)
+                {
+                    ReleasePianoKey(7);
+                }
+            }
+            else
+            {
+                if (dot > 0.85 && dot < 0.95)
+                {
+                    ReleasePianoKey(3);
+                }
+                else if (dot > 0.65 && dot < 0.85)
+                {
+                    ReleasePianoKey(2);
+                }
+                else if (dot > 0.35 && dot < 0.65)
+                {
+                    ReleasePianoKey(1);
+                }
+                else if (dot > 0 && dot < 0.35)
+                {
+                    ReleasePianoKey(0);
                 }
             }
         }
@@ -234,10 +230,10 @@ namespace KinectAirBand.Controls
                 Canvas.SetLeft(key, ( pianoKeys.IndexOf(key) < 4 ) ? x - length * 0.2 : x - length * 0.03);
             }
 
-            IsPointInSector(
+            isPointInSector(
                 body.CenterPoint.X, body.CenterPoint.Y,
                 body.LocatePoint.X, body.LocatePoint.Y,
-                body.VariabPoint.X, body.VariabPoint.Y,
+                body.RightVariabPoint.X, body.RightVariabPoint.Y,
                 length, angle);
         }
 

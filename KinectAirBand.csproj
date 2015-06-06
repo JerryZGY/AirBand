@@ -89,6 +89,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GuitarControl.xaml.cs">
+      <DependentUpon>GuitarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PianoControl.xaml.cs">
       <DependentUpon>PianoControl.xaml</DependentUpon>
     </Compile>
@@ -111,12 +114,6 @@
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\StoryboardHandler.cs" />
     <Compile Include="Common\Switcher.cs" />
-    <Compile Include="Controls\PianoKeyWPF.xaml.cs">
-      <DependentUpon>PianoKeyWPF.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PianoControlWPF.xaml.cs">
-      <DependentUpon>PianoControlWPF.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Pages\Community.xaml.cs">
       <DependentUpon>Community.xaml</DependentUpon>
     </Compile>
@@ -128,8 +125,11 @@
     </Compile>
     <Compile Include="ViewModels\FacebookViewModel.cs" />
     <Compile Include="ViewModels\EnvironmentVariablesViewModel.cs" />
-    <Compile Include="ViewModels\StateView.cs" />
     <Page Include="Controls\CommunityControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GuitarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -138,14 +138,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\PianoControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PianoKeyWPF.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PianoControlWPF.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,6 +232,7 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Clear.png" />
     <Resource Include="Resources\Target.png" />
     <Resource Include="Resources\AirBand.jpg" />
     <Content Include="Resources\Background\BG00.jpg">

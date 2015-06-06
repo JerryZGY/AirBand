@@ -19,7 +19,7 @@
             <Viewbox Grid.RowSpan="4">
                 <Grid Width="1366" Height="768">
                     <Image Source="{Binding Background, Mode=OneWay}"/>
-                    <Grid Name="Grid_Controls"/>
+                    <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768"/>
                     <Image Grid.RowSpan="4" Name="Image_BackgroundRemoval" Stretch="Fill"/>
                 </Grid>
             </Viewbox>
@@ -41,14 +41,19 @@
             </Button>
             <Button Name="Button_Clear" Grid.Row="3" Content="移除樂器" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
                 <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Ensemble.png"/>
+                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Clear.png"/>
                 </Button.Background>
                 <Button.RenderTransform>
                     <TranslateTransform X="200"/>
                 </Button.RenderTransform>
             </Button>
             <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+            <Canvas Name="Canvas_Test" Grid.RowSpan="4">
+            </Canvas>
+            <Grid Name="Grid_GuitarControls" Grid.RowSpan="4" MaxWidth="1366" MaxHeight="768"/>
+
             <Canvas Name="Canvas_Pointer" Grid.RowSpan="4">
+
                 <Image Name="Pointer" Source="/KinectAirBand;component/Resources/Target.png" Width="32" Height="32"/>
             </Canvas>
             <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>

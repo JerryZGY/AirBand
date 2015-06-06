@@ -135,6 +135,7 @@ namespace KinectAirBand.Pages
             {
                 if (frame != null)
                 {
+                    Canvas_Test.Children.Clear();
                     bodies = new Body[frame.BodyFrameSource.BodyCount];
 
                     frame.GetAndRefreshBodyData(bodies);
@@ -147,10 +148,14 @@ namespace KinectAirBand.Pages
                         {
                             //2維中心點
                             Point centerPoint = coordinateMap(item.value.Joints[JointType.SpineMid].Position);
+                            //2維下心點
+                            Point spinePoint = coordinateMap(item.value.Joints[JointType.SpineBase].Position);
                             //2維定位點
                             Point locatePoint = coordinateMap(item.value.Joints[JointType.Head].Position);
-                            //2維變異點
-                            Point variabPoint = coordinateMap(item.value.Joints[JointType.HandRight].Position);
+                            //2維左異點
+                            Point leftVariabPoint = coordinateMap(item.value.Joints[JointType.HandLeft].Position);
+                            //2維右異點
+                            Point rightVariabPoint = coordinateMap(item.value.Joints[JointType.HandRight].Position);
                             //2維中肩點
                             Point shouldPoint = coordinateMap(item.value.Joints[JointType.SpineShoulder].Position);
                             //左手狀態
@@ -158,17 +163,18 @@ namespace KinectAirBand.Pages
                             //右手狀態
                             HandState rightHandState = item.value.HandRightState;
                             //更新體感數據
-                            body.UpdateBodyData(centerPoint, locatePoint, variabPoint, shouldPoint, leftHandState, rightHandState);
+                            body.UpdateBodyData(centerPoint, spinePoint, locatePoint, leftVariabPoint, rightVariabPoint, shouldPoint, leftHandState, rightHandState);
                             if (body.Instrument != null)
                                 body.UpdateInstrument();
-                            /*pointCanvas.Children.Add(
-                                new Line() { Stroke = Brushes.Green, X1 = centerPoint.X - radius, Y1 = centerPoint.Y, X2 = centerPoint.X + radius, Y2 = centerPoint.Y, StrokeThickness = 20 });*/
+
+                            /*Grid_GuitarControls.Children.Add(
+                                new Line() { Stroke = Brushes.Green, X1 = spinePoint.X, Y1 = (spinePoint.Y + centerPoint.Y) / 2, X2 = leftVariabPoint.X, Y2 = leftVariabPoint.Y, StrokeThickness = 20 });*/
                         }
                         else
                         {
                             if (body.Instrument != null)
                             {
-                                body.ClearInstrument(Grid_Controls);
+                                body.ClearInstrument(Grid_PianoControls);
                             }
                         }
                     }
@@ -288,6 +294,7 @@ namespace KinectAirBand.Pages
             if (point.Properties.IsEngaged)
             {
                 performLassoClick(screenRelative, trackingId, Button_Piano);
+                performLassoClick(screenRelative, trackingId, Button_Guitar);
                 performLassoClick(screenRelative, trackingId, Button_Clear);
             }
         }
@@ -367,14 +374,23 @@ namespace KinectAirBand.Pages
                 case "Button_Piano":
                     if (body != null && (body.Instrument == null || body.Instrument.GetType() != typeof(PianoControl)))
                     {
+                        body.ClearInstrument(Grid_GuitarControls);
                         body.SetInstrument(new PianoControl(outDevice, body));
-                        Grid_Controls.Children.Add(body.Instrument);
+                        Grid_PianoControls.Children.Add(body.Instrument);
+                    }
+                    break;
+                case "Button_Guitar":
+                    if (body != null && ( body.Instrument == null || body.Instrument.GetType() != typeof(GuitarControl) ))
+                    {
+                        body.ClearInstrument(Grid_PianoControls);
+                        body.SetInstrument(new GuitarControl(outDevice, body));
+                        Grid_GuitarControls.Children.Add(body.Instrument);
                     }
                     break;
                 case "Button_Clear":
                     if (body != null && body.Instrument != null)
                     {
-                        body.ClearInstrument(Grid_Controls);
+                        body.ClearInstrument(Grid_PianoControls);
                     }
                     break;
                 case "Button_Back":

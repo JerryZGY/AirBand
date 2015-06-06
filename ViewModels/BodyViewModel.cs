@@ -53,6 +53,15 @@ namespace KinectAirBand
             }
         }
 
+        private Point spinePoint;
+        public Point SpinePoint
+        {
+            get
+            {
+                return spinePoint;
+            }
+        }
+
         private Point locatePoint;
         public Point LocatePoint
         {
@@ -62,12 +71,21 @@ namespace KinectAirBand
             }
         }
 
-        private Point variabPoint;
-        public Point VariabPoint
+        private Point leftVariabPoint;
+        public Point LeftVariabPoint
         {
             get
             {
-                return variabPoint;
+                return leftVariabPoint;
+            }
+        }
+
+        private Point rightVariabPoint;
+        public Point RightVariabPoint
+        {
+            get
+            {
+                return rightVariabPoint;
             }
         }
 
@@ -121,11 +139,17 @@ namespace KinectAirBand
             trackingId = body.TrackingId;
         }
 
-        public void UpdateBodyData (Point centerPoint, Point locatePoint, Point variabPoint, Point shouldPoint, HandState leftHandState, HandState rightHandState)
+        public void UpdateBodyData (
+            Point centerPoint, Point spinePoint,
+            Point locatePoint, Point leftVariabPoint,
+            Point rightVariabPoint, Point shouldPoint,
+            HandState leftHandState, HandState rightHandState)
         {
             this.centerPoint = centerPoint;
+            this.spinePoint = spinePoint;
             this.locatePoint = locatePoint;
-            this.variabPoint = variabPoint;
+            this.leftVariabPoint = leftVariabPoint;
+            this.rightVariabPoint = rightVariabPoint;
             this.shouldPoint = shouldPoint;
             this.leftHandState = leftHandState;
             this.rightHandState = rightHandState;
@@ -140,7 +164,8 @@ namespace KinectAirBand
         {
             Dictionary<Type, Action> @switch = new Dictionary<Type, Action>
             {
-                { typeof(PianoControl), () => ((PianoControl)instrument).UpdatePianoKeys(this)}
+                { typeof(PianoControl), () => ((PianoControl)instrument).UpdatePianoKeys(this)},
+                { typeof(GuitarControl), () => ((GuitarControl)instrument).UpdateGuitar(this)}
             };
             @switch[instrument.GetType()]();
         }
