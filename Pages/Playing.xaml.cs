@@ -35,6 +35,7 @@ namespace KinectAirBand.Pages
         private KinectSensor sensor;
         private OutputDevice outDevice;
         private UInt32 bitmapBackBufferSize;
+        private Int32 trackingIndex;
         private Body[] bodyTrackingArray;
         private List<BodyViewModel> bodyList;
         private WriteableBitmap bitmap = null;
@@ -47,6 +48,7 @@ namespace KinectAirBand.Pages
         {
             InitializeComponent();
             this.DataContext = viewModel;
+            outDevice = new OutputDevice(0);
         }
 
         #region IDisposable
@@ -71,8 +73,6 @@ namespace KinectAirBand.Pages
             {
                 if (disposing && isLoaded)
                 {
-                    outDevice.Close();
-                    outDevice.Dispose();
                     reader.Dispose();
                 }
 
@@ -81,7 +81,7 @@ namespace KinectAirBand.Pages
                 bodies = null;
                 kinectCoreWindow = null;
                 bitmapBackBufferSize = 0;
-                //bodyList = null;
+                bodyTrackingArray = null;
                 reader = null;
                 colorFrameDesc = null;
                 bitmap = null;
@@ -91,12 +91,19 @@ namespace KinectAirBand.Pages
             }
         }
 
+        public void OutDeviceDispose ()
+        {
+            outDevice.Close();
+            outDevice.Dispose();
+        }
+
         #endregion
 
         private void Playing_Loaded (object sender, RoutedEventArgs e)
         {
             Grid_Main.Opacity = 0;
             kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
+            KinectCoreWindow.SetKinectTwoPersonSystemEngagement();
             sensor = KinectSensor.GetDefault();
             sensor.Open();
             reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
@@ -104,25 +111,22 @@ namespace KinectAirBand.Pages
             bodyTrackingArray = new Body[2];
             bodyList = new List<BodyViewModel>();
 
-            if (outDevice == null)
-            {
-                outDevice = new OutputDevice(0);
-            }
-
             for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
             {
                 bodyList.Add(new BodyViewModel(i));
             }
 
+            reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
+            bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
+            bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
+            Image_BackgroundRemoval.Source = bitmap;
+            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
             {
                 if (!isLoaded)
                 {
-                    reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
-                    bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
-                    bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
-                    Image_BackgroundRemoval.Source = bitmap;
-                    kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
+
                 }
                 isLoaded = true;
             });
@@ -142,22 +146,21 @@ namespace KinectAirBand.Pages
 
                     frame.GetAndRefreshBodyData(bodies);
 
-                    if (bodyTrackingArray[0] != null)
-                        bodyTrackingArray[0] = null;
-                    if (bodyTrackingArray[1] != null)
-                        bodyTrackingArray[1] = null;
+                    trackingIndex = 0;
 
                     foreach (var item in bodies.Select((value, i) => new { i, value }))
                     {
                         BodyViewModel body = bodyList[item.i];
                         body.SetBodyData(item.value);
+
+                        if (body.TrackingId != 0 && trackingIndex < 2)
+                        {
+                            bodyTrackingArray[trackingIndex] = item.value;
+                            trackingIndex++;
+                        }
+
                         if (item.value.IsTracked)
                         {
-                            if (bodyTrackingArray[0] == null)
-                                bodyTrackingArray[0] = item.value;
-                            else if (bodyTrackingArray[0].TrackingId != item.value.TrackingId)
-                                bodyTrackingArray[1] = item.value;
-
                             //2維中心點
                             Point centerPoint = coordinateMap(item.value.Joints[JointType.SpineMid].Position);
                             //2維下心點
@@ -187,9 +190,6 @@ namespace KinectAirBand.Pages
                                 rightHandState, rightHandConfidence);
                             if (body.Instrument != null)
                                 body.UpdateInstrument();
-
-                            /*Grid_GuitarControls.Children.Add(
-                                new Line() { Stroke = Brushes.Green, X1 = spinePoint.X, Y1 = (spinePoint.Y + centerPoint.Y) / 2, X2 = leftVariabPoint.X, Y2 = leftVariabPoint.Y, StrokeThickness = 20 });*/
                         }
                         else
                         {
@@ -203,91 +203,117 @@ namespace KinectAirBand.Pages
                 }
             }
 
-            DepthFrame depthFrame = null;
-            ColorFrame colorFrame = null;
-            BodyIndexFrame bodyIndexFrame = null;
-            bool isBitmapLocked = false;
-            if (multiSourceFrame == null)
+            if (!Switcher.viewModel.BackgroundRemoval)
             {
-                return;
-            }
-            try
-            {
-                depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame();
-                colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
-                bodyIndexFrame = multiSourceFrame.BodyIndexFrameReference.AcquireFrame();
-                if (( depthFrame == null ) || ( colorFrame == null ) || ( bodyIndexFrame == null ))
+                using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
                 {
-                    return;
-                }
-                FrameDescription depthFrameDescription = depthFrame.FrameDescription;
-                Int32 depthWidth = depthFrameDescription.Width;
-                Int32 depthHeight = depthFrameDescription.Height;
-                using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
-                {
-                    sensor.CoordinateMapper.MapColorFrameToDepthSpaceUsingIntPtr(
-                        depthFrameData.UnderlyingBuffer,
-                        depthFrameData.Size,
-                        this.colorMappedToDepthPoints);
-                }
-                depthFrame.Dispose();
-                depthFrame = null;
-                this.bitmap.Lock();
-                isBitmapLocked = true;
-                colorFrame.CopyConvertedFrameDataToIntPtr(this.bitmap.BackBuffer, this.bitmapBackBufferSize, ColorImageFormat.Bgra);
-                colorFrame.Dispose();
-                colorFrame = null;
-                using (KinectBuffer bodyIndexData = bodyIndexFrame.LockImageBuffer())
-                {
-                    unsafe
+                    if (colorFrame != null)
                     {
-                        byte* bodyIndexDataPointer = (byte*)bodyIndexData.UnderlyingBuffer;
-                        int colorMappedToDepthPointCount = this.colorMappedToDepthPoints.Length;
-                        fixed (DepthSpacePoint* colorMappedToDepthPointsPointer = this.colorMappedToDepthPoints)
+                        FrameDescription colorFrameDescription = colorFrame.FrameDescription;
+                        using (KinectBuffer colorBuffer = colorFrame.LockRawImageBuffer())
                         {
-                            uint* bitmapPixelsPointer = (uint*)this.bitmap.BackBuffer;
-                            for (int colorIndex = 0; colorIndex < colorMappedToDepthPointCount; ++colorIndex)
+                            this.bitmap.Lock();
+                            if (( colorFrameDescription.Width == this.bitmap.PixelWidth ) && ( colorFrameDescription.Height == this.bitmap.PixelHeight ))
                             {
-                                float colorMappedToDepthX = colorMappedToDepthPointsPointer[colorIndex].X;
-                                float colorMappedToDepthY = colorMappedToDepthPointsPointer[colorIndex].Y;
-                                if (!float.IsNegativeInfinity(colorMappedToDepthX) &&
-                                    !float.IsNegativeInfinity(colorMappedToDepthY))
-                                {
-                                    int depthX = (int)( colorMappedToDepthX + 0.5f );
-                                    int depthY = (int)( colorMappedToDepthY + 0.5f );
-                                    if (( depthX >= 0 ) && ( depthX < depthWidth ) && ( depthY >= 0 ) && ( depthY < depthHeight ))
-                                    {
-                                        int depthIndex = ( depthY * depthWidth ) + depthX;
-                                        if (bodyIndexDataPointer[depthIndex] != 0xff)
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                }
-                                bitmapPixelsPointer[colorIndex] = 0;
+                                colorFrame.CopyConvertedFrameDataToIntPtr(
+                                    this.bitmap.BackBuffer,
+                                    (uint)( colorFrameDescription.Width * colorFrameDescription.Height * 4 ),
+                                    ColorImageFormat.Bgra);
+                                this.bitmap.AddDirtyRect(new Int32Rect(0, 0, this.bitmap.PixelWidth, this.bitmap.PixelHeight));
                             }
+                            this.bitmap.Unlock();
                         }
-                        this.bitmap.AddDirtyRect(new Int32Rect(0, 0, this.bitmap.PixelWidth, this.bitmap.PixelHeight));
                     }
                 }
             }
-            finally
+            else
             {
-                if (isBitmapLocked)
+                DepthFrame depthFrame = null;
+                ColorFrame colorFrame = null;
+                BodyIndexFrame bodyIndexFrame = null;
+                bool isBitmapLocked = false;
+                if (multiSourceFrame == null)
                 {
-                    this.bitmap.Unlock();
+                    return;
                 }
-                if (depthFrame != null)
+                try
                 {
+                    depthFrame = multiSourceFrame.DepthFrameReference.AcquireFrame();
+                    colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame();
+                    bodyIndexFrame = multiSourceFrame.BodyIndexFrameReference.AcquireFrame();
+                    if (( depthFrame == null ) || ( colorFrame == null ) || ( bodyIndexFrame == null ))
+                    {
+                        return;
+                    }
+                    FrameDescription depthFrameDescription = depthFrame.FrameDescription;
+                    Int32 depthWidth = depthFrameDescription.Width;
+                    Int32 depthHeight = depthFrameDescription.Height;
+                    using (KinectBuffer depthFrameData = depthFrame.LockImageBuffer())
+                    {
+                        sensor.CoordinateMapper.MapColorFrameToDepthSpaceUsingIntPtr(
+                            depthFrameData.UnderlyingBuffer,
+                            depthFrameData.Size,
+                            this.colorMappedToDepthPoints);
+                    }
                     depthFrame.Dispose();
-                }
-                if (colorFrame != null)
-                {
+                    depthFrame = null;
+                    this.bitmap.Lock();
+                    isBitmapLocked = true;
+                    colorFrame.CopyConvertedFrameDataToIntPtr(this.bitmap.BackBuffer, this.bitmapBackBufferSize, ColorImageFormat.Bgra);
                     colorFrame.Dispose();
+                    colorFrame = null;
+                    using (KinectBuffer bodyIndexData = bodyIndexFrame.LockImageBuffer())
+                    {
+                        unsafe
+                        {
+                            byte* bodyIndexDataPointer = (byte*)bodyIndexData.UnderlyingBuffer;
+                            int colorMappedToDepthPointCount = this.colorMappedToDepthPoints.Length;
+                            fixed (DepthSpacePoint* colorMappedToDepthPointsPointer = this.colorMappedToDepthPoints)
+                            {
+                                uint* bitmapPixelsPointer = (uint*)this.bitmap.BackBuffer;
+                                for (int colorIndex = 0; colorIndex < colorMappedToDepthPointCount; ++colorIndex)
+                                {
+                                    float colorMappedToDepthX = colorMappedToDepthPointsPointer[colorIndex].X;
+                                    float colorMappedToDepthY = colorMappedToDepthPointsPointer[colorIndex].Y;
+                                    if (!float.IsNegativeInfinity(colorMappedToDepthX) &&
+                                        !float.IsNegativeInfinity(colorMappedToDepthY))
+                                    {
+                                        int depthX = (int)( colorMappedToDepthX + 0.5f );
+                                        int depthY = (int)( colorMappedToDepthY + 0.5f );
+                                        if (( depthX >= 0 ) && ( depthX < depthWidth ) && ( depthY >= 0 ) && ( depthY < depthHeight ))
+                                        {
+                                            int depthIndex = ( depthY * depthWidth ) + depthX;
+                                            if (bodyIndexDataPointer[depthIndex] != 0xff)
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                    bitmapPixelsPointer[colorIndex] = 0;
+                                }
+                            }
+                            this.bitmap.AddDirtyRect(new Int32Rect(0, 0, this.bitmap.PixelWidth, this.bitmap.PixelHeight));
+                        }
+                    }
                 }
-                if (bodyIndexFrame != null)
+                finally
                 {
-                    bodyIndexFrame.Dispose();
+                    if (isBitmapLocked)
+                    {
+                        this.bitmap.Unlock();
+                    }
+                    if (depthFrame != null)
+                    {
+                        depthFrame.Dispose();
+                    }
+                    if (colorFrame != null)
+                    {
+                        colorFrame.Dispose();
+                    }
+                    if (bodyIndexFrame != null)
+                    {
+                        bodyIndexFrame.Dispose();
+                    }
                 }
             }
         }
@@ -302,6 +328,8 @@ namespace KinectAirBand.Pages
 
         private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs args)
         {
+            if (bodyTrackingArray == null)
+                return;
             if (bodyTrackingArray[0] == null && bodyTrackingArray[1] == null)
                 return;
 
@@ -313,8 +341,13 @@ namespace KinectAirBand.Pages
                 lastTime = point.Properties.BodyTimeCounter;
             }
 
-            Int32 bodyIndex = (bodyTrackingArray[1] != null && bodyTrackingArray[1].TrackingId == trackingId) ? 1 : 0;
-            BodyIndex.Content = "IDX: " + bodyIndex;
+            Int32 bodyIndex = ( bodyTrackingArray[1] != null && bodyTrackingArray[1].TrackingId == trackingId ) ? 1 : 0;
+            /*BodyIndex.Content = "IDX: " + bodyIndex;
+            TrackingBody0.Content = "TB0: " + bodyTrackingArray[0].TrackingId;
+            if (bodyTrackingArray[1] != null)
+                TrackingBody1.Content = "TB1: " + bodyTrackingArray[1].TrackingId;
+            TrackingId.Content = "TBID: " + trackingId;
+            Tracked.Content = point.Properties.IsEngaged;*/
             Point screenRelative = new Point(
             point.Position.X * Canvas_Pointer.ActualWidth,
             point.Position.Y * Canvas_Pointer.ActualHeight);
@@ -324,11 +357,11 @@ namespace KinectAirBand.Pages
                     PointerFirst.Visibility = System.Windows.Visibility.Visible;
                 else
                     PointerSecond.Visibility = System.Windows.Visibility.Visible;
+                RenderPointer(point.Position, Canvas_Pointer, bodyIndex);
                 performLassoClick(screenRelative, trackingId, Button_RandomEffect);
                 performLassoClick(screenRelative, trackingId, Button_Piano);
                 performLassoClick(screenRelative, trackingId, Button_Guitar);
                 performLassoClick(screenRelative, trackingId, Button_Clear);
-                RenderPointer(point.Position, Canvas_Pointer, bodyIndex);
             }
             else
             {
@@ -341,8 +374,10 @@ namespace KinectAirBand.Pages
 
         private void RenderPointer (PointF position, Canvas canvas, Int32 bodyIndex)
         {
-            Canvas.SetLeft(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.X * canvas.ActualWidth);
-            Canvas.SetTop(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.Y * canvas.ActualHeight);
+            Double y = position.Y * canvas.ActualHeight;
+            y = ( y > 720 ) ? 720 : y;
+            Canvas.SetLeft(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.X * canvas.ActualWidth - 25);
+            Canvas.SetTop(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.Y * canvas.ActualHeight - 35);
         }
 
         private void performLassoClick (Point relative, UInt64 trackingId, UIElement relativeTo)
@@ -424,6 +459,9 @@ namespace KinectAirBand.Pages
                     }
                     break;
                 case "Button_Back":
+                    Grid_BackPianoControls.Children.Clear();
+                    Grid_PianoControls.Children.Clear();
+                    Grid_GuitarControls.Children.Clear();
                     Dispose(true);
                     StoryboardHandler.InitHitStoryBoard(this, "ExitStoryboard", () => Switcher.Switch("MainMenu"));
                     break;

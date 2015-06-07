@@ -8,67 +8,68 @@
     <UserControl.Resources>
         <ResourceDictionary Source="../ResDictionary/PlayingRes.xaml"/>
     </UserControl.Resources>
-    <Canvas Name="Region">
-        <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Viewbox Grid.RowSpan="4">
-                <Grid Width="1366" Height="768">
-                    <Image Source="{Binding Background, Mode=OneWay}"/>
-                    <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768"/>
-                    <Image Name="Image_BackgroundRemoval" Stretch="Fill"/>
-                    <Grid Name="Grid_GuitarControls" MaxWidth="1366" MaxHeight="768"/>
-                </Grid>
-            </Viewbox>
+    <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Viewbox Grid.RowSpan="4">
+            <Grid Width="1366" Height="768">
+                <Image Source="{Binding Background, Mode=OneWay}"/>
+                <Grid Name="Grid_BackPianoControls" MaxWidth="1366" MaxHeight="768"/>
+                <Image Name="Image_BackgroundRemoval" Stretch="Fill"/>
+                <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768" Opacity="0.5"/>
+                <Grid Name="Grid_GuitarControls" MaxWidth="1366" MaxHeight="768"/>
+            </Grid>
+        </Viewbox>
             
-            <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
-                </Button.Background>
-                <Button.RenderTransform>
-                    <TranslateTransform X="200"/>
-                </Button.RenderTransform>
-            </Button>
-            <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
-                </Button.Background>
-                <Button.RenderTransform>
-                    <TranslateTransform X="200"/>
-                </Button.RenderTransform>
-            </Button>
-            <Button Name="Button_Clear" Grid.Row="2" Content="移除樂器" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/Clear.png"/>
-                </Button.Background>
-                <Button.RenderTransform>
-                    <TranslateTransform X="200"/>
-                </Button.RenderTransform>
-            </Button>
-            <Button Name="Button_RandomEffect" Grid.Row="3" Content="演奏結果" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
-                <Button.Background>
-                    <ImageBrush ImageSource="/KinectAirBand;component/Resources/RandomEffect.png"/>
-                </Button.Background>
-                <Button.RenderTransform>
-                    <TranslateTransform X="200"/>
-                </Button.RenderTransform>
-            </Button>
-            <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
-            <Canvas Name="Canvas_Pointer" Grid.RowSpan="4">
-                <Image Name="PointerFirst" Source="/KinectAirBand;component/Resources/PointerFirst.png" Width="32" Height="32" Visibility="Collapsed"/>
-                <Image Name="PointerSecond" Source="/KinectAirBand;component/Resources/PointerSecond.png" Width="32" Height="32" Visibility="Collapsed"/>
-            </Canvas>
-            <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-            <Image Name="Image_Effect" Grid.RowSpan="4" Stretch="UniformToFill" Width="1366" Height="768" IsHitTestVisible="False" Opacity="0"/>
-            <StackPanel>
-                <Label Name="BodyIndex" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
-                <Label Name="TrackingBody0" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
-                <Label Name="TrackingBody1" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Grid>
-    </Canvas>
+        <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Clear" Grid.Row="2" Content="移除樂器" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Clear.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_RandomEffect" Grid.Row="3" Content="演奏結果" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/RandomEffect.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+        <Canvas Name="Canvas_Pointer" Grid.RowSpan="4">
+            <Image Name="PointerFirst" Source="/KinectAirBand;component/Resources/PointerFirst.png" Width="50" Height="50" Visibility="Collapsed"/>
+            <Image Name="PointerSecond" Source="/KinectAirBand;component/Resources/PointerSecond.png" Width="50" Height="50" Visibility="Collapsed"/>
+        </Canvas>
+        <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Image Name="Image_Effect" Grid.RowSpan="4" Stretch="UniformToFill" Width="1366" Height="768" IsHitTestVisible="False" Opacity="0"/>
+        <StackPanel Grid.RowSpan="2">
+            <Label Name="BodyIndex" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
+            <Label Name="TrackingBody0" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
+            <Label Name="TrackingBody1" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
+            <Label Name="TrackingId" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
+            <Label Name="Tracked" FontSize="50" Foreground="Red" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

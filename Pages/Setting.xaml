@@ -30,7 +30,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1">
             <ToggleButton IsChecked="{Binding MainVolumeMute, Mode=TwoWay}"/>
             <Slider Value="{Binding MainVolume, Converter={StaticResource VolumeConverter}, Mode=TwoWay}"/>
-            <ToggleButton IsChecked="{Binding FullScreen, Mode=TwoWay}"/>
+            <ToggleButton IsChecked="{Binding FullScreen, Mode=TwoWay}" IsEnabled="{Binding FullScreenToggleButtonEnabled, Mode=OneWay}"/>
             <ToggleButton IsChecked="{Binding BackgroundRemoval, Mode=TwoWay}"/>
             <c:ImageListControl Height="111" Margin="2,2,20,2"/>
         </StackPanel>

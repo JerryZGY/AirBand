@@ -72,6 +72,20 @@ namespace KinectAirBand
             }
         }
 
+        private Boolean fullScreenToggleButtonEnabled = true;
+        public Boolean FullScreenToggleButtonEnabled
+        {
+            get
+            {
+                return fullScreenToggleButtonEnabled;
+            }
+            set
+            {
+                fullScreenToggleButtonEnabled = value;
+                OnPropertyChanged("FullScreenToggleButtonEnabled");
+            }
+        }
+
         private Boolean backgroundRemoval = false;
         public Boolean BackgroundRemoval
         {

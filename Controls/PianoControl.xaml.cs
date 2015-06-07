@@ -66,7 +66,7 @@ namespace KinectAirBand.Controls
             {
                 Rectangle key = new Rectangle()
                 {
-                    Fill = Brushes.White,
+                    Fill = Brushes.Black,
                     Width = length / 5,
                     Height = length,
                     Tag = false
@@ -78,12 +78,14 @@ namespace KinectAirBand.Controls
                     Canvas.SetLeft(key, x - length * 0.2);
                     key.RenderTransform = new RotateTransform(initialValue + intervalValue * i);
                     key.RenderTransformOrigin = new Point(1, 1);
+                    Canvas.SetZIndex(key, i);
                 }
                 else
                 {
                     Canvas.SetLeft(key, x - length * 0.03);
                     key.RenderTransform = new RotateTransform(initialValue + intervalValue * ( i + 1 ));
                     key.RenderTransformOrigin = new Point(0, 1);
+                    Canvas.SetZIndex(key, Math.Abs(i - 4 - 3));
                 }
                 Canvas_Main.Children.Add(key);
             }
@@ -307,7 +309,7 @@ namespace KinectAirBand.Controls
         private void releasePianoKey (Int32 index)
         {
             outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, keysMap[index], 0));
-            pianoKeys[index].Fill = Brushes.White;
+            pianoKeys[index].Fill = Brushes.Black;
             pianoKeys[index].Tag = false;
         }
     }
