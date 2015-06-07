@@ -31,15 +31,21 @@ namespace KinectAirBand.Controls
         //吉他主體
         private Rectangle guitarChord;
         private List<Rectangle> guitarBoxes = new List<Rectangle>();
-        private Int32[] keysMap = 
+        private Int32[,] keysMap = 
         {
-            60, 62, 64, 65, 67, 69
+            {84, 72, 60, 48, 36, 24},
+            {86, 74, 62, 50, 38, 26},
+            {88, 76, 64, 52, 40, 28},
+            {89, 77, 65, 53, 41, 30},
+            {91, 79, 67, 55, 43, 31},
+            {93, 81, 69, 57, 45, 33},
+            {95, 83, 71, 59, 47, 35},
         };
         private Rectangle hand;
         //吉他釋放計時器
-        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
+        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 500 };
 
-        public GuitarControl (OutputDevice outDevice, BodyViewModel body)
+        public GuitarControl (OutputDevice outDevice, BodyViewModel body, Grid grid)
         {
             InitializeComponent();
 
@@ -48,17 +54,16 @@ namespace KinectAirBand.Controls
             outDevice.Send(new ChannelMessage(ChannelCommand.ProgramChange, 1, 25, 0));
 
             createGuitar();
+            this.Tag = grid;
+            releaseTimer.Enabled = false;
 
             hand = new Rectangle()
             {
                 Fill = Brushes.Blue,
-                Width = 10,
-                Height = 10
+                Width = 20,
+                Height = 20
             };
             Canvas_Main.Children.Add(hand);
-
-
-            releaseTimer.Enabled = false;
         }
 
         private void createGuitar ()
@@ -66,7 +71,7 @@ namespace KinectAirBand.Controls
             guitarChord = new Rectangle()
             {
                 Fill = Brushes.White,
-                Width = 40,
+                Width = 20,
                 Height = Math.Abs(body.SpinePoint.X - body.LeftVariabPoint.X),
                 RenderTransformOrigin = new Point(0.5, 1)
             };
@@ -80,7 +85,8 @@ namespace KinectAirBand.Controls
                 Rectangle box = new Rectangle()
                 {
                     Width = 100,
-                    Height = 10
+                    Height = 10,
+                    Tag = false
                 };
                 switch (i)
                 {
@@ -104,8 +110,8 @@ namespace KinectAirBand.Controls
                         break;
                 }
                 guitarBoxes.Add(box);
-                Canvas.SetTop(box, ( body.SpinePoint.Y + body.CenterPoint.Y ) / 2 + i * box.Height * 2);
-                Canvas.SetLeft(box, body.SpinePoint.X - box.Width / 2);
+                Canvas.SetTop(box, ( body.SpinePoint.Y + body.CenterPoint.Y ) / 4 + i * box.Height * 8);
+                Canvas.SetLeft(box, body.SpinePoint.X - box.Width / 2 + 100);
                 Canvas.SetZIndex(box, 1);
                 Canvas_Main.Children.Add(box);
             }
@@ -154,19 +160,58 @@ namespace KinectAirBand.Controls
                 body.CenterPoint.X, body.CenterPoint.Y,
                 body.LocatePoint.X, body.LocatePoint.Y,
                 body.LeftVariabPoint.X, body.LeftVariabPoint.Y);
-            guitarChord.RenderTransform = new RotateTransform(-angle);
-            guitarChord.Height = Math.Abs(body.SpinePoint.X - body.LeftVariabPoint.X) + 80;
+            guitarChord.RenderTransform = new RotateTransform(-90);
+            guitarChord.Height = Math.Abs(body.SpinePoint.X - body.LeftVariabPoint.X);
             Canvas.SetBottom(guitarChord, 768 - ( body.SpinePoint.Y + body.CenterPoint.Y ) / 2);
             Canvas.SetLeft(guitarChord, body.SpinePoint.X - guitarChord.Width / 2);
+
+            var chordPart = 60;
+            Int32 index1 = 0;
+
+            if (guitarChord.Height <= chordPart)
+            {
+                guitarChord.Fill = Brushes.Red;
+                index1 = 0;
+            }
+            else if (guitarChord.Height > chordPart * 1 && guitarChord.Height <= chordPart * 2)
+            {
+                guitarChord.Fill = Brushes.Orange;
+                index1 = 1;
+            }
+            else if (guitarChord.Height > chordPart * 2 && guitarChord.Height <= chordPart * 3)
+            {
+                guitarChord.Fill = Brushes.Yellow;
+                index1 = 2;
+            }
+            else if (guitarChord.Height > chordPart * 3 && guitarChord.Height <= chordPart * 4)
+            {
+                guitarChord.Fill = Brushes.Green;
+                index1 = 3;
+            }
+            else if (guitarChord.Height > chordPart * 4 && guitarChord.Height <= chordPart * 5)
+            {
+                guitarChord.Fill = Brushes.Blue;
+                index1 = 4;
+            }
+            else if (guitarChord.Height > chordPart * 5 && guitarChord.Height <= chordPart * 6)
+            {
+                guitarChord.Fill = Brushes.Indigo;
+                index1 = 5;
+            }
+            else if (guitarChord.Height > chordPart * 6)
+            {
+                guitarChord.Fill = Brushes.Purple;
+                index1 = 6;
+            }
 
             foreach (var item in guitarBoxes.Select((value, i) => new { i, value }))
             {
                 Rectangle box = item.value;
-                //box.Width = length / 5;
+                box.Width = 100 + item.i * 30;
                 //box.Height = length;
-                Canvas.SetTop(box, ( body.SpinePoint.Y + body.CenterPoint.Y ) / 2.3 + item.i * box.Height * 2);
-                Canvas.SetLeft(box, body.SpinePoint.X - box.Width / 2);
-                press(GetBounds(box, Canvas_Main), GetBounds(hand, Canvas_Main), item.i);
+                Canvas.SetTop(box, ( body.SpinePoint.Y + body.CenterPoint.Y ) / 4 + item.i * box.Height * 8);
+                Canvas.SetLeft(box, body.SpinePoint.X - box.Width / 2 + 100);
+                pluckedGuitarBox(GetBounds(box, Canvas_Main), GetBounds(hand, Canvas_Main), index1, item.i);
             }
 
             Canvas.SetTop(hand, body.RightVariabPoint.Y);
@@ -179,10 +224,27 @@ namespace KinectAirBand.Controls
             return transform.TransformBounds(new Rect(0, 0, of.ActualWidth, of.ActualHeight));
         }
 
-        private void press (Rect box, Rect rightHand, Int32 index)
+        private void pluckedGuitarBox (Rect box, Rect rightHand, Int32 index1, Int32 index2)
         {
+            if ((Boolean)guitarBoxes[index2].Tag)
+                return;
+
             if (box.IntersectsWith(rightHand))
-                outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 1, keysMap[index], 127));
+            {
+                outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 1, keysMap[index1, index2], 127));
+                releaseTimer.Enabled = true;
+                releaseTimer.Tick += (s, e) =>
+                {
+                    releaseGuitarBox(index2);
+                    releaseTimer.Enabled = false;
+                };
+                guitarBoxes[index2].Tag = true;
+            }
+        }
+
+        private void releaseGuitarBox (Int32 index)
+        {
+            guitarBoxes[index].Tag = false;
         }
 
         /*public void PressPianoKey (Int32 index)

@@ -232,8 +232,16 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\PointerFirst.png" />
+    <Resource Include="Resources\PointerSecond.png" />
+    <Resource Include="Resources\RandomEffect.png" />
+    <Resource Include="Resources\BooEffect.png" />
+    <Resource Include="Resources\CheerEffect.png" />
+    <Resource Include="Resources\Boo.wav" />
+    <Resource Include="Resources\Cheer.wav" />
+    <Resource Include="Resources\Boo.png" />
+    <Resource Include="Resources\Cheer.png" />
     <Resource Include="Resources\Clear.png" />
-    <Resource Include="Resources\Target.png" />
     <Resource Include="Resources\AirBand.jpg" />
     <Content Include="Resources\Background\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

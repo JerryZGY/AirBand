@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace KinectAirBand.Pages
         private KinectSensor sensor;
         private OutputDevice outDevice;
         private UInt32 bitmapBackBufferSize;
+        private Body[] bodyTrackingArray;
         private List<BodyViewModel> bodyList;
         private WriteableBitmap bitmap = null;
         private MultiSourceFrameReader reader;
@@ -99,6 +101,7 @@ namespace KinectAirBand.Pages
             sensor.Open();
             reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
             colorFrameDesc = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
+            bodyTrackingArray = new Body[2];
             bodyList = new List<BodyViewModel>();
 
             if (outDevice == null)
@@ -135,17 +138,26 @@ namespace KinectAirBand.Pages
             {
                 if (frame != null)
                 {
-                    Canvas_Test.Children.Clear();
                     bodies = new Body[frame.BodyFrameSource.BodyCount];
 
                     frame.GetAndRefreshBodyData(bodies);
 
-                    foreach (var item in bodies.Select((value, i) => new {i ,value}))
+                    if (bodyTrackingArray[0] != null)
+                        bodyTrackingArray[0] = null;
+                    if (bodyTrackingArray[1] != null)
+                        bodyTrackingArray[1] = null;
+
+                    foreach (var item in bodies.Select((value, i) => new { i, value }))
                     {
                         BodyViewModel body = bodyList[item.i];
                         body.SetBodyData(item.value);
                         if (item.value.IsTracked)
                         {
+                            if (bodyTrackingArray[0] == null)
+                                bodyTrackingArray[0] = item.value;
+                            else if (bodyTrackingArray[0].TrackingId != item.value.TrackingId)
+                                bodyTrackingArray[1] = item.value;
+
                             //2維中心點
                             Point centerPoint = coordinateMap(item.value.Joints[JointType.SpineMid].Position);
                             //2維下心點
@@ -160,10 +172,19 @@ namespace KinectAirBand.Pages
                             Point shouldPoint = coordinateMap(item.value.Joints[JointType.SpineShoulder].Position);
                             //左手狀態
                             HandState leftHandState = item.value.HandLeftState;
+                            //左手狀態程度
+                            TrackingConfidence leftHandConfidence = item.value.HandLeftConfidence;
                             //右手狀態
                             HandState rightHandState = item.value.HandRightState;
+                            //右手狀態程度
+                            TrackingConfidence rightHandConfidence = item.value.HandRightConfidence;
                             //更新體感數據
-                            body.UpdateBodyData(centerPoint, spinePoint, locatePoint, leftVariabPoint, rightVariabPoint, shouldPoint, leftHandState, rightHandState);
+                            body.UpdateBodyData(
+                                centerPoint, spinePoint,
+                                locatePoint, leftVariabPoint,
+                                rightVariabPoint, shouldPoint,
+                                leftHandState, leftHandConfidence,
+                                rightHandState, rightHandConfidence);
                             if (body.Instrument != null)
                                 body.UpdateInstrument();
 
@@ -174,7 +195,8 @@ namespace KinectAirBand.Pages
                         {
                             if (body.Instrument != null)
                             {
-                                body.ClearInstrument(Grid_PianoControls);
+                                ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
+                                body.ClearInstrument();
                             }
                         }
                     }
@@ -280,59 +302,47 @@ namespace KinectAirBand.Pages
 
         private void kinectCoreWindow_PointerMoved (object sender, KinectPointerEventArgs args)
         {
+            if (bodyTrackingArray[0] == null && bodyTrackingArray[1] == null)
+                return;
+
             KinectPointerPoint point = args.CurrentPoint;
             UInt64 trackingId = point.Properties.BodyTrackingId;
+
             if (lastTime == TimeSpan.Zero || lastTime != point.Properties.BodyTimeCounter)
             {
                 lastTime = point.Properties.BodyTimeCounter;
             }
 
+            Int32 bodyIndex = (bodyTrackingArray[1] != null && bodyTrackingArray[1].TrackingId == trackingId) ? 1 : 0;
+            BodyIndex.Content = "IDX: " + bodyIndex;
             Point screenRelative = new Point(
             point.Position.X * Canvas_Pointer.ActualWidth,
             point.Position.Y * Canvas_Pointer.ActualHeight);
-            RenderPointer(point.Position, Canvas_Pointer, point.Properties.HandType);
             if (point.Properties.IsEngaged)
             {
+                if (bodyIndex == 0)
+                    PointerFirst.Visibility = System.Windows.Visibility.Visible;
+                else
+                    PointerSecond.Visibility = System.Windows.Visibility.Visible;
+                performLassoClick(screenRelative, trackingId, Button_RandomEffect);
                 performLassoClick(screenRelative, trackingId, Button_Piano);
                 performLassoClick(screenRelative, trackingId, Button_Guitar);
                 performLassoClick(screenRelative, trackingId, Button_Clear);
+                RenderPointer(point.Position, Canvas_Pointer, bodyIndex);
+            }
+            else
+            {
+                if (bodyIndex == 0)
+                    PointerFirst.Visibility = System.Windows.Visibility.Collapsed;
+                else
+                    PointerSecond.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
-        private void RenderPointer (PointF position, Canvas canvas, HandType handType)
+        private void RenderPointer (PointF position, Canvas canvas, Int32 bodyIndex)
         {
-            Canvas.SetLeft(Pointer, position.X * canvas.ActualWidth);
-            Canvas.SetTop(Pointer, position.Y * canvas.ActualHeight);
-            /*StackPanel cursor = null;
-            if (cursor == null)
-            {
-                cursor = new StackPanel();
-                canvas.Children.Add(cursor);
-            }
-
-            cursor.Children.Clear();
-
-            StackPanel sp = new StackPanel()
-            {
-                Margin = new Thickness(-5, -5, 0, 0),
-                Orientation = Orientation.Horizontal
-            };
-
-            Ellipse cursorEllipse = new Ellipse()
-            {
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Height = dotHeight,
-                Width = dotWidth,
-                Margin = new Thickness(5)
-            };
-
-            sp.Children.Add(cursorEllipse);
-            cursor.Children.Add(sp);
-            cursor.Children.Add(new TextBlock() { Text = "HandType: " + handType });
-
-            cursorEllipse.Fill = ( handType == HandType.LEFT ) ? Brushes.Green : Brushes.Yellow;
-            Canvas.SetLeft(cursor, position.X * canvas.ActualWidth - dotWidth / 2);
-            Canvas.SetTop(cursor, position.Y * canvas.ActualHeight - dotHeight / 2);*/
+            Canvas.SetLeft(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.X * canvas.ActualWidth);
+            Canvas.SetTop(( bodyIndex == 0 ) ? PointerFirst : PointerSecond, position.Y * canvas.ActualHeight);
         }
 
         private void performLassoClick (Point relative, UInt64 trackingId, UIElement relativeTo)
@@ -371,26 +381,46 @@ namespace KinectAirBand.Pages
 
             switch (button.Name)
             {
-                case "Button_Piano":
-                    if (body != null && (body.Instrument == null || body.Instrument.GetType() != typeof(PianoControl)))
+                case "Button_RandomEffect":
+                    Button_RandomEffect.IsHitTestVisible = false;
+                    if (new Random().Next(4) < 3)
                     {
-                        body.ClearInstrument(Grid_GuitarControls);
-                        body.SetInstrument(new PianoControl(outDevice, body));
+                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/CheerEffect.png", UriKind.Relative));
+                        StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_RandomEffect.IsHitTestVisible = true);
+                    }
+                    else
+                    {
+                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/BooEffect.png", UriKind.Relative));
+                        StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_RandomEffect.IsHitTestVisible = true);
+                    }
+                    break;
+                case "Button_Piano":
+                    if (body != null && ( body.Instrument == null || body.Instrument.GetType() != typeof(PianoControl) ))
+                    {
+                        if (body.Instrument != null)
+                            ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
+                        body.ClearInstrument();
+                        body.SetInstrument(new PianoControl(outDevice, body, Grid_PianoControls));
                         Grid_PianoControls.Children.Add(body.Instrument);
                     }
                     break;
                 case "Button_Guitar":
                     if (body != null && ( body.Instrument == null || body.Instrument.GetType() != typeof(GuitarControl) ))
                     {
-                        body.ClearInstrument(Grid_PianoControls);
-                        body.SetInstrument(new GuitarControl(outDevice, body));
+                        if (body.Instrument != null)
+                            ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
+                        body.ClearInstrument();
+                        body.SetInstrument(new GuitarControl(outDevice, body, Grid_GuitarControls));
                         Grid_GuitarControls.Children.Add(body.Instrument);
                     }
                     break;
                 case "Button_Clear":
                     if (body != null && body.Instrument != null)
                     {
-                        body.ClearInstrument(Grid_PianoControls);
+                        ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
+                        body.ClearInstrument();
                     }
                     break;
                 case "Button_Back":

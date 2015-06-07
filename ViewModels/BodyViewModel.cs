@@ -124,6 +124,24 @@ namespace KinectAirBand
             }
         }
 
+        private TrackingConfidence leftHandConfidence;
+        public TrackingConfidence LeftHandConfidence
+        {
+            get
+            {
+                return leftHandConfidence;
+            }
+        }
+
+        private TrackingConfidence rightHandConfidence;
+        public TrackingConfidence RightHandConfidence
+        {
+            get
+            {
+                return rightHandConfidence;
+            }
+        }
+
         private UserControl instrument;
         public UserControl Instrument
         {
@@ -143,7 +161,8 @@ namespace KinectAirBand
             Point centerPoint, Point spinePoint,
             Point locatePoint, Point leftVariabPoint,
             Point rightVariabPoint, Point shouldPoint,
-            HandState leftHandState, HandState rightHandState)
+            HandState leftHandState, TrackingConfidence leftHandConfidence,
+            HandState rightHandState, TrackingConfidence rightHandConfidence)
         {
             this.centerPoint = centerPoint;
             this.spinePoint = spinePoint;
@@ -152,7 +171,9 @@ namespace KinectAirBand
             this.rightVariabPoint = rightVariabPoint;
             this.shouldPoint = shouldPoint;
             this.leftHandState = leftHandState;
+            this.leftHandConfidence = leftHandConfidence;
             this.rightHandState = rightHandState;
+            this.rightHandConfidence = rightHandConfidence;
         }
 
         public void SetInstrument (UserControl instrument)
@@ -170,9 +191,8 @@ namespace KinectAirBand
             @switch[instrument.GetType()]();
         }
 
-        public void ClearInstrument (Grid canvas)
+        public void ClearInstrument ()
         {
-            canvas.Children.Remove(this.Instrument);
             this.instrument = null;
         }
     }

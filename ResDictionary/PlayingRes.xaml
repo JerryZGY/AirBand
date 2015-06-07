@@ -6,6 +6,11 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_RandomEffect" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -29,6 +34,7 @@
     </Storyboard>
     <Storyboard x:Key="ExitStoryboard">
         <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
+        <DoubleAnimation Storyboard.TargetName="Button_RandomEffect" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Clear" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
@@ -36,6 +42,30 @@
         <DoubleAnimation.EasingFunction>
             <QuarticEase EasingMode="EaseOut"/>
         </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="CheerEffectStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Image_Effect" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Image_Effect" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:3" BeginTime="0:0:2">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="BooEffectStoryboard">
+        <DoubleAnimation Storyboard.TargetName="Image_Effect" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Image_Effect" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1" BeginTime="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
     </Storyboard>
     <Style x:Key="InstrumentButton" TargetType="{x:Type Button}">
