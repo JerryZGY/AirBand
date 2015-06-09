@@ -113,5 +113,19 @@ namespace KinectAirBand
                 OnPropertyChanged("Background");
             }
         }
+
+        private BitmapImage mask = new BitmapImage(new Uri("/KinectAirBand;component/Resources/Mask/Mask00.png", UriKind.Relative));
+        public BitmapImage Mask
+        {
+            get
+            {
+                return mask;
+            }
+            set
+            {
+                mask = value;
+                OnPropertyChanged("Mask");
+            }
+        }
     }
 }

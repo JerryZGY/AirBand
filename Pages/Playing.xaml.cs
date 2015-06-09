@@ -43,6 +43,7 @@ namespace KinectAirBand.Pages
         private FrameDescription colorFrameDesc;
         private KinectCoreWindow kinectCoreWindow;
         private DepthSpacePoint[] colorMappedToDepthPoints = new DepthSpacePoint[1920 * 1080];
+        private System.Windows.Forms.Timer debounceTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
 
         public Playing (EnvironmentVariablesViewModel viewModel)
         {
@@ -75,8 +76,8 @@ namespace KinectAirBand.Pages
                 {
                     reader.Dispose();
                 }
-
-                kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
+                if (!Switcher.viewModel.BackgroundRemoval)
+                    kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
                 sensor = null;
                 bodies = null;
                 kinectCoreWindow = null;
@@ -101,6 +102,10 @@ namespace KinectAirBand.Pages
 
         private void Playing_Loaded (object sender, RoutedEventArgs e)
         {
+            if (!Switcher.viewModel.BackgroundRemoval)
+                Image_Background.Visibility = System.Windows.Visibility.Collapsed;
+            else
+                Image_Background.Visibility = System.Windows.Visibility.Visible;
             Grid_Main.Opacity = 0;
             kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
             KinectCoreWindow.SetKinectTwoPersonSystemEngagement();
@@ -110,23 +115,23 @@ namespace KinectAirBand.Pages
             colorFrameDesc = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             bodyTrackingArray = new Body[2];
             bodyList = new List<BodyViewModel>();
+            debounceTimer.Enabled = false;
 
             for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
             {
                 bodyList.Add(new BodyViewModel(i));
             }
 
-            reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
-            bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
-            bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
-            Image_BackgroundRemoval.Source = bitmap;
-            kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
-
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
             {
                 if (!isLoaded)
                 {
-
+                    reader.MultiSourceFrameArrived += reader_MultiSourceFrameArrived;
+                    bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
+                    bitmapBackBufferSize = (uint)( ( bitmap.BackBufferStride * ( bitmap.PixelHeight - 1 ) ) + ( bitmap.PixelWidth * 4 ) );
+                    Image_BackgroundRemoval.Source = bitmap;
+                    if (!Switcher.viewModel.BackgroundRemoval)
+                        kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
                 }
                 isLoaded = true;
             });
@@ -161,6 +166,8 @@ namespace KinectAirBand.Pages
 
                         if (item.value.IsTracked)
                         {
+                            //2維頭心點
+                            Point headPoint = coordinateMap(item.value.Joints[JointType.Head].Position);
                             //2維中心點
                             Point centerPoint = coordinateMap(item.value.Joints[JointType.SpineMid].Position);
                             //2維下心點
@@ -183,6 +190,7 @@ namespace KinectAirBand.Pages
                             TrackingConfidence rightHandConfidence = item.value.HandRightConfidence;
                             //更新體感數據
                             body.UpdateBodyData(
+                                headPoint,
                                 centerPoint, spinePoint,
                                 locatePoint, leftVariabPoint,
                                 rightVariabPoint, shouldPoint,
@@ -190,6 +198,8 @@ namespace KinectAirBand.Pages
                                 rightHandState, rightHandConfidence);
                             if (body.Instrument != null)
                                 body.UpdateInstrument();
+                            if (body.Mask != null)
+                                body.UpdateMask();
                         }
                         else
                         {
@@ -342,12 +352,6 @@ namespace KinectAirBand.Pages
             }
 
             Int32 bodyIndex = ( bodyTrackingArray[1] != null && bodyTrackingArray[1].TrackingId == trackingId ) ? 1 : 0;
-            /*BodyIndex.Content = "IDX: " + bodyIndex;
-            TrackingBody0.Content = "TB0: " + bodyTrackingArray[0].TrackingId;
-            if (bodyTrackingArray[1] != null)
-                TrackingBody1.Content = "TB1: " + bodyTrackingArray[1].TrackingId;
-            TrackingId.Content = "TBID: " + trackingId;
-            Tracked.Content = point.Properties.IsEngaged;*/
             Point screenRelative = new Point(
             point.Position.X * Canvas_Pointer.ActualWidth,
             point.Position.Y * Canvas_Pointer.ActualHeight);
@@ -358,9 +362,12 @@ namespace KinectAirBand.Pages
                 else
                     PointerSecond.Visibility = System.Windows.Visibility.Visible;
                 RenderPointer(point.Position, Canvas_Pointer, bodyIndex);
-                performLassoClick(screenRelative, trackingId, Button_RandomEffect);
+                performLassoClick(screenRelative, trackingId, Button_Cheer);
+                performLassoClick(screenRelative, trackingId, Button_Boo);
+                performLassoClick(screenRelative, trackingId, Button_Mask);
                 performLassoClick(screenRelative, trackingId, Button_Piano);
                 performLassoClick(screenRelative, trackingId, Button_Guitar);
+                performLassoClick(screenRelative, trackingId, Button_RandomEffect);
                 performLassoClick(screenRelative, trackingId, Button_Clear);
             }
             else
@@ -396,7 +403,7 @@ namespace KinectAirBand.Pages
                 if (insideElement && isLasso && clickedButton.IsHitTestVisible)
                 {
                     clickedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, trackingId));
-                    VisualStateManager.GoToState(clickedButton, "Pressed", true);
+                    //VisualStateManager.GoToState(clickedButton, "Pressed", true);
                 }
                 else if (!insideElement && !isLasso && clickedButton.IsHitTestVisible)
                 {
@@ -418,7 +425,7 @@ namespace KinectAirBand.Pages
             {
                 case "Button_RandomEffect":
                     Button_RandomEffect.IsHitTestVisible = false;
-                    if (new Random().Next(4) < 3)
+                    if (new Random().Next(2) < 1)
                     {
                         new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
                         Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/CheerEffect.png", UriKind.Relative));
@@ -430,6 +437,38 @@ namespace KinectAirBand.Pages
                         Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/BooEffect.png", UriKind.Relative));
                         StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_RandomEffect.IsHitTestVisible = true);
                     }
+                    break;
+                case "Button_Cheer":
+                    Button_Cheer.IsHitTestVisible = false;
+                    new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/CheerEffect.png", UriKind.Relative));
+                        StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_Cheer.IsHitTestVisible = true);
+                    break;
+                case "Button_Boo":
+                    Button_Boo.IsHitTestVisible = false;
+                    new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/BooEffect.png", UriKind.Relative));
+                        StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_Boo.IsHitTestVisible = true);
+                    break;
+                case "Button_Mask":
+                    Button_Mask.IsHitTestVisible = false;
+                    if (body != null && body.Mask == null)
+                    {
+                        body.SetMask(new Image() { Source = Switcher.viewModel.Mask });
+                        Canvas_Mask.Children.Add(body.Mask);
+                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Maji.wav", UriKind.Relative)).Stream).Play();
+                    }
+                    else if (body != null && body.Mask != null)
+                    {
+                        Canvas_Mask.Children.Remove(body.Mask);
+                        body.ClearMask();
+                    }
+                    debounceTimer.Enabled = true;
+                    debounceTimer.Tick += (s, ev) =>
+                    {
+                        debounceTimer.Enabled = false;
+                        Button_Mask.IsHitTestVisible = true;
+                    };
                     break;
                 case "Button_Piano":
                     if (body != null && ( body.Instrument == null || body.Instrument.GetType() != typeof(PianoControl) ))
@@ -459,6 +498,7 @@ namespace KinectAirBand.Pages
                     }
                     break;
                 case "Button_Back":
+                    Canvas_Mask.Children.Clear();
                     Grid_BackPianoControls.Children.Clear();
                     Grid_PianoControls.Children.Clear();
                     Grid_GuitarControls.Children.Clear();

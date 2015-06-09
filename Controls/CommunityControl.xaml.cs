@@ -56,6 +56,16 @@ namespace KinectAirBand.Controls
             set { SetValue(EnableProperty, value); }
         }
 
+        public Boolean TestEnable
+        {
+            get { return !Convert.ToBoolean(Enable); }
+        }
+
+        public Boolean TestDisable
+        {
+            get { return Convert.ToBoolean(Enable); }
+        }
+
         private String accessToken = null;
 
         private void toggleButton_Click (object sender, RoutedEventArgs e)

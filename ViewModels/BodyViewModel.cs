@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using KinectAirBand.Controls;
 using Microsoft.Kinect;
 
@@ -41,6 +42,15 @@ namespace KinectAirBand
             get
             {
                 return isTracked;
+            }
+        }
+
+        private Point headPoint;
+        public Point HeadPoint
+        {
+            get
+            {
+                return headPoint;
             }
         }
 
@@ -151,6 +161,15 @@ namespace KinectAirBand
             }
         }
 
+        private Image mask;
+        public Image Mask
+        {
+            get
+            {
+                return mask;
+            }
+        }
+
         public void SetBodyData (Body body)
         {
             isTracked = body.IsTracked;
@@ -158,12 +177,14 @@ namespace KinectAirBand
         }
 
         public void UpdateBodyData (
+            Point headPoint,
             Point centerPoint, Point spinePoint,
             Point locatePoint, Point leftVariabPoint,
             Point rightVariabPoint, Point shouldPoint,
             HandState leftHandState, TrackingConfidence leftHandConfidence,
             HandState rightHandState, TrackingConfidence rightHandConfidence)
         {
+            this.headPoint = headPoint;
             this.centerPoint = centerPoint;
             this.spinePoint = spinePoint;
             this.locatePoint = locatePoint;
@@ -194,6 +215,24 @@ namespace KinectAirBand
         public void ClearInstrument ()
         {
             this.instrument = null;
+        }
+
+        public void SetMask (Image mask)
+        {
+            this.mask = mask;
+        }
+
+        public void UpdateMask ()
+        {
+            this.mask.Width /= 2;
+            this.mask.Height /= 2;
+            Canvas.SetTop(this.mask, headPoint.Y - this.mask.ActualHeight / 2);
+            Canvas.SetLeft(this.mask, headPoint.X - this.mask.ActualWidth / 2);
+        }
+
+        public void ClearMask ()
+        {
+            this.mask = null;
         }
     }
 }

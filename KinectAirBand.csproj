@@ -92,6 +92,15 @@
     <Compile Include="Controls\GuitarControl.xaml.cs">
       <DependentUpon>GuitarControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Test1ListControl.xaml.cs">
+      <DependentUpon>Test1ListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TestListControl.xaml.cs">
+      <DependentUpon>TestListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MaskListControl.xaml.cs">
+      <DependentUpon>MaskListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PianoControl.xaml.cs">
       <DependentUpon>PianoControl.xaml</DependentUpon>
     </Compile>
@@ -102,8 +111,8 @@
     <Compile Include="Controls\CommunityControl.xaml.cs">
       <DependentUpon>CommunityControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ImageListControl.xaml.cs">
-      <DependentUpon>ImageListControl.xaml</DependentUpon>
+    <Compile Include="Controls\BackgroundListControl.xaml.cs">
+      <DependentUpon>BackgroundListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Mod.xaml.cs">
       <DependentUpon>Mod.xaml</DependentUpon>
@@ -133,7 +142,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ImageListControl.xaml">
+    <Page Include="Controls\Test1ListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TestListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MaskListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\BackgroundListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,6 +253,17 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Maji.wav" />
+    <Content Include="Resources\Background\BG07.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mask\Mask00.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Mask\Mask01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Resources\Mask.png" />
     <Resource Include="Resources\PointerFirst.png" />
     <Resource Include="Resources\PointerSecond.png" />
     <Resource Include="Resources\RandomEffect.png" />

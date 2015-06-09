@@ -8,7 +8,7 @@
     <UserControl.Resources>
         <ResourceDictionary Source="../ResDictionary/PlayingRes.xaml"/>
     </UserControl.Resources>
-    <Grid Name="Grid_Main" Opacity="1" Background="{Binding Background, Mode=OneWay}">
+    <Grid Name="Grid_Main" Opacity="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
@@ -17,14 +17,38 @@
         </Grid.RowDefinitions>
         <Viewbox Grid.RowSpan="4">
             <Grid Width="1366" Height="768">
-                <Image Source="{Binding Background, Mode=OneWay}"/>
+                <Image Name="Image_Background" Source="{Binding Background, Mode=OneWay}"/>
                 <Grid Name="Grid_BackPianoControls" MaxWidth="1366" MaxHeight="768"/>
                 <Image Name="Image_BackgroundRemoval" Stretch="Fill"/>
+                <Canvas Name="Canvas_Mask" MaxWidth="1366" MaxHeight="768"/>
                 <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768" Opacity="0.5"/>
                 <Grid Name="Grid_GuitarControls" MaxWidth="1366" MaxHeight="768"/>
             </Grid>
         </Viewbox>
-            
+        <Button Name="Button_Cheer" Content="歡呼" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Cheer.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Boo" Content="噓聲" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Boo.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Mask" Content="面具" Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Mask.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
         <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>

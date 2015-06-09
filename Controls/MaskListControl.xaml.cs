@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,18 +19,21 @@ namespace KinectAirBand.Controls
     /// <summary>
     /// Interaction logic for ImageListControl.xaml
     /// </summary>
-    public partial class ImageListControl : UserControl
+    public partial class MaskListControl : UserControl
     {
         private Int32 index = 0;
-        private String[] backgroundArray;
-        public ImageListControl ()
+        private String[] maskArray;
+        public MaskListControl ()
         {
             InitializeComponent();
         }
 
         private void UserControl_Loaded (object sender, RoutedEventArgs e)
         {
-            backgroundArray = System.IO.Directory.GetFileSystemEntries(@"Resources/Background", "*.jpg").ToArray();
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                maskArray = System.IO.Directory.GetFileSystemEntries(@"Resources/Mask", "*.png").ToArray();
+            }
         }
 
         private void Button_Click (object sender, RoutedEventArgs e)
@@ -38,19 +42,19 @@ namespace KinectAirBand.Controls
             switch (button.Name)
             {
                 case "Button_Prev":
-                    index = ( index > 0 ) ? ( index - 1 ) : ( backgroundArray.Count() - 1 );
+                    index = ( index > 0 ) ? ( index - 1 ) : ( maskArray.Count() - 1 );
                     break;
                 case "Button_Next":
-                    index = ( index < backgroundArray.Count() - 1 ) ? ( index + 1 ) : 0;
+                    index = ( index < maskArray.Count() - 1 ) ? ( index + 1 ) : 0;
                     break;
             }
             var src = new BitmapImage();
             src.BeginInit();
-            src.UriSource = new Uri(backgroundArray[index], UriKind.Relative);
+            src.UriSource = new Uri(maskArray[index], UriKind.Relative);
             src.CacheOption = BitmapCacheOption.OnLoad;
             src.EndInit();
             Image.Source = src;
-            Switcher.viewModel.Background = src;
+            Switcher.viewModel.Mask = src;
         }
     }
 }
