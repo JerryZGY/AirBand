@@ -21,7 +21,7 @@
             </Grid.RowDefinitions>
             <c:CommunityControl Grid.Row="0" Title="Facebook" Desc="連接您的Facebook帳號來分享演奏資訊" Url="/KinectAirBand;component/Resources/Facebook.jpg" Enable="True"/>
             <c:CommunityControl Grid.Row="1" Title="YouTube" Desc="連接您的YouTube帳號以進行實況轉播" Url="/KinectAirBand;component/Resources/YouTube.jpg" Enable="False"/>
-            <c:CommunityControl Grid.Row="2" Title="AirBand" Desc="連接AirBand平台使用我們的線上服務" Url="/KinectAirBand;component/Resources/AirBand.jpg" Enable="False"/>
+            <c:CommunityControl Grid.Row="2" Title="AirBand" Desc="連接AirBand平台使用我們的線上服務" Url="/KinectAirBand;component/Resources/AirBand.jpg" Enable="False"  IsHitTestVisible="False"/>
         </Grid>
         <Button Name="Button_Check" Grid.Row="4" Grid.ColumnSpan="2" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>

@@ -35,8 +35,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>KinectAirBand.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
@@ -254,6 +253,7 @@
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
     <Resource Include="Resources\Maji.wav" />
+    <Resource Include="KinectAirBand.ico" />
     <Content Include="Resources\Background\BG07.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

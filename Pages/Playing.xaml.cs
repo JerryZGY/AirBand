@@ -208,6 +208,11 @@ namespace KinectAirBand.Pages
                                 ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
                                 body.ClearInstrument();
                             }
+                            if (body.Mask != null)
+                            {
+                                Canvas_Mask.Children.Remove(body.Mask);
+                                body.ClearMask();
+                            }
                         }
                     }
                 }
