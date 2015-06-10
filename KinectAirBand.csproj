@@ -207,10 +207,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResDictionary\BRPlayingRes.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ResDictionary\SettingRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

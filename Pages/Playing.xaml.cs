@@ -30,7 +30,6 @@ namespace KinectAirBand.Pages
     {
         private Boolean disposed = false;
         private Boolean isLoaded = false;
-        private Boolean removed = false;
         private Body[] bodies;
         private TimeSpan lastTime;
         private KinectSensor sensor;
@@ -73,15 +72,19 @@ namespace KinectAirBand.Pages
             {
                 kinectCoreWindow.PointerMoved -= kinectCoreWindow_PointerMoved;
                 reader.MultiSourceFrameArrived -= reader_MultiSourceFrameArrived;
-                if (disposing && isLoaded)
+                if (disposing && isLoaded && reader != null)
                 {
                     reader.Dispose();
+                    reader = null;
                 }
-                sensor = null;
+                if (disposing && isLoaded && sensor != null)
+                {
+                    sensor.Close();
+                    sensor = null;
+                }
                 bodies = null;
                 kinectCoreWindow = null;
                 bodyTrackingArray = null;
-                reader = null;
                 colorFrameDesc = null;
                 bitmap = null;
                 Image_BackgroundRemoval.Source = null;

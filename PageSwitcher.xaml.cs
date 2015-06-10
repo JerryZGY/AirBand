@@ -11,11 +11,11 @@ namespace KinectAirBand
         {
             InitializeComponent();
             Switcher.pageSwitcher = this;
-            Switcher.Switch("MainMenu");
             Switcher.viewModel.FullScreen = !( SystemParameters.FullPrimaryScreenWidth > 1366 );
             Switcher.viewModel.FullScreenToggleButtonEnabled = ( SystemParameters.FullPrimaryScreenWidth > 1366 );
             Control.IsTabStopProperty.OverrideMetadata(typeof(Control), new FrameworkPropertyMetadata(false));
             this.InputBindings.Add(new InputBinding(RightClickCommand(), new MouseGesture(MouseAction.RightClick)));
+            Switcher.Switch("MainMenu");
         }
 
         private ICommand RightClickCommand ()

@@ -8,7 +8,6 @@ namespace KinectAirBand
         {
             ( Switcher.PageDictionary["Playing"] as KinectAirBand.Pages.Playing ).Dispose();
             ( Switcher.PageDictionary["Playing"] as KinectAirBand.Pages.Playing ).OutDeviceDispose();
-            ( Switcher.PageDictionary["BRPlaying"] as KinectAirBand.Pages.BRPlaying ).Dispose();
         }
     }
 }
