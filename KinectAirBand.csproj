@@ -116,6 +116,9 @@
     <Compile Include="Pages\Mod.xaml.cs">
       <DependentUpon>Mod.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\BRPlaying.xaml.cs">
+      <DependentUpon>BRPlaying.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Common\VolumeConverter.cs" />
@@ -184,6 +187,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\BRPlaying.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ResDictionary\CommonRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +206,10 @@
     <Page Include="Pages\Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResDictionary\BRPlayingRes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ResDictionary\SettingRes.xaml">
       <SubType>Designer</SubType>
