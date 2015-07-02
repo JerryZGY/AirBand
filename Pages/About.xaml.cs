@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace KinectAirBand.Pages
+namespace AirBand.Pages
 {
     /// <summary>
     /// About.xaml 的互動邏輯

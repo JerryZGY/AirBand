@@ -1,7 +1,7 @@
-﻿<UserControl x:Class="KinectAirBand.Pages.Playing"
+﻿<UserControl x:Class="AirBand.Pages.Playing"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:ctrl="clr-namespace:KinectAirBand.Controls"
+      xmlns:ctrl="clr-namespace:AirBand.Controls"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Loaded="Playing_Loaded">
@@ -27,7 +27,7 @@
         </Viewbox>
         <Button Name="Button_Cheer" Content="歡呼" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Cheer.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Cheer.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="-200"/>
@@ -35,7 +35,7 @@
         </Button>
         <Button Name="Button_Boo" Content="噓聲" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Boo.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Boo.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="-200"/>
@@ -43,7 +43,7 @@
         </Button>
         <Button Name="Button_Mask" Content="面具" Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Mask.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Mask.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="-200"/>
@@ -51,7 +51,7 @@
         </Button>
         <Button Name="Button_Piano" Content="鋼琴" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Piano.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Piano.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="200"/>
@@ -59,7 +59,7 @@
         </Button>
         <Button Name="Button_Guitar" Grid.Row="1" Content="吉他" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Guitar.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Guitar.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="200"/>
@@ -67,7 +67,7 @@
         </Button>
         <Button Name="Button_Clear" Grid.Row="2" Content="移除樂器" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/Clear.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Clear.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="200"/>
@@ -75,16 +75,16 @@
         </Button>
         <Button Name="Button_RandomEffect" Grid.Row="3" Content="演奏結果" HorizontalAlignment="Right" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
             <Button.Background>
-                <ImageBrush ImageSource="/KinectAirBand;component/Resources/RandomEffect.png"/>
+                <ImageBrush ImageSource="/AirBand;component/Resources/RandomEffect.png"/>
             </Button.Background>
             <Button.RenderTransform>
                 <TranslateTransform X="200"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+        <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/AirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
         <Canvas Name="Canvas_Pointer" Grid.RowSpan="4">
-            <Image Name="PointerFirst" Source="/KinectAirBand;component/Resources/PointerFirst.png" Width="50" Height="50" Visibility="Collapsed"/>
-            <Image Name="PointerSecond" Source="/KinectAirBand;component/Resources/PointerSecond.png" Width="50" Height="50" Visibility="Collapsed"/>
+            <Image Name="PointerFirst" Source="/AirBand;component/Resources/PointerFirst.png" Width="50" Height="50" Visibility="Collapsed"/>
+            <Image Name="PointerSecond" Source="/AirBand;component/Resources/PointerSecond.png" Width="50" Height="50" Visibility="Collapsed"/>
         </Canvas>
         <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
         <Image Name="Image_Effect" Grid.RowSpan="4" Stretch="UniformToFill" Width="1366" Height="768" IsHitTestVisible="False" Opacity="0"/>

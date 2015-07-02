@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="KinectAirBand.Pages.Community"
+﻿<UserControl x:Class="AirBand.Pages.Community"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:c="clr-namespace:KinectAirBand.Controls"
+             xmlns:c="clr-namespace:AirBand.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="600" Margin="0 34">
     <Grid Background="#99FFFFFF" Height="600" Width="600">
@@ -19,9 +19,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <c:CommunityControl Grid.Row="0" Title="Facebook" Desc="連接您的Facebook帳號來分享演奏資訊" Url="/KinectAirBand;component/Resources/Facebook.jpg" Enable="True"/>
-            <c:CommunityControl Grid.Row="1" Title="YouTube" Desc="連接您的YouTube帳號以進行實況轉播" Url="/KinectAirBand;component/Resources/YouTube.jpg" Enable="False"/>
-            <c:CommunityControl Grid.Row="2" Title="AirBand" Desc="連接AirBand平台使用我們的線上服務" Url="/KinectAirBand;component/Resources/AirBand.jpg" Enable="False"  IsHitTestVisible="False"/>
+            <c:CommunityControl Grid.Row="0" Title="Facebook" Desc="連接您的Facebook帳號來分享演奏資訊" Url="/AirBand;component/Resources/Facebook.jpg" Enable="True"/>
+            <c:CommunityControl Grid.Row="1" Title="YouTube" Desc="連接您的YouTube帳號以進行實況轉播" Url="/AirBand;component/Resources/YouTube.jpg" Enable="False"/>
+            <c:CommunityControl Grid.Row="2" Title="AirBand" Desc="連接AirBand平台使用我們的線上服務" Url="/AirBand;component/Resources/AirBand.jpg" Enable="False"  IsHitTestVisible="False"/>
         </Grid>
         <Button Name="Button_Check" Grid.Row="4" Grid.ColumnSpan="2" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>

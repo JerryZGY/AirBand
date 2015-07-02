@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public class EnvironmentVariablesViewModel : ViewModelBase
     {
@@ -100,7 +100,7 @@ namespace KinectAirBand
             }
         }
 
-        private BitmapImage background = new BitmapImage(new Uri("/KinectAirBand;component/Resources/Background.jpg", UriKind.Relative));
+        private BitmapImage background = new BitmapImage(new Uri("/AirBand;component/Resources/Background.jpg", UriKind.Relative));
         public BitmapImage Background
         {
             get
@@ -114,7 +114,7 @@ namespace KinectAirBand
             }
         }
 
-        private BitmapImage mask = new BitmapImage(new Uri("/KinectAirBand;component/Resources/Mask/Mask00.png", UriKind.Relative));
+        private BitmapImage mask = new BitmapImage(new Uri("/AirBand;component/Resources/Mask/Mask00.png", UriKind.Relative));
         public BitmapImage Mask
         {
             get

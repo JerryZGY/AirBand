@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public partial class PageSwitcher : Window
     {

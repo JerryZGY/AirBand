@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Controls;
-using KinectAirBand.Pages;
+using AirBand.Pages;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public static class Switcher
     {

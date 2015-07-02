@@ -15,13 +15,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using KinectAirBand.Controls;
+using AirBand.Controls;
 using Microsoft.Kinect;
 using Microsoft.Kinect.Input;
 using Microsoft.Kinect.Wpf.Controls;
 using Sanford.Multimedia.Midi;
 
-namespace KinectAirBand.Pages
+namespace AirBand.Pages
 {
     /// <summary>
     /// Interaction logic for StartPlaying.xaml
@@ -242,6 +242,8 @@ namespace KinectAirBand.Pages
                 return;
             if (bodyTrackingArray[0] == null && bodyTrackingArray[1] == null)
                 return;
+            if (args.CurrentPoint.Properties.HandType != HandType.RIGHT)
+                return;
 
             KinectPointerPoint point = args.CurrentPoint;
             UInt64 trackingId = point.Properties.BodyTrackingId;
@@ -327,27 +329,27 @@ namespace KinectAirBand.Pages
                     Button_RandomEffect.IsHitTestVisible = false;
                     if (new Random().Next(2) < 1)
                     {
-                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/CheerEffect.png", UriKind.Relative));
+                        new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/CheerEffect.png", UriKind.Relative));
                         StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_RandomEffect.IsHitTestVisible = true);
                     }
                     else
                     {
-                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/BooEffect.png", UriKind.Relative));
+                        new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/BooEffect.png", UriKind.Relative));
                         StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_RandomEffect.IsHitTestVisible = true);
                     }
                     break;
                 case "Button_Cheer":
                     Button_Cheer.IsHitTestVisible = false;
-                    new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/CheerEffect.png", UriKind.Relative));
+                    new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/CheerEffect.png", UriKind.Relative));
                         StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_Cheer.IsHitTestVisible = true);
                     break;
                 case "Button_Boo":
                     Button_Boo.IsHitTestVisible = false;
-                    new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/KinectAirBand;component/Resources/BooEffect.png", UriKind.Relative));
+                    new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
+                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/BooEffect.png", UriKind.Relative));
                         StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_Boo.IsHitTestVisible = true);
                     break;
                 case "Button_Mask":
@@ -356,7 +358,7 @@ namespace KinectAirBand.Pages
                     {
                         body.SetMask(new Image() { Source = Switcher.viewModel.Mask });
                         Canvas_Mask.Children.Add(body.Mask);
-                        new SoundPlayer(Application.GetResourceStream(new Uri("/KinectAirBand;component/Resources/Maji.wav", UriKind.Relative)).Stream).Play();
+                        //new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Maji.wav", UriKind.Relative)).Stream).Play();
                     }
                     else if (body != null && body.Mask != null)
                     {

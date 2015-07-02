@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Facebook;
 
-namespace KinectAirBand.Controls
+namespace AirBand.Controls
 {
     /// <summary>
     /// CommunityControl.xaml 的互動邏輯
@@ -89,7 +89,7 @@ namespace KinectAirBand.Controls
                     accessToken = null;
                     Title = "Facebook";
                     Desc = "連接您的Facebook帳號來分享演奏資訊";
-                    Url = "/KinectAirBand;component/Resources/Facebook.jpg";
+                    Url = "/AirBand;component/Resources/Facebook.jpg";
                 }
                 else
                     StoryboardHandler.InitStoryBoard(this, "ToggleOutStoryboard");

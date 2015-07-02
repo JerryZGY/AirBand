@@ -7,12 +7,13 @@
     <ProjectGuid>{8B534FCB-FD0A-45BD-B02B-0B99EA5E6CC7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KinectAirBand</RootNamespace>
-    <AssemblyName>KinectAirBand</AssemblyName>
+    <RootNamespace>AirBand</RootNamespace>
+    <AssemblyName>AirBand</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>發行\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,7 +26,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -35,7 +35,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>KinectAirBand.ico</ApplicationIcon>
+    <ApplicationIcon>AirBand.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
@@ -253,14 +253,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="AirBand.ico" />
     <Content Include="Assemblies\Sanford.Collections.dll" />
     <Content Include="Assemblies\Sanford.Multimedia.dll" />
     <Content Include="Assemblies\Sanford.Multimedia.Midi.WPF.dll" />
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Content Include="Resources\Mask\Mask02.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Maji.wav" />
-    <Resource Include="KinectAirBand.ico" />
     <Content Include="Resources\Background\BG07.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -310,7 +313,9 @@
     <Resource Include="Resources\Facebook.jpg" />
     <Resource Include="Resources\Check.png" />
     <Resource Include="Resources\Click.wav" />
-    <Resource Include="Resources\Title.m4a" />
+    <Content Include="Resources\Title.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Resources\Logo.png" />
     <Resource Include="Resources\Single.png" />
     <Resource Include="Resources\Ensemble.png" />

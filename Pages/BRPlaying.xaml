@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="KinectAirBand.Pages.BRPlaying"
+﻿<UserControl x:Class="AirBand.Pages.BRPlaying"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -63,7 +63,7 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                                <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                                <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                             </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -80,7 +80,7 @@
             <ImageBrush ImageSource="{Binding Background, Mode=OneWay}"/>
         </Grid.Background>
         <Image Name="Image_BackgroundRemoval" Stretch="UniformToFill"/>
-        <Button Name="Button_Back" Content="返回" Opacity="0" Click="Button_Click" Tag="/KinectAirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+        <Button Name="Button_Back" Content="返回" Opacity="0" Click="Button_Click" Tag="/AirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
         <TextBlock Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
     </Grid>
 </UserControl>

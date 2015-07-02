@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:c="clr-namespace:KinectAirBand">
+                    xmlns:c="clr-namespace:AirBand">
     <Style TargetType="{x:Type Label}">
         <Setter Property="Margin" Value="20,2,2,2"/>
         <Setter Property="Height" Value="40"/>

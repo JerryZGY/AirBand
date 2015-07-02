@@ -1,13 +1,13 @@
 ﻿using System.Windows;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public partial class App : Application
     {
         private void Application_Exit (object sender, ExitEventArgs e)
         {
-            ( Switcher.PageDictionary["Playing"] as KinectAirBand.Pages.Playing ).Dispose();
-            ( Switcher.PageDictionary["Playing"] as KinectAirBand.Pages.Playing ).OutDeviceDispose();
+            ( Switcher.PageDictionary["Playing"] as AirBand.Pages.Playing ).Dispose();
+            ( Switcher.PageDictionary["Playing"] as AirBand.Pages.Playing ).OutDeviceDispose();
         }
     }
 }

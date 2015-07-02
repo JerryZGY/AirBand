@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="KinectAirBand.Controls.TestListControl"
+﻿<UserControl x:Class="AirBand.Controls.TestListControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -25,7 +25,7 @@
                                 <Setter Property="Fill" TargetName="BackRectangle" Value="#E5FFFFFF"/>
                             </Trigger>
                             <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                                <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                                <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                             </EventTrigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -55,49 +55,49 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Button Name="Button_Prev" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/LeftArrow.png"/>
+        <Button Name="Button_Prev" Style="{DynamicResource SelectButton}" Tag="/AirBand;component/Resources/LeftArrow.png"/>
         <Canvas Grid.Column="1" Width="198">
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
+            <Rectangle Fill="Black" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="90"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
+            <Rectangle Fill="Purple" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="67.5"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
+            <Rectangle Fill="Indigo" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="45"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
+            <Rectangle Fill="Blue" Width="20" Height="80" Canvas.Left="99" RenderTransformOrigin="0,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="22.5"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
+            <Rectangle Fill="Red" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="-90"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
+            <Rectangle Fill="Orange" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="-67.5"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
+            <Rectangle Fill="Yellow" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="-45"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
-            <Rectangle Fill="White" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
+            <Rectangle Fill="Green" Width="20" Height="80" Canvas.Left="79" RenderTransformOrigin="1,1">
                 <Rectangle.RenderTransform>
                     <RotateTransform Angle="-22.5"/>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
-        <Button Name="Button_Next" Grid.Column="2" Style="{DynamicResource SelectButton}" Tag="/KinectAirBand;component/Resources/RightArrow.png"/>
+        <Button Name="Button_Next" Grid.Column="2" Style="{DynamicResource SelectButton}" Tag="/AirBand;component/Resources/RightArrow.png"/>
     </Grid>
 </UserControl>

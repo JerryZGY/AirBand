@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

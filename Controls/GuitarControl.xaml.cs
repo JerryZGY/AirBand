@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
 
-namespace KinectAirBand.Controls
+namespace AirBand.Controls
 {
     /// <summary>
     /// GuitarControl.xaml 的互動邏輯

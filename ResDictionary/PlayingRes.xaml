@@ -124,7 +124,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                            <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -169,7 +169,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                            <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

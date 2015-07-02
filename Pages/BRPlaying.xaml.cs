@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
-namespace KinectAirBand.Pages
+namespace AirBand.Pages
 {
     public partial class BRPlaying : UserControl
     {

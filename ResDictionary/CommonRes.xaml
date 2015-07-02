@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:c="clr-namespace:KinectAirBand">
+                    xmlns:c="clr-namespace:AirBand">
     <c:VolumeConverter x:Key="VolumeConverter"/>
     <Style x:Key="DefaultLabel" TargetType="{x:Type Label}">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -46,7 +46,7 @@
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                            <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -65,7 +65,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="3*"/>
                         </Grid.ColumnDefinitions>
-                        <Image Height="40" Width="40" Margin="10 0 0 0" Source="/KinectAirBand;component/Resources/Check.png"/>
+                        <Image Height="40" Width="40" Margin="10 0 0 0" Source="/AirBand;component/Resources/Check.png"/>
                         <ContentPresenter Grid.Column="1" x:Name="contentPresenter" TextBlock.Foreground="#000000" TextBlock.FontSize="28" TextBlock.FontWeight="Bold" TextBlock.FontFamily="華康瘦金體" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="False" Content="確定"/>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -76,7 +76,7 @@
                             <Setter Property="Background" TargetName="Button" Value="#FFF09E3B"/>
                         </Trigger>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                            <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -111,7 +111,7 @@
                             <Setter Property="Fill" TargetName="Rectangle" Value="#E5FFB93F"/>
                         </Trigger>
                         <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                            <SoundPlayerAction Source="/KinectAirBand;component/Resources/click.wav" />
+                            <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

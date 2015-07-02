@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace KinectAirBand.Pages
+namespace AirBand.Pages
 {
     public partial class MainMenu : UserControl
     {
@@ -19,6 +19,7 @@ namespace KinectAirBand.Pages
         private void loaded (object sender, RoutedEventArgs e)
         {
             Grid_Main.Opacity = 0;
+            //Music.Source = new Uri("Resources/Title.m4a", UriKind.Relative);
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard", () =>
             {
                 Image_LogoEffect.Visibility = System.Windows.Visibility.Visible;

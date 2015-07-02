@@ -1,4 +1,4 @@
-﻿namespace KinectAirBand
+﻿namespace AirBand
 {
     public interface ISwitchable
     {

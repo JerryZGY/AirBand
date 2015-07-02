@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Kinect;
 using Sanford.Multimedia.Midi;
 
-namespace KinectAirBand.Controls
+namespace AirBand.Controls
 {
     /// <summary>
     /// Piano.xaml 的互動邏輯
@@ -66,11 +66,39 @@ namespace KinectAirBand.Controls
             {
                 Rectangle key = new Rectangle()
                 {
-                    Fill = Brushes.Black,
                     Width = length / 5,
                     Height = length,
                     Tag = false
                 };
+                switch (i)
+                {
+                    case 0:
+                        key.Fill = Brushes.Red;
+                        break;
+                    case 1:
+                        key.Fill = Brushes.Orange;
+                        break;
+                    case 2:
+                        key.Fill = Brushes.Yellow;
+                        break;
+                    case 3:
+                        key.Fill = Brushes.Green;
+                        break;
+                    case 4:
+                        key.Fill = Brushes.Blue;
+                        break;
+                    case 5:
+                        key.Fill = Brushes.Indigo;
+                        break;
+                    case 6:
+                        key.Fill = Brushes.Purple;
+                        break;
+                    case 7:
+                        key.Fill = Brushes.Black;
+                        break;
+                    default:
+                        break;
+                }
                 pianoKeys.Add(key);
                 Canvas.SetTop(key, y - length * 0.8);
                 if (i < 4)
@@ -296,7 +324,7 @@ namespace KinectAirBand.Controls
                 return;
 
             outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, keysMap[index], 127));
-            pianoKeys[index].Fill = Brushes.Yellow;
+            pianoKeys[index].Fill = Brushes.White;
             releaseTimer.Enabled = true;
             releaseTimer.Tick += (s, e) =>
             {
@@ -309,7 +337,35 @@ namespace KinectAirBand.Controls
         private void releasePianoKey (Int32 index)
         {
             outDevice.Send(new ChannelMessage(ChannelCommand.NoteOn, 0, keysMap[index], 0));
-            pianoKeys[index].Fill = Brushes.Black;
+            switch (index)
+            {
+                case 0:
+                    pianoKeys[index].Fill = Brushes.Red;
+                    break;
+                case 1:
+                    pianoKeys[index].Fill = Brushes.Orange;
+                    break;
+                case 2:
+                    pianoKeys[index].Fill = Brushes.Yellow;
+                    break;
+                case 3:
+                    pianoKeys[index].Fill = Brushes.Green;
+                    break;
+                case 4:
+                    pianoKeys[index].Fill = Brushes.Blue;
+                    break;
+                case 5:
+                    pianoKeys[index].Fill = Brushes.Indigo;
+                    break;
+                case 6:
+                    pianoKeys[index].Fill = Brushes.Purple;
+                    break;
+                case 7:
+                    pianoKeys[index].Fill = Brushes.Black;
+                    break;
+                default:
+                    break;
+            }
             pianoKeys[index].Tag = false;
         }
     }

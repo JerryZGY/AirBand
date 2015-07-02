@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using KinectAirBand.Controls;
+using AirBand.Controls;
 using Microsoft.Kinect;
 
-namespace KinectAirBand
+namespace AirBand
 {
     public class BodyViewModel
     {
