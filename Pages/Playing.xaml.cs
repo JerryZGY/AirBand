@@ -30,6 +30,8 @@ namespace AirBand.Pages
     {
         private Boolean disposed = false;
         private Boolean isLoaded = false;
+        private Boolean engagementPeopleHaveChanged = false;
+        private List<BodyHandPair> handsToEngage;
         private Body[] bodies;
         private TimeSpan lastTime;
         private KinectSensor sensor;
@@ -38,10 +40,22 @@ namespace AirBand.Pages
         private Body[] bodyTrackingArray;
         private List<BodyViewModel> bodyList;
         private WriteableBitmap bitmap = null;
+        private WriteableBitmap bodyIndexBitmap = null;
         private MultiSourceFrameReader reader;
         private FrameDescription colorFrameDesc;
         private KinectCoreWindow kinectCoreWindow;
+        private FrameDescription bodyIndexFrameDescription = null;
+        private UInt32[] bodyIndexPixels = null;
         private System.Windows.Forms.Timer debounceTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
+        private static readonly UInt32[] BodyColor =
+        {
+            0x0000FF00,
+            0x00FF0000,
+            0xFFFF4000,
+            0x40FFFF00,
+            0xFF40FF00,
+            0xFF808000,
+        };
 
         public Playing (EnvironmentVariablesViewModel viewModel)
         {
@@ -107,13 +121,16 @@ namespace AirBand.Pages
             sensor = KinectSensor.GetDefault();
             sensor.Open();
             bitmap = new WriteableBitmap(1920, 1080, 96.0, 96.0, PixelFormats.Bgra32, null);
+            bodyIndexFrameDescription = sensor.BodyIndexFrameSource.FrameDescription;
+            bodyIndexPixels = new uint[bodyIndexFrameDescription.Width * bodyIndexFrameDescription.Height];
+            bodyIndexBitmap = new WriteableBitmap(bodyIndexFrameDescription.Width, bodyIndexFrameDescription.Height, 96.0, 96.0, PixelFormats.Bgr32, null);
             reader = sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body | FrameSourceTypes.Depth | FrameSourceTypes.BodyIndex);
             Image_Background.Visibility = System.Windows.Visibility.Collapsed;
             kinectCoreWindow = KinectCoreWindow.GetForCurrentThread();
-            KinectCoreWindow.SetKinectTwoPersonSystemEngagement();
             kinectCoreWindow.PointerMoved += kinectCoreWindow_PointerMoved;
             bodyTrackingArray = new Body[2];
             bodyList = new List<BodyViewModel>();
+            handsToEngage = new List<BodyHandPair>();
             for (int i = 0; i < sensor.BodyFrameSource.BodyCount; ++i)
             {
                 bodyList.Add(new BodyViewModel(i));
@@ -122,6 +139,7 @@ namespace AirBand.Pages
             colorFrameDesc = sensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Bgra);
             debounceTimer.Enabled = false;
             Image_BackgroundRemoval.Source = bitmap;
+            Image_UserView.Source = bodyIndexBitmap;
             StoryboardHandler.InitHitStoryBoard(this, "EnterStoryboard");
 
             disposed = false;
@@ -138,6 +156,8 @@ namespace AirBand.Pages
                     bodies = new Body[frame.BodyFrameSource.BodyCount];
 
                     frame.GetAndRefreshBodyData(bodies);
+
+                    TrackEngagedPlayersViaHandOverHead();
 
                     trackingIndex = 0;
 
@@ -206,6 +226,25 @@ namespace AirBand.Pages
                 }
             }
 
+            using (BodyIndexFrame bodyIndexFrame = multiSourceFrame.BodyIndexFrameReference.AcquireFrame())
+            {
+                if (bodyIndexFrame != null)
+                {
+                    // the fastest way to process the body index data is to directly access 
+                    // the underlying buffer
+                    using (Microsoft.Kinect.KinectBuffer bodyIndexBuffer = bodyIndexFrame.LockImageBuffer())
+                    {
+                        // verify data and write the color data to the display bitmap
+                        if (( ( this.bodyIndexFrameDescription.Width * this.bodyIndexFrameDescription.Height ) == bodyIndexBuffer.Size ) &&
+                            ( this.bodyIndexFrameDescription.Width == this.bodyIndexBitmap.PixelWidth ) && ( this.bodyIndexFrameDescription.Height == this.bodyIndexBitmap.PixelHeight ))
+                        {
+                            ProcessBodyIndexFrameData(bodyIndexBuffer.UnderlyingBuffer, bodyIndexBuffer.Size);
+                            RenderBodyIndexPixels();
+                        }
+                    }
+                }
+            }
+
             using (ColorFrame colorFrame = multiSourceFrame.ColorFrameReference.AcquireFrame())
             {
                 if (colorFrame != null)
@@ -226,6 +265,127 @@ namespace AirBand.Pages
                     }
                 }
             }
+        }
+
+        private void TrackEngagedPlayersViaHandOverHead ()
+        {
+            this.engagementPeopleHaveChanged = false;
+            var currentlyEngagedHands = KinectCoreWindow.KinectManualEngagedHands;
+            this.handsToEngage.Clear();
+
+            // check to see if anybody who is currently engaged should be disengaged
+            foreach (var bodyHandPair in currentlyEngagedHands)
+            {
+                var bodyTrackingId = bodyHandPair.BodyTrackingId;
+                foreach (var body in this.bodies)
+                {
+                    if (body.TrackingId == bodyTrackingId)
+                    {
+                        // check for disengagement
+                        bool toBeDisengaged = ( body.Joints[JointType.HandRight].Position.Y < body.Joints[JointType.SpineBase].Position.Y );
+
+                        if (toBeDisengaged)
+                        {
+                            this.engagementPeopleHaveChanged = true;
+                        }
+                        else
+                        {
+                            this.handsToEngage.Add(bodyHandPair);
+                        }
+                    }
+                }
+            }
+
+            // check to see if anybody should be engaged, if not already engaged
+            foreach (var body in this.bodies)
+            {
+                if (this.handsToEngage.Count < 2)
+                {
+                    bool alreadyEngaged = false;
+                    foreach (var bodyHandPair in this.handsToEngage)
+                    {
+                        alreadyEngaged = ( body.TrackingId == bodyHandPair.BodyTrackingId );
+                    }
+
+                    if (!alreadyEngaged && IsHandOverhead(JointType.HandRight, body))
+                    {
+                        // engage the right hand
+                        this.handsToEngage.Add(new BodyHandPair(body.TrackingId, HandType.RIGHT));
+                        this.engagementPeopleHaveChanged = true;
+                    }
+                }
+            }
+
+            if (this.engagementPeopleHaveChanged)
+            {
+                BodyHandPair firstPersonToEngage = null;
+                BodyHandPair secondPersonToEngage = null;
+
+                switch (this.handsToEngage.Count)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        firstPersonToEngage = this.handsToEngage[0];
+                        break;
+                    case 2:
+                        firstPersonToEngage = this.handsToEngage[0];
+                        secondPersonToEngage = this.handsToEngage[1];
+                        break;
+                }
+
+                KinectCoreWindow.SetKinectTwoPersonManualEngagement(firstPersonToEngage, secondPersonToEngage);
+            }
+        }
+
+        /// <summary>
+        /// Directly accesses the underlying image buffer of the BodyIndexFrame to 
+        /// create a displayable bitmap.
+        /// This function requires the /unsafe compiler option as we make use of direct
+        /// access to the native memory pointed to by the bodyIndexFrameData pointer.
+        /// </summary>
+        /// <param name="bodyIndexFrameData">Pointer to the BodyIndexFrame image data</param>
+        /// <param name="bodyIndexFrameDataSize">Size of the BodyIndexFrame image data</param>
+        private unsafe void ProcessBodyIndexFrameData (IntPtr bodyIndexFrameData, uint bodyIndexFrameDataSize)
+        {
+            byte* frameData = (byte*)bodyIndexFrameData;
+
+            // convert body index to a visual representation
+            for (int i = 0; i < (int)bodyIndexFrameDataSize; ++i)
+            {
+                // the BodyColor array has been sized to match
+                // BodyFrameSource.BodyCount
+                if (frameData[i] < BodyColor.Length)
+                {
+                    // this pixel is part of a player,
+                    // display the appropriate color
+                    this.bodyIndexPixels[i] = BodyColor[frameData[i]];
+                }
+                else
+                {
+                    // this pixel is not part of a player
+                    // display black
+                    this.bodyIndexPixels[i] = 0x00000000;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Renders color pixels into the writeableBitmap.
+        /// </summary>
+        private void RenderBodyIndexPixels ()
+        {
+            bodyIndexBitmap.WritePixels(
+                new Int32Rect(0, 0, this.bodyIndexBitmap.PixelWidth, this.bodyIndexBitmap.PixelHeight),
+                this.bodyIndexPixels,
+                this.bodyIndexBitmap.PixelWidth * 4,
+                0);
+
+        }
+
+        private static Boolean IsHandOverhead (JointType jointType, Body body)
+        {
+            return ( body.Joints[jointType].Position.Y > body.Joints[JointType.Head].Position.Y );
         }
 
         private Point coordinateMap (CameraSpacePoint position)
@@ -274,10 +434,10 @@ namespace AirBand.Pages
             }
             else
             {
-                if (bodyIndex == 0)
+                /*if (bodyIndex == 0)
                     PointerFirst.Visibility = System.Windows.Visibility.Collapsed;
                 else
-                    PointerSecond.Visibility = System.Windows.Visibility.Collapsed;
+                    PointerSecond.Visibility = System.Windows.Visibility.Collapsed;*/
             }
         }
 
@@ -343,14 +503,14 @@ namespace AirBand.Pages
                 case "Button_Cheer":
                     Button_Cheer.IsHitTestVisible = false;
                     new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/CheerEffect.png", UriKind.Relative));
-                        StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_Cheer.IsHitTestVisible = true);
+                    Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/CheerEffect.png", UriKind.Relative));
+                    StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_Cheer.IsHitTestVisible = true);
                     break;
                 case "Button_Boo":
                     Button_Boo.IsHitTestVisible = false;
                     new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
-                        Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/BooEffect.png", UriKind.Relative));
-                        StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_Boo.IsHitTestVisible = true);
+                    Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/BooEffect.png", UriKind.Relative));
+                    StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_Boo.IsHitTestVisible = true);
                     break;
                 case "Button_Mask":
                     Button_Mask.IsHitTestVisible = false;
