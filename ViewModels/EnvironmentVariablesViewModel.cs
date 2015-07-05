@@ -127,5 +127,33 @@ namespace AirBand
                 OnPropertyChanged("Mask");
             }
         }
+
+        private Int32 pianoSense = 1500;
+        public Int32 PianoSense
+        {
+            get
+            {
+                return pianoSense;
+            }
+            set
+            {
+                pianoSense = value;
+                OnPropertyChanged("PianoSense");
+            }
+        }
+
+        private Int32 guitarSense = 500;
+        public Int32 GuitarSense
+        {
+            get
+            {
+                return guitarSense;
+            }
+            set
+            {
+                guitarSense = value;
+                OnPropertyChanged("GuitarSense");
+            }
+        }
     }
 }

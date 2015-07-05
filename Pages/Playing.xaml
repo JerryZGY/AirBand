@@ -23,6 +23,7 @@
                 <Canvas Name="Canvas_Mask" MaxWidth="1366" MaxHeight="768"/>
                 <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768" Opacity="0.5"/>
                 <Grid Name="Grid_GuitarControls" MaxWidth="1366" MaxHeight="768"/>
+                <Grid Name="Grid_DrumControls" MaxWidth="1366" MaxHeight="768"/>
             </Grid>
         </Viewbox>
         <Button Name="Button_Cheer" Content="歡呼" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
@@ -65,7 +66,15 @@
                 <TranslateTransform X="200"/>
             </Button.RenderTransform>
         </Button>
-        <Button Name="Button_Clear" Grid.Row="2" Content="移除樂器" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
+        <Button Name="Button_Drum" Grid.Row="2" Content="爵士鼓" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Drum.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Clear" Grid.Row="3" Content="移除樂器" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=InstrumentButton}" Click="Button_Click">
             <Button.Background>
                 <ImageBrush ImageSource="/AirBand;component/Resources/Clear.png"/>
             </Button.Background>
@@ -81,7 +90,7 @@
                 <TranslateTransform X="200"/>
             </Button.RenderTransform>
         </Button>
-        <Viewbox Grid.Row="3" Height="135" Width="230"  HorizontalAlignment="Right">
+        <Viewbox Grid.Row="3" Height="135" Width="230" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Image Name="Image_UserView" Stretch="UniformToFill"/>
         </Viewbox>
         <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/AirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>

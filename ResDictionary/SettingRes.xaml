@@ -20,6 +20,7 @@
         <Setter Property="Maximum" Value="100"/>
         <Setter Property="Minimum" Value="0"/>
         <Setter Property="Height" Value="40"/>
+        <Setter Property="IsSnapToTickEnabled" Value="True"/>
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
         <Setter Property="Template">
             <Setter.Value>

@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="AirBand.Controls.DrumControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="768" d:DesignWidth="1366">
+    <UserControl.Resources>
+        <Storyboard x:Key="sbRideCymbal" Duration="0:0:0.5" FillBehavior="Stop">
+            <DoubleAnimation To="1" Storyboard.TargetName="RideCymbal" Storyboard.TargetProperty="Opacity" AutoReverse="True"/>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="RideCymbal" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="RideCymbal" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="60" Storyboard.TargetName="RideCymbal" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbTom1" Duration="0:0:0.5" FillBehavior="Stop">
+            <DoubleAnimation To="1" Storyboard.TargetName="Tom1" Storyboard.TargetProperty="Opacity" AutoReverse="True"/>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="Tom1" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="Tom1" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbTom2" Duration="0:0:0.5" FillBehavior="Stop">
+            <DoubleAnimation To="1" Storyboard.TargetName="Tom2" Storyboard.TargetProperty="Opacity" AutoReverse="True"/>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="Tom2" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="Tom2" Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="sbHiHat" Duration="0:0:0.5" FillBehavior="Stop">
+            <DoubleAnimation To="1" Storyboard.TargetName="HiHat" Storyboard.TargetProperty="Opacity" AutoReverse="True"/>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="HiHat" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="1.8" Storyboard.TargetName="HiHat" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation To="-60" Storyboard.TargetName="HiHat" Storyboard.TargetProperty="(RenderTransform).(TransformGroup.Children)[1].(RotateTransform.Angle)" AutoReverse="True">
+                <DoubleAnimation.EasingFunction>
+                    <ElasticEase Oscillations="1" EasingMode="EaseIn" />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    <Canvas Name="Canvas_Main" Width="1366" Height="768">
+        <Viewbox Name="Viewbox_Drum" Width="671" Height="171">
+            <Canvas Name="Drum" Width="671" Height="171">
+                <Rectangle Name="RideCymbal" Width="189" Height="64" Fill="Yellow" RenderTransformOrigin="0.5,0.5" Opacity="0.5">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <RotateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Name="Tom1" Width="113" Height="107" Fill="Red" Canvas.Left="189" Canvas.Top="64" RenderTransformOrigin="0.5,0.5" Opacity="0.5">
+                    <Rectangle.RenderTransform>
+                        <ScaleTransform/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Name="Tom2" Width="103" Height="97" Fill="Red" Canvas.Left="369" Canvas.Top="64" RenderTransformOrigin="0.5,0.5" Opacity="0.5">
+                    <Rectangle.RenderTransform>
+                        <ScaleTransform/>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+                <Rectangle Name="HiHat" Width="124" Height="42" Fill="Yellow" Canvas.Left="472" Canvas.Top="94" RenderTransformOrigin="0.5,0.5" Opacity="0.5">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <RotateTransform/>
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Canvas>
+        </Viewbox>
+    </Canvas>
+</UserControl>

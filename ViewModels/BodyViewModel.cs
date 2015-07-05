@@ -195,6 +195,8 @@ namespace AirBand
             this.leftHandConfidence = leftHandConfidence;
             this.rightHandState = rightHandState;
             this.rightHandConfidence = rightHandConfidence;
+            if (mask != null)
+                this.mask.Height = Math.Abs(headPoint.Y - spinePoint.Y) * 1.5;
         }
 
         public void SetInstrument (UserControl instrument)
@@ -207,7 +209,8 @@ namespace AirBand
             Dictionary<Type, Action> @switch = new Dictionary<Type, Action>
             {
                 { typeof(PianoControl), () => ((PianoControl)instrument).UpdatePianoKeys(this)},
-                { typeof(GuitarControl), () => ((GuitarControl)instrument).UpdateGuitar(this)}
+                { typeof(GuitarControl), () => ((GuitarControl)instrument).UpdateGuitar(this)},
+                { typeof(DrumControl), () => ((DrumControl)instrument).UpdateDrum(this)},
             };
             @switch[instrument.GetType()]();
         }

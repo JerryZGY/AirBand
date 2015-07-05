@@ -102,8 +102,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\PianoSenseConverter.cs" />
+    <Compile Include="Common\GuitarSenseConverter.cs" />
     <Compile Include="Controls\GuitarControl.xaml.cs">
       <DependentUpon>GuitarControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DrumControl.xaml.cs">
+      <DependentUpon>DrumControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Test2ListControl.xaml.cs">
+      <DependentUpon>Test2ListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Test1ListControl.xaml.cs">
       <DependentUpon>Test1ListControl.xaml</DependentUpon>
@@ -157,6 +165,14 @@
     <Page Include="Controls\GuitarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DrumControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Test2ListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Test1ListControl.xaml">
       <Generator>MSBuild:Compile</Generator>

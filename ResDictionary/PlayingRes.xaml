@@ -31,6 +31,11 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Button_Drum" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Button_RandomEffect" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" From="200" To="0" Duration="0:0:0.8" BeginTime="0:0:0.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
@@ -54,6 +59,7 @@
         <DoubleAnimation Storyboard.TargetName="Button_Mask" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="-200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Piano" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Guitar" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
+        <DoubleAnimation Storyboard.TargetName="Button_Drum" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_RandomEffect" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Button_Clear" Storyboard.TargetProperty="(RenderTransform).(TranslateTransform.X)" To="200" Duration="0:0:0.4"/>
         <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">

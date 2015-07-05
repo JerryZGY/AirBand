@@ -46,7 +46,7 @@ namespace AirBand.Pages
         private KinectCoreWindow kinectCoreWindow;
         private FrameDescription bodyIndexFrameDescription = null;
         private UInt32[] bodyIndexPixels = null;
-        private System.Windows.Forms.Timer debounceTimer = new System.Windows.Forms.Timer() { Interval = 1000 };
+        private System.Windows.Forms.Timer debounceTimer = new System.Windows.Forms.Timer() { Interval = 1500 };
         private static readonly UInt32[] BodyColor =
         {
             0x0000FF00,
@@ -429,15 +429,16 @@ namespace AirBand.Pages
                 performLassoClick(screenRelative, trackingId, Button_Mask);
                 performLassoClick(screenRelative, trackingId, Button_Piano);
                 performLassoClick(screenRelative, trackingId, Button_Guitar);
-                performLassoClick(screenRelative, trackingId, Button_RandomEffect);
+                performLassoClick(screenRelative, trackingId, Button_Drum);
+                //performLassoClick(screenRelative, trackingId, Button_RandomEffect);
                 performLassoClick(screenRelative, trackingId, Button_Clear);
             }
             else
             {
-                /*if (bodyIndex == 0)
+                if (bodyIndex == 0)
                     PointerFirst.Visibility = System.Windows.Visibility.Collapsed;
                 else
-                    PointerSecond.Visibility = System.Windows.Visibility.Collapsed;*/
+                    PointerSecond.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -452,22 +453,25 @@ namespace AirBand.Pages
         private void performLassoClick (Point relative, UInt64 trackingId, UIElement relativeTo)
         {
             Button clickedButton = relativeTo as Button;
+            if (!clickedButton.IsHitTestVisible)
+                return;
+
             if (clickedButton != null)
             {
                 Point relativeToElement = Canvas_Pointer.TranslatePoint(relative, clickedButton);
                 Boolean insideElement = ( relativeToElement.X >= 0 && relativeToElement.X < clickedButton.ActualWidth
                     && relativeToElement.Y >= 0 && relativeToElement.Y < clickedButton.ActualHeight );
                 Boolean isLasso = bodyList.Where(x => x.TrackingId == trackingId).First().RightHandState == HandState.Lasso;
-                if (insideElement && clickedButton.IsHitTestVisible)
+                if (insideElement)
                 {
                     VisualStateManager.GoToState(clickedButton, "MouseOver", false);
+                    if (isLasso)
+                    {
+                        clickedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, trackingId));
+                        //VisualStateManager.GoToState(clickedButton, "Pressed", true);
+                    }
                 }
-                if (insideElement && isLasso && clickedButton.IsHitTestVisible)
-                {
-                    clickedButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, trackingId));
-                    //VisualStateManager.GoToState(clickedButton, "Pressed", true);
-                }
-                else if (!insideElement && !isLasso && clickedButton.IsHitTestVisible)
+                else
                 {
                     VisualStateManager.GoToState(clickedButton, "Normal", true);
                 }
@@ -502,15 +506,25 @@ namespace AirBand.Pages
                     break;
                 case "Button_Cheer":
                     Button_Cheer.IsHitTestVisible = false;
+                    Button_Boo.IsHitTestVisible = false;
                     new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Cheer.wav", UriKind.Relative)).Stream).Play();
                     Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/CheerEffect.png", UriKind.Relative));
-                    StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => Button_Cheer.IsHitTestVisible = true);
+                    StoryboardHandler.InitStoryBoard(this, "CheerEffectStoryboard", () => 
+                    {
+                        Button_Cheer.IsHitTestVisible = true;
+                        Button_Boo.IsHitTestVisible = true;
+                    });
                     break;
                 case "Button_Boo":
                     Button_Boo.IsHitTestVisible = false;
+                    Button_Cheer.IsHitTestVisible = false;
                     new SoundPlayer(Application.GetResourceStream(new Uri("/AirBand;component/Resources/Boo.wav", UriKind.Relative)).Stream).Play();
                     Image_Effect.Source = new BitmapImage(new Uri("/AirBand;component/Resources/BooEffect.png", UriKind.Relative));
-                    StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () => Button_Boo.IsHitTestVisible = true);
+                    StoryboardHandler.InitStoryBoard(this, "BooEffectStoryboard", () =>
+                    {
+                        Button_Boo.IsHitTestVisible = true;
+                        Button_Cheer.IsHitTestVisible = true;
+                    });
                     break;
                 case "Button_Mask":
                     Button_Mask.IsHitTestVisible = false;
@@ -552,6 +566,16 @@ namespace AirBand.Pages
                         Grid_GuitarControls.Children.Add(body.Instrument);
                     }
                     break;
+                case "Button_Drum":
+                    if (body != null && ( body.Instrument == null || body.Instrument.GetType() != typeof(DrumControl) ))
+                    {
+                        if (body.Instrument != null)
+                            ( (Grid)body.Instrument.Tag ).Children.Remove(body.Instrument);
+                        body.ClearInstrument();
+                        body.SetInstrument(new DrumControl(outDevice, body, Grid_DrumControls));
+                        Grid_DrumControls.Children.Add(body.Instrument);
+                    }
+                    break;
                 case "Button_Clear":
                     if (body != null && body.Instrument != null)
                     {
@@ -564,6 +588,7 @@ namespace AirBand.Pages
                     Grid_BackPianoControls.Children.Clear();
                     Grid_PianoControls.Children.Clear();
                     Grid_GuitarControls.Children.Clear();
+                    Grid_DrumControls.Children.Clear();
                     Dispose(true);
                     StoryboardHandler.InitHitStoryBoard(this, "ExitStoryboard", () => Switcher.Switch("MainMenu"));
                     break;

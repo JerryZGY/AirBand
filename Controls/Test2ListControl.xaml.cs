@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace AirBand.Controls
 {
     /// <summary>
-    /// Interaction logic for Test1ListControl.xaml
+    /// Interaction logic for Test2ListControl.xaml
     /// </summary>
-    public partial class Test1ListControl : UserControl
+    public partial class Test2ListControl : UserControl
     {
-        public Test1ListControl ()
+        public Test2ListControl ()
         {
             InitializeComponent();
         }

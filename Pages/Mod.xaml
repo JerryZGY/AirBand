@@ -23,11 +23,13 @@
         <StackPanel Grid.Row="1">
             <Label Content="鋼琴" Height="111"/>
             <Label Content="吉他" Height="111"/>
+            <Label Content="爵士鼓" Height="111"/>
             <Label Content="面具" Height="111"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <c:TestListControl Height="111" Margin="2,2,20,2" IsHitTestVisible="False" Opacity="0.5"/>
             <c:Test1ListControl Height="111" Margin="2,2,20,2" IsHitTestVisible="False" Opacity="0.5"/>
+            <c:Test2ListControl Height="111" Margin="2,2,20,2" IsHitTestVisible="False" Opacity="0.5"/>
             <c:MaskListControl Height="111" Margin="2,2,20,2"/>
         </StackPanel>
         <Button Name="Button_Check" Grid.Row="5" Grid.ColumnSpan="2" Content="確定" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>

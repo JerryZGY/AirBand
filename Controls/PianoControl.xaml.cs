@@ -37,7 +37,7 @@ namespace AirBand.Controls
         //琴鍵清單
         private List<Rectangle> pianoKeys = new List<Rectangle>();
         //琴鍵釋放計時器
-        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 1500 };
+        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = Switcher.viewModel.PianoSense };
         //琴鍵音調表
         private Int32[] keysMap = 
         {

@@ -43,7 +43,7 @@ namespace AirBand.Controls
         };
         private Rectangle hand;
         //吉他釋放計時器
-        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = 500 };
+        private System.Windows.Forms.Timer releaseTimer = new System.Windows.Forms.Timer() { Interval = Switcher.viewModel.GuitarSense };
 
         public GuitarControl (OutputDevice outDevice, BodyViewModel body, Grid grid)
         {
@@ -73,7 +73,8 @@ namespace AirBand.Controls
                 Fill = Brushes.White,
                 Width = 20,
                 Height = Math.Abs(body.SpinePoint.X - body.LeftVariabPoint.X),
-                RenderTransformOrigin = new Point(0.5, 1)
+                RenderTransformOrigin = new Point(0.5, 1),
+                Opacity = 0.5
             };
             Canvas.SetBottom(guitarChord, 768 - ( body.SpinePoint.Y + body.CenterPoint.Y ) / 2);
             Canvas.SetLeft(guitarChord, body.SpinePoint.X - guitarChord.Width / 2);
@@ -86,7 +87,8 @@ namespace AirBand.Controls
                 {
                     Width = 100,
                     Height = 10,
-                    Tag = false
+                    Tag = false,
+                    Opacity = 0.5
                 };
                 switch (i)
                 {
