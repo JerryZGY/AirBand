@@ -37,6 +37,7 @@ namespace AirBand.Pages
         private KinectSensor sensor;
         private OutputDevice outDevice;
         private Int32 trackingIndex;
+        private Body trackingBody;
         private Body[] bodyTrackingArray;
         private List<BodyViewModel> bodyList;
         private WriteableBitmap bitmap = null;
@@ -269,15 +270,15 @@ namespace AirBand.Pages
 
         private void TrackEngagedPlayersViaHandOverHead ()
         {
-            this.engagementPeopleHaveChanged = false;
+            engagementPeopleHaveChanged = false;
             var currentlyEngagedHands = KinectCoreWindow.KinectManualEngagedHands;
-            this.handsToEngage.Clear();
+            handsToEngage.Clear();
 
             // check to see if anybody who is currently engaged should be disengaged
             foreach (var bodyHandPair in currentlyEngagedHands)
             {
                 var bodyTrackingId = bodyHandPair.BodyTrackingId;
-                foreach (var body in this.bodies)
+                foreach (var body in bodies)
                 {
                     if (body.TrackingId == bodyTrackingId)
                     {
@@ -286,11 +287,11 @@ namespace AirBand.Pages
 
                         if (toBeDisengaged)
                         {
-                            this.engagementPeopleHaveChanged = true;
+                            engagementPeopleHaveChanged = true;
                         }
                         else
                         {
-                            this.handsToEngage.Add(bodyHandPair);
+                            handsToEngage.Add(bodyHandPair);
                         }
                     }
                 }
@@ -299,7 +300,7 @@ namespace AirBand.Pages
             // check to see if anybody should be engaged, if not already engaged
             foreach (var body in this.bodies)
             {
-                if (this.handsToEngage.Count < 2)
+                if (handsToEngage.Count < 2)
                 {
                     bool alreadyEngaged = false;
                     foreach (var bodyHandPair in this.handsToEngage)
@@ -334,7 +335,7 @@ namespace AirBand.Pages
                         break;
                 }
 
-                KinectCoreWindow.SetKinectTwoPersonManualEngagement(firstPersonToEngage, secondPersonToEngage);
+                KinectCoreWindow.SetKinectOnePersonManualEngagement(firstPersonToEngage);
             }
         }
 
