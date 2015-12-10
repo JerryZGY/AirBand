@@ -62,7 +62,6 @@ namespace AirBand.Pages
         {
             InitializeComponent();
             this.DataContext = viewModel;
-            outDevice = new OutputDevice(0);
         }
 
         #region IDisposable
@@ -110,14 +109,19 @@ namespace AirBand.Pages
 
         public void OutDeviceDispose ()
         {
+            if (outDevice == null)
+                return;
             outDevice.Close();
             outDevice.Dispose();
+            outDevice = null;
         }
 
         #endregion
 
         private void Playing_Loaded (object sender, RoutedEventArgs e)
         {
+            ((BRPlaying)Switcher.PageDictionary["BRPlaying"]).OutDeviceDispose();
+            outDevice = new OutputDevice(0);
             Grid_Main.Opacity = 0;
             sensor = KinectSensor.GetDefault();
             sensor.Open();

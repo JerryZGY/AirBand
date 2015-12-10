@@ -5,82 +5,88 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Loaded="BRPlaying_Loaded" Unloaded="BRPlaying_Unloaded">
     <UserControl.Resources>
-        <Storyboard x:Key="EnterStoryboard">
-            <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5">
-                <DoubleAnimation.EasingFunction>
-                    <QuarticEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-            <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5" BeginTime="0:0:0.9">
-                <DoubleAnimation.EasingFunction>
-                    <QuarticEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-        <Storyboard x:Key="ExitStoryboard">
-            <DoubleAnimation Storyboard.TargetName="Button_Back" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.1"/>
-            <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:0.5">
-                <DoubleAnimation.EasingFunction>
-                    <QuarticEase EasingMode="EaseOut"/>
-                </DoubleAnimation.EasingFunction>
-            </DoubleAnimation>
-        </Storyboard>
-        <Style x:Key="BackButton" TargetType="{x:Type Button}">
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Width" Value="200"/>
-            <Setter Property="VerticalAlignment" Value="Bottom"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Name="Button" Background="#A5FFFFFF">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualStateGroup.States>
-                                        <VisualState Name="Normal">
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#A5FFFFFF" Duration="0:0:0.01"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState Name="Pressed">
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFF09E3B" Duration="0:0:0.01"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                        <VisualState Name="MouseOver">
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="Button" Storyboard.TargetProperty="(Grid.Background).(SolidColorBrush.Color)" To="#FFFFFFFF" Duration="0:0:0.01"/>
-                                            </Storyboard>
-                                        </VisualState>
-                                    </VisualStateGroup.States>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="3*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Height="40" Width="40" Margin="10 0 0 0" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
-                            <ContentPresenter Grid.Column="1" x:Name="contentPresenter" TextBlock.Foreground="#000000" TextBlock.FontSize="28" TextBlock.FontWeight="Bold" TextBlock.FontFamily="華康瘦金體" Focusable="False" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True" SnapsToDevicePixels="False"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
-                                <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
-                            </EventTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="50" />
-            <Setter Property="Foreground" Value="Brown" />
-        </Style>
+        <ResourceDictionary Source="../ResDictionary/BPlayingRes.xaml"/>
     </UserControl.Resources>
     <Grid Name="Grid_Main" Opacity="1">
-        <Grid.Background>
-            <ImageBrush ImageSource="{Binding Background, Mode=OneWay}"/>
-        </Grid.Background>
-        <Image Name="Image_BackgroundRemoval" Stretch="UniformToFill"/>
-        <Button Name="Button_Back" Content="返回" Opacity="0" Click="Button_Click" Tag="/AirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
-        <TextBlock Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Viewbox Grid.RowSpan="4">
+            <Grid Width="1366" Height="768">
+                <Image Name="Image_Background" Source="{Binding Background, Mode=OneWay}"/>
+                <Grid Name="Grid_PianoControls" MaxWidth="1366" MaxHeight="768" Opacity="0.5"/>
+                <Image Name="Image_BackgroundRemoval" Stretch="Fill"/>
+                <Canvas Name="Canvas_Mask" MaxWidth="1366" MaxHeight="768"/>
+                <Grid Name="Grid_GuitarControls" MaxWidth="1366" MaxHeight="768"/>
+                <Grid Name="Grid_DrumControls" MaxWidth="1366" MaxHeight="768"/>
+            </Grid>
+        </Viewbox>
+        <Button Name="Button_Cheer" Content="歡呼" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Cheer.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Boo" Content="噓聲" Grid.Row="1" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Boo.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Button Name="Button_Mask" Content="面具" Grid.Row="2" HorizontalAlignment="Left" Style="{StaticResource ResourceKey= InstrumentButton}" Click="Button_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="/AirBand;component/Resources/Mask.png"/>
+            </Button.Background>
+            <Button.RenderTransform>
+                <TranslateTransform X="-200"/>
+            </Button.RenderTransform>
+        </Button>
+        <Canvas Grid.RowSpan="4" Name="canvas" RenderTransformOrigin="0.5,0.5">
+            <Canvas.RenderTransform>
+                <RotateTransform/>
+            </Canvas.RenderTransform>
+            <Button Name="Button_Piano" Canvas.Top="166.4" Canvas.Left="327.3" Content="鋼琴" Style="{StaticResource ResourceKey= InstrumentButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/AirBand;component/Resources/Piano.png"/>
+                </Button.Background>
+            </Button>
+            <Button Name="Button_Violin" Canvas.Top="473.6" Canvas.Left="327.3" Content="小提琴" Style="{StaticResource ResourceKey= InstrumentButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/AirBand;component/Resources/Violin.png"/>
+                </Button.Background>
+            </Button>
+            <Button Name="Button_Flute" Canvas.Top="473.6" Canvas.Left="910.6" Content="長笛" Style="{StaticResource ResourceKey= InstrumentButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/AirBand;component/Resources/Flute.png"/>
+                </Button.Background>
+            </Button>
+            <Button Name="Button_Guitar" Canvas.Top="166.4" Canvas.Left="910.6" Content="吉他" Style="{StaticResource ResourceKey= InstrumentButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/AirBand;component/Resources/Guitar.png"/>
+                </Button.Background>
+            </Button>
+            <Button Name="Button_Drum" Canvas.Top="12.8" Canvas.Left="618.95" Content="爵士鼓" Style="{StaticResource ResourceKey= InstrumentButton}">
+                <Button.Background>
+                    <ImageBrush ImageSource="/AirBand;component/Resources/Drum.png"/>
+                </Button.Background>
+            </Button>
+        </Canvas>
+        <Viewbox Grid.Row="3" Height="135" Width="230" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Image Name="Image_UserView" Stretch="UniformToFill"/>
+        </Viewbox>
+        <Button Name="Button_Back" Grid.Row="3" Grid.Column="2" Content="返回" Opacity="0" Click="Button_Click" Tag="/AirBand;component/Resources/Exit.png" Style="{StaticResource ResourceKey=BackButton}"/>
+        <Canvas Name="Canvas_Pointer" Grid.RowSpan="4" IsHitTestVisible="False">
+            <Image Name="PointerFirst" Source="/AirBand;component/Resources/PointerFirst.png" Width="50" Height="50" Visibility="Collapsed"/>
+            <Image Name="PointerSecond" Source="/AirBand;component/Resources/PointerSecond.png" Width="50" Height="50" Visibility="Collapsed"/>
+        </Canvas>
+        <TextBlock Grid.Row="3" Text="演奏" Foreground="White" Margin="0 0 0 10" FontSize="32" FontFamily="華康瘦金體" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Image Name="Image_Effect" Grid.RowSpan="4" Stretch="UniformToFill" Width="1366" Height="768" IsHitTestVisible="False" Opacity="0"/>
     </Grid>
 </UserControl>

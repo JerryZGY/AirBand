@@ -33,6 +33,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="R2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.25"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -41,6 +42,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="R3">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.25" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -49,6 +51,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="R4">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:0.75" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -57,6 +60,7 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(ee:SwirlEffect.TwistAmount)" Storyboard.TargetName="canvas">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2.25" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -64,7 +68,8 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(ee:PixelateEffect.Pixelation)" Storyboard.TargetName="outlinedTextBlock">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Effect).(ee:PixelateEffect.Pixelation)" Storyboard.TargetName="effect_Name">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2.25" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -72,7 +77,8 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="outlinedTextBlock">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="effect_Name">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2.25" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <QuarticEase EasingMode="EaseInOut"/>
@@ -80,17 +86,10 @@
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="0:0:2.3" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="outlinedTextBlock1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="origin_Name">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0"/>
                 <EasingDoubleKeyFrame KeyTime="0:0:2.25" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="outlinedTextBlock2">
-                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2.25" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <QuarticEase EasingMode="EaseInOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </UserControl.Resources>
@@ -124,9 +123,7 @@
                 <Rectangle.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleY="0"/>
-                        <SkewTransform/>
                         <RotateTransform Angle="45"/>
-                        <TranslateTransform/>
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
@@ -134,9 +131,7 @@
                 <Rectangle.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleY="0"/>
-                        <SkewTransform/>
                         <RotateTransform Angle="90"/>
-                        <TranslateTransform/>
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
@@ -144,20 +139,17 @@
                 <Rectangle.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleY="0"/>
-                        <SkewTransform/>
                         <RotateTransform Angle="135"/>
-                        <TranslateTransform/>
                     </TransformGroup>
                 </Rectangle.RenderTransform>
             </Rectangle>
         </Canvas>
-        <local:OutlinedTextBlock Grid.Row="1" x:Name="outlinedTextBlock1" Text="JZ'Studio" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" FontWeight="Bold" FontFamily="Agency FB" Opacity="0" StrokeThickness="2.5"/>
-        <local:OutlinedTextBlock Grid.Row="1" x:Name="outlinedTextBlock" Text="JZ'Studio" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" FontWeight="Bold" FontFamily="Agency FB" StrokeThickness="2.5">
+        <local:OutlinedTextBlock Grid.Row="1" x:Name="origin_Name" Text="JZ'Studio" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" FontWeight="Bold" FontFamily="Agency FB" Opacity="0" StrokeThickness="2.5"/>
+        <local:OutlinedTextBlock Grid.Row="1" x:Name="effect_Name" Text="JZ'Studio" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="60" FontWeight="Bold" FontFamily="Agency FB" StrokeThickness="2.5">
             <local:OutlinedTextBlock.Effect>
                 <ee:PixelateEffect Pixelation="1"/>
             </local:OutlinedTextBlock.Effect>
         </local:OutlinedTextBlock>
-        <TextBlock Grid.Row="1" x:Name="outlinedTextBlock2" Text="© 2015 JZ'Studio" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="32" FontWeight="Bold" Margin="0 0 0 30" Opacity="0"/>
         <Button Grid.Row="2" Content="確定" Click="Button_Click" Style="{StaticResource ResourceKey=CheckButton}"/>
     </Grid>
 </UserControl>

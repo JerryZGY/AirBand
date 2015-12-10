@@ -61,6 +61,9 @@
     <Reference Include="Microsoft.Kinect.Wpf.Controls, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="MyoSharp">
+      <HintPath>..\..\Visual Studio 2015\Projects\ConsoleApplication1\MyoSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Sanford.Collections, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Assemblies\Sanford.Collections.dll</HintPath>
@@ -103,6 +106,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\ConsoleHelper.cs" />
     <Compile Include="Common\OutlinedTextBlock.cs" />
     <Compile Include="Common\PianoSenseConverter.cs" />
     <Compile Include="Common\GuitarSenseConverter.cs" />
@@ -223,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="ResDictionary\BPlayingRes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResDictionary\CommonRes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -285,6 +293,9 @@
     <Resource Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="x86\myo.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="AirBand.ico" />
     <Content Include="Assemblies\Sanford.Collections.dll" />
     <Content Include="Assemblies\Sanford.Multimedia.dll" />
@@ -292,6 +303,7 @@
     <Content Include="Assemblies\Sanford.Multimedia.Timers.dll" />
     <Content Include="Assemblies\Sanford.Threading.dll" />
     <Content Include="Assemblies\WriteableBitmapEx.Wpf.dll" />
+    <Resource Include="Resources\Flute.png" />
     <Content Include="Resources\Mask\Mask02.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

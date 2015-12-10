@@ -40,7 +40,7 @@ namespace AirBand
             }
         }
 
-        private Double mainVolume = 0.1;
+        private Double mainVolume = 0;
         public Double MainVolume
         {
             get
