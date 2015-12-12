@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="AirBand.Pages.Page_Main"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ctrl="clr-namespace:AirBand.Controls"
+             mc:Ignorable="d"
+             d:DesignWidth="1366" d:DesignHeight="768" Width="1366" Height="768" Loaded="page_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/Res_Page_Main.xaml"/>
+    </UserControl.Resources>
+    <Grid x:Name="Grid_Main">
+        <Grid.Background>
+            <ImageBrush ImageSource="/AirBand;component/Materials/BackGround.jpg"/>
+        </Grid.Background>
+        <Image Name="Img_Logo" Width="400" Source="/AirBand;component/Materials/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Image Name="Img_Version" Width="153" Source="/AirBand;component/Materials/Version.png" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Image.RenderTransform>
+                <TranslateTransform Y="110"/>
+            </Image.RenderTransform>
+        </Image>
+        <ctrl:Ctrl_HexagonCanvas x:Name="Cnv_Btns">
+            <Button x:Name="Btn_Playing" Content="演奏" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Playing.png" Click="btn_Click"/>
+            <Button x:Name="Btn_Community" Content="社群" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Community.png" Click="btn_Click"/>
+            <Button x:Name="Btn_Mod" Content="模組" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Mod.png" Click="btn_Click"/>
+            <Button x:Name="Btn_Exit" Content="離開" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Exit.png" Click="btn_Click"/>
+            <Button x:Name="Btn_Options" Content="設定" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Options.png" Click="btn_Click"/>
+            <Button x:Name="Btn_About" Content="關於" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/About.png" Click="btn_Click"/>
+        </ctrl:Ctrl_HexagonCanvas>
+    </Grid>
+</UserControl>

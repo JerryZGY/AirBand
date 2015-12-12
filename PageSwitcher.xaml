@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AirBand"
         mc:Ignorable="d"
         Title="AirBand" d:DesignWidth="1366" d:DesignHeight="768"
-        Width="{Binding SystemParameters.PrimaryScreenHeight}" Height="{Binding SystemParameters.PrimaryScreenHeight}"
-        ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized" Background="Black">
+        Width="1366" Height="768"
+        ResizeMode="NoResize" WindowStyle="None" Background="Black">
+    <!-- WindowState="Maximized" Width="{Binding SystemParameters.PrimaryScreenHeight}" Height="{Binding SystemParameters.PrimaryScreenHeight}"-->
     <Viewbox>
         <Grid Width="1366" Height="768">
             <ContentPresenter x:Name="Presenter"/>

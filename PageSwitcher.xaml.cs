@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using AirBand.Pages;
 
 namespace AirBand
 {
@@ -10,7 +11,7 @@ namespace AirBand
         {
             InitializeComponent();
             Switcher.pageSwitcher = this;
-            //Switcher.Switch(new Page_Start());
+            Switcher.Switch(new Page_Main());
         }
 
         public void Navigate(UserControl nextPage)

@@ -74,12 +74,24 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Page_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Res_Page_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ISwitchable.cs" />
     <Compile Include="Common\Switcher.cs" />
+    <Compile Include="Controls\Ctrl_HexagonCanvas.cs" />
     <Compile Include="PageSwitcher.xaml.cs">
       <DependentUpon>PageSwitcher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Page_Main.xaml.cs">
+      <DependentUpon>Page_Main.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -124,12 +136,27 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assemblies\" />
-    <Folder Include="Controls\" />
-    <Folder Include="Materials\" />
-    <Folder Include="Pages\" />
-    <Folder Include="Resources\" />
     <Folder Include="Sounds\" />
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Materials\About.png" />
+    <Resource Include="Materials\Mod.png" />
+    <Resource Include="Materials\Options.png" />
+    <Resource Include="Materials\Community.png" />
+    <Resource Include="Materials\Playing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Materials\Exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Materials\Background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Materials\Version.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Materials\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
