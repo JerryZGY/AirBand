@@ -66,20 +66,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="PageSwitcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ISwitchable.cs" />
+    <Compile Include="Common\Switcher.cs" />
+    <Compile Include="PageSwitcher.xaml.cs">
+      <DependentUpon>PageSwitcher.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -120,6 +121,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="AirBand.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assemblies\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Materials\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Sounds\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
