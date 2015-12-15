@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using AirBand.Controls;
 
 namespace AirBand.Pages
 {
@@ -11,6 +12,7 @@ namespace AirBand.Pages
         public Page_Main()
         {
             InitializeComponent();
+            DataContext = Switcher.VM_EnvironmentVariables;
         }
 
         public void EnterStory()
@@ -21,7 +23,9 @@ namespace AirBand.Pages
 
         public void ExitStory(Action callback)
         {
-            callback();
+            Storyboard story = ((Storyboard)Resources["Exit"]);
+            story.Completed += (s, e) => callback();
+            story.Begin();
         }
 
         public void InitializeProperty()
@@ -32,7 +36,6 @@ namespace AirBand.Pages
             Img_Version.RenderTransform = new TranslateTransform(165, 110);
             Cnv_Btns.Opacity = 0;
             Cnv_Btns.RenderTransform = new RotateTransform(-90);
-            Cnv_Btns.InitializeProperty();
         }
 
         private void page_Loaded(object sender, RoutedEventArgs e)
@@ -57,14 +60,24 @@ namespace AirBand.Pages
                 //case "Button_Mod":
                 //    EnterContent("Mod");
                 //    break;
-                //case "Button_Setting":
-                //    EnterContent("Setting");
-                //    break;
-                //case "Btn_About":
-                //    Switcher.Switch(new Page_Main());
-                //    break;
+                case "Btn_Playing":
+                    Switcher.Switch(new Page_Main());
+                    break;
+                case "Btn_About":
+                    break;
+                case "Btn_Options":
+                    Presenter.Content = new Ctrl_Options();
+                    Storyboard story = ((Storyboard)Resources["EnterContent"]);
+                    story.Begin();
+                    Grid_Menu.IsHitTestVisible = false;
+                    break;
                 case "Btn_Exit":
                     Application.Current.Shutdown();
+                    break;
+                case "Btn_Check":
+                    Storyboard storya = ((Storyboard)Resources["ExitContent"]);
+                    storya.Begin();
+                    Grid_Menu.IsHitTestVisible = true;
                     break;
                 default:
                     break;

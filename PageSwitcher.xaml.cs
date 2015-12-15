@@ -11,6 +11,8 @@ namespace AirBand
         {
             InitializeComponent();
             Switcher.pageSwitcher = this;
+            Switcher.VM_EnvironmentVariables.FullScreen = !(SystemParameters.FullPrimaryScreenWidth > 1366);
+            Switcher.VM_EnvironmentVariables.FullScreenToggleButtonEnabled = (SystemParameters.FullPrimaryScreenWidth > 1366);
             Switcher.Switch(new Page_Main());
         }
 

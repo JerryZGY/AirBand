@@ -10,22 +10,39 @@
         <ResourceDictionary Source="../Resources/Res_Page_Main.xaml"/>
     </UserControl.Resources>
     <Grid x:Name="Grid_Main">
-        <Grid.Background>
-            <ImageBrush ImageSource="/AirBand;component/Materials/BackGround.jpg"/>
-        </Grid.Background>
-        <Image Name="Img_Logo" Width="400" Source="/AirBand;component/Materials/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Image Name="Img_Version" Width="153" Source="/AirBand;component/Materials/Version.png" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image.RenderTransform>
-                <TranslateTransform Y="110"/>
-            </Image.RenderTransform>
-        </Image>
-        <ctrl:Ctrl_HexagonCanvas x:Name="Cnv_Btns">
-            <Button x:Name="Btn_Playing" Content="演奏" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Playing.png" Click="btn_Click"/>
-            <Button x:Name="Btn_Community" Content="社群" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Community.png" Click="btn_Click"/>
-            <Button x:Name="Btn_Mod" Content="模組" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Mod.png" Click="btn_Click"/>
-            <Button x:Name="Btn_Exit" Content="離開" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Exit.png" Click="btn_Click"/>
-            <Button x:Name="Btn_Options" Content="設定" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Options.png" Click="btn_Click"/>
-            <Button x:Name="Btn_About" Content="關於" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/About.png" Click="btn_Click"/>
-        </ctrl:Ctrl_HexagonCanvas>
+        <Image Source="{Binding Background, Mode=OneWay}"/>
+        <Grid x:Name="Grid_Menu">
+            <Grid.Effect>
+                <BlurEffect Radius="0" KernelType="Gaussian"/>
+            </Grid.Effect>
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
+            <ctrl:Ctrl_HexagonCanvas x:Name="Cnv_Btns">
+                <Button x:Name="Btn_Playing" Content="演奏" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Playing.png" Click="btn_Click"/>
+                <Button x:Name="Btn_Community" Content="社群" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Community.png" Click="btn_Click"/>
+                <Button x:Name="Btn_Mod" Content="模組" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Mod.png" Click="btn_Click"/>
+                <Button x:Name="Btn_Exit" Content="離開" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Exit.png" Click="btn_Click"/>
+                <Button x:Name="Btn_Options" Content="設定" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Options.png" Click="btn_Click"/>
+                <Button x:Name="Btn_About" Content="關於" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/About.png" Click="btn_Click"/>
+            </ctrl:Ctrl_HexagonCanvas>
+            <Image Name="Img_Logo" Width="400" Source="/AirBand;component/Materials/Logo.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image Name="Img_Version" Width="153" Source="/AirBand;component/Materials/Version.png" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="110"/>
+                </Image.RenderTransform>
+            </Image>
+        </Grid>
+        <Grid Name="Stp_Content" Width="600" Background="#9900FFFF" HorizontalAlignment="Right">
+            <Grid.RenderTransform>
+                <TranslateTransform X="600"/>
+            </Grid.RenderTransform>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ContentPresenter x:Name="Presenter"/>
+            <Button x:Name="Btn_Check" Grid.Row="1" Content="確定" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Check.png" Click="btn_Click" VerticalAlignment="Bottom" Margin="0 12.8"/>
+        </Grid>
     </Grid>
 </UserControl>

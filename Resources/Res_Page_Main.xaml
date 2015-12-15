@@ -71,7 +71,7 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
-        <DoubleAnimation Storyboard.TargetName="Img_Version" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:1.5" BeginTime="0:0:1.5">
+        <DoubleAnimation Storyboard.TargetName="Img_Version" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1.5" BeginTime="0:0:1.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
@@ -83,6 +83,115 @@
         </DoubleAnimation>
     </Storyboard>
     <Storyboard x:Key="Exit">
+        <DoubleAnimation Storyboard.TargetName="Cnv_Btns" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Cnv_Btns" Storyboard.TargetProperty="RenderTransform.(RotateTransform.Angle)" To="90" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Playing" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Community" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Community" Storyboard.TargetProperty="(Canvas.Left)" To="619" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Mod" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Mod" Storyboard.TargetProperty="(Canvas.Left)" To="619" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Exit" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Options" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_Options" Storyboard.TargetProperty="(Canvas.Left)" To="619" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_About" Storyboard.TargetProperty="(Canvas.Top)" To="320" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Btn_About" Storyboard.TargetProperty="(Canvas.Left)" To="619" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Main" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="EnterContent">
+        <DoubleAnimation Storyboard.TargetName="Stp_Content" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Stp_Content" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Menu" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="-300.95" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Menu" Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)" From="0" To="30" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+    </Storyboard>
+    <Storyboard x:Key="ExitContent">
+        <DoubleAnimation Storyboard.TargetName="Stp_Content" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Stp_Content" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="600" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Menu" Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" To="0" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Grid_Menu" Storyboard.TargetProperty="(Effect).(BlurEffect.Radius)" To="0" Duration="0:0:1">
+            <DoubleAnimation.EasingFunction>
+                <QuadraticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
     <Style x:Key="MenuButton" TargetType="Button">
         <Setter Property="Height" Value="128"/>
