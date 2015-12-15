@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ctrl="clr-namespace:AirBand.Controls"
-             mc:Ignorable="d" 
-             d:DesignWidth="600" d:DesignHeight="640" Loaded="ctrl_Loaded">
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="640" Loaded="ctrl_Loaded">
     <UserControl.Resources>
         <Style x:Key="TitleLabel" TargetType="Label">
             <Setter Property="Margin" Value="20 2"/>
@@ -85,7 +84,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid Height="600" Width="600">
+    <Grid Width="600" Height="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="Auto"/>

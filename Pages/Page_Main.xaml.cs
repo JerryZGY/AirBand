@@ -64,11 +64,13 @@ namespace AirBand.Pages
                     Switcher.Switch(new Page_Main());
                     break;
                 case "Btn_About":
+                    Presenter.Content = new Ctrl_About();
+                    ((Storyboard)Resources["EnterContent"]).Begin();
+                    Grid_Menu.IsHitTestVisible = false;
                     break;
                 case "Btn_Options":
                     Presenter.Content = new Ctrl_Options();
-                    Storyboard story = ((Storyboard)Resources["EnterContent"]);
-                    story.Begin();
+                    ((Storyboard)Resources["EnterContent"]).Begin();
                     Grid_Menu.IsHitTestVisible = false;
                     break;
                 case "Btn_Exit":

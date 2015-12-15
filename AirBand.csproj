@@ -46,6 +46,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Effects, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -70,6 +71,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Ctrl_About.xaml.cs">
+      <DependentUpon>Ctrl_About.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Ctrl_BackgroundSelector.xaml.cs">
       <DependentUpon>Ctrl_BackgroundSelector.xaml</DependentUpon>
     </Compile>
@@ -81,6 +85,10 @@
     <Compile Include="Converters\PianoSenseConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
     <Compile Include="ViewModels\VM_EnvironmentVariables.cs" />
+    <Page Include="Controls\Ctrl_About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Ctrl_BackgroundSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
