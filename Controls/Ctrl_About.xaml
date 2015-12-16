@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ee="http://schemas.microsoft.com/expression/2010/effects"
              xmlns:ctrl="clr-namespace:AirBand.Controls"
-             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="640">
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="614">
     <UserControl.Resources>
         <Storyboard x:Key="Enter">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="R1">
@@ -91,32 +91,18 @@
             </Setter>
             <Setter Property="Fill" Value="Black"/>
         </Style>
-        <Style TargetType="Label">
-            <Setter Property="Margin" Value="20 2"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Label">
-                        <Border Background="#66000000">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top" TextBlock.FontSize="28" TextBlock.FontFamily="華康瘦金體" TextBlock.FontWeight="Bold"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource Enter}"/>
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid Width="600" Height="600">
+    <Grid Width="600" Height="614">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="關於"/>
+        <Label Content="關於" Style="{StaticResource TitleLabel}"/>
         <Canvas Grid.Row="1" x:Name="canvas" RenderTransformOrigin="0.5,0.5" Width="350" Height="350">
             <Canvas.Effect>
                 <ee:SwirlEffect TwistAmount="0"/>

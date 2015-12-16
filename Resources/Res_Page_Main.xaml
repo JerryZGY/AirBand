@@ -81,6 +81,21 @@
                 <QuarticEase EasingMode="EaseOut"/>
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:1.5" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Width" To="610" Duration="0:0:1.5" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Height" To="610" Duration="0:0:1.5" BeginTime="0:0:0.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseOut"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
     </Storyboard>
     <Storyboard x:Key="Exit">
         <DoubleAnimation Storyboard.TargetName="Cnv_Btns" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.5">
@@ -139,6 +154,21 @@
             </DoubleAnimation.EasingFunction>
         </DoubleAnimation>
         <DoubleAnimation Storyboard.TargetName="Btn_About" Storyboard.TargetProperty="(Canvas.Left)" To="619" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Width" To="50" Duration="0:0:1.5">
+            <DoubleAnimation.EasingFunction>
+                <QuarticEase EasingMode="EaseIn"/>
+            </DoubleAnimation.EasingFunction>
+        </DoubleAnimation>
+        <DoubleAnimation Storyboard.TargetName="Inst" Storyboard.TargetProperty="Height" To="50" Duration="0:0:1.5">
             <DoubleAnimation.EasingFunction>
                 <QuarticEase EasingMode="EaseIn"/>
             </DoubleAnimation.EasingFunction>

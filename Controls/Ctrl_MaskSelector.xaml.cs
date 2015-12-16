@@ -10,7 +10,7 @@ namespace AirBand.Controls
 {
     public partial class Ctrl_MaskSelector : UserControl
     {
-        private int index = Switcher.VM_EnvironmentVariables.BackgroundIndex;
+        private int index = Switcher.VM_EnvironmentVariables.MaskIndex;
         private string[] maskArray;
 
         public Ctrl_MaskSelector()
@@ -21,9 +21,7 @@ namespace AirBand.Controls
         private void ctrl_Loaded(object sender, RoutedEventArgs e)
         {
             if (!DesignerProperties.GetIsInDesignMode(this))
-            {
                 maskArray = Directory.GetFileSystemEntries(@"Materials/Masks", "*.png").ToArray();
-            }
         }
 
         private void btn_Click(object sender, RoutedEventArgs e)

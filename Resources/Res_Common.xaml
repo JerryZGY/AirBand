@@ -4,6 +4,20 @@
     <c:VolumeConverter x:Key="VolumeConverter"/>
     <c:PianoSenseConverter x:Key="PianoSenseConverter"/>
     <c:GuitarSenseConverter x:Key="GuitarSenseConverter"/>
+    <Style x:Key="TitleLabel" TargetType="Label">
+        <Setter Property="Margin" Value="20 2"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Label">
+                    <Border Background="#66000000">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top" TextBlock.FontSize="28" TextBlock.FontFamily="華康瘦金體" TextBlock.FontWeight="Bold"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="DefaultLabel" TargetType="Label">
         <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
         <Setter Property="Background" Value="Transparent"/>

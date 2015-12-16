@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AirBand</RootNamespace>
     <AssemblyName>AirBand</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -29,6 +29,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SupportedCultures>en-US</SupportedCultures>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>AirBand.ico</ApplicationIcon>
@@ -46,7 +48,13 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Expression.Effects, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Facebook">
+      <HintPath>Assemblies\Facebook.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Effects, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -71,6 +79,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\DoubleUtil.cs" />
+    <Compile Include="Common\GeometryExtensions.cs" />
+    <Compile Include="Common\JStoryteller.cs" />
+    <Compile Include="Controls\Ctrl_Community.xaml.cs">
+      <DependentUpon>Ctrl_Community.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_CommunityElement.xaml.cs">
+      <DependentUpon>Ctrl_CommunityElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Instrumentation.cs" />
+    <Compile Include="Common\RightClickCommand.cs" />
     <Compile Include="Controls\Ctrl_About.xaml.cs">
       <DependentUpon>Ctrl_About.xaml</DependentUpon>
     </Compile>
@@ -80,8 +99,27 @@
     <Compile Include="Controls\Ctrl_MaskSelector.xaml.cs">
       <DependentUpon>Ctrl_MaskSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Ctrl_Mod.xaml.cs">
+      <DependentUpon>Ctrl_Mod.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Ctrl_OutlinedTextBlock.cs" />
+    <Compile Include="Controls\Ctrl_Test4.xaml.cs">
+      <DependentUpon>Ctrl_Test4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Test3.xaml.cs">
+      <DependentUpon>Ctrl_Test3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Test2.xaml.cs">
+      <DependentUpon>Ctrl_Test2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Test1.xaml.cs">
+      <DependentUpon>Ctrl_Test1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Test0.xaml.cs">
+      <DependentUpon>Ctrl_Test0.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\GuitarSenseConverter.cs" />
+    <Compile Include="Converters\InstrumentsVolumeConverter.cs" />
     <Compile Include="Converters\PianoSenseConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
     <Compile Include="ViewModels\VM_EnvironmentVariables.cs" />
@@ -93,11 +131,43 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Ctrl_Community.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Ctrl_CommunityElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Ctrl_MaskSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Ctrl_Mod.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Ctrl_Options.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Ctrl_Test4.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Ctrl_Test3.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Ctrl_Test2.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Ctrl_Test1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Ctrl_Test0.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,6 +184,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Res_Page_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Res_Test.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -174,7 +248,6 @@
     <Resource Include="AirBand.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assemblies\" />
     <Folder Include="Sounds\" />
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +284,13 @@
     <Resource Include="Materials\RightArrow.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Materials\Violin.png" />
+    <Resource Include="Materials\YouTube.jpg" />
+    <EmbeddedResource Include="Assemblies\Microsoft.Expression.Effects.dll" />
+    <EmbeddedResource Include="Assemblies\Microsoft.Expression.Interactions.dll" />
+    <EmbeddedResource Include="Assemblies\System.Windows.Interactivity.dll" />
+    <EmbeddedResource Include="Assemblies\Facebook.dll" />
+    <Resource Include="Materials\AirBand.jpg" />
     <Content Include="Materials\Backgrounds\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -220,6 +300,9 @@
     <Content Include="Materials\Backgrounds\BG03.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Materials\Facebook.jpg" />
+    <Resource Include="Materials\Drum.png" />
+    <Resource Include="Materials\Flute.png" />
     <Content Include="Materials\Masks\Mask00.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -232,7 +315,6 @@
     <Resource Include="Materials\Guitar.png" />
     <Resource Include="Materials\Piano.png" />
     <Resource Include="Materials\Masks.png" />
-    <Resource Include="Materials\Mask.png" />
     <Resource Include="Materials\InstrumentsVolume.png" />
   </ItemGroup>
   <ItemGroup>

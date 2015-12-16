@@ -18,6 +18,7 @@
             <Grid.RenderTransform>
                 <TranslateTransform/>
             </Grid.RenderTransform>
+            <ctrl:Ctrl_Instrumentation x:Name="Inst" Width="610" Height="610" CurrentValue="10" Foreground="White" ActiveForeground="Aqua" IsEnabled="True"/>
             <ctrl:Ctrl_HexagonCanvas x:Name="Cnv_Btns">
                 <Button x:Name="Btn_Playing" Content="演奏" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Playing.png" Click="btn_Click"/>
                 <Button x:Name="Btn_Community" Content="社群" Style="{StaticResource MenuButton}" Tag="/AirBand;component/Materials/Community.png" Click="btn_Click"/>

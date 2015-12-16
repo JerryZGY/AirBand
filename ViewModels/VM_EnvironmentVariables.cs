@@ -34,7 +34,7 @@ namespace AirBand
             }
         }
 
-        private double mainVolume = 0;
+        private double mainVolume = .5;
         public double MainVolume
         {
             get
@@ -125,12 +125,12 @@ namespace AirBand
         {
             get
             {
-                return backgroundIndex;
+                return maskIndex;
             }
             set
             {
                 maskIndex = value;
-                OnPropertyChanged("BackgroundIndex");
+                OnPropertyChanged("MaskIndex");
             }
         }
 
@@ -145,6 +145,20 @@ namespace AirBand
             {
                 mask = value;
                 OnPropertyChanged("Mask");
+            }
+        }
+
+        private int instrumentsVolume = 63;
+        public int InstrumentsVolume
+        {
+            get
+            {
+                return instrumentsVolume;
+            }
+            set
+            {
+                instrumentsVolume = value;
+                OnPropertyChanged("InstrumentsVolume");
             }
         }
 

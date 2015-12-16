@@ -4,22 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ctrl="clr-namespace:AirBand.Controls"
-             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="640" Loaded="ctrl_Loaded">
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="614" Loaded="ctrl_Loaded">
     <UserControl.Resources>
-        <Style x:Key="TitleLabel" TargetType="Label">
-            <Setter Property="Margin" Value="20 2"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Label">
-                        <Border Background="#66000000">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top" TextBlock.FontSize="28" TextBlock.FontFamily="華康瘦金體" TextBlock.FontWeight="Bold"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style TargetType="Label">
             <Setter Property="Margin" Value="20,2,2,2"/>
             <Setter Property="Height" Value="40"/>
@@ -84,7 +70,7 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Grid Width="600" Height="600">
+    <Grid Width="600" Height="614">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="Auto"/>
@@ -110,7 +96,7 @@
             <ToggleButton IsChecked="{Binding BackgroundRemoval, Mode=TwoWay}"/>
             <ToggleButton IsChecked="{Binding MainVolumeMute, Mode=TwoWay}"/>
             <Slider Value="{Binding MainVolume, Converter={StaticResource VolumeConverter}, Mode=TwoWay}"/>
-            <Slider Value="{Binding MainVolume, Converter={StaticResource VolumeConverter}, Mode=TwoWay}"/>
+            <Slider Value="{Binding InstrumentsVolume, Mode=TwoWay}" Maximum="127"/>
             <Slider Value="{Binding PianoSense, Converter={StaticResource PianoSenseConverter}, Mode=TwoWay}" Maximum="99" TickFrequency="5"/>
             <Slider Value="{Binding GuitarSense, Converter={StaticResource GuitarSenseConverter}, Mode=TwoWay}" Maximum="99" TickFrequency="10"/>
             <ctrl:Ctrl_BackgroundSelector Height="111" Margin="2,2,20,2"/>

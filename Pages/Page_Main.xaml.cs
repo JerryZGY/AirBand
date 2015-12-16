@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using AirBand.Controls;
@@ -13,6 +14,7 @@ namespace AirBand.Pages
         {
             InitializeComponent();
             DataContext = Switcher.VM_EnvironmentVariables;
+            InputBindings.Add(new InputBinding(new RightClickCommand(() => exitContent()), new MouseGesture(MouseAction.RightClick)));
         }
 
         public void EnterStory()
@@ -30,6 +32,9 @@ namespace AirBand.Pages
 
         public void InitializeProperty()
         {
+            Inst.Opacity = 0;
+            Inst.Width = 50;
+            Inst.Height = 50;
             Grid_Main.Opacity = 0;
             Img_Logo.Opacity = 0;
             Img_Version.Opacity = 0;
@@ -48,42 +53,49 @@ namespace AirBand.Pages
         {
             switch (((Button)sender).Name)
             {
-                //case "Button_Start":
-                //    if (!Switcher.viewModel.BackgroundRemoval)
-                //        StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("Playing"));
-                //    else
-                //        StoryboardHandler.ExitStoryBoard(this, Image_LogoEffect, () => Switcher.Switch("BRPlaying"));
-                //    break;
-                //case "Button_Community":
-                //    EnterContent("Community");
-                //    break;
-                //case "Button_Mod":
-                //    EnterContent("Mod");
-                //    break;
                 case "Btn_Playing":
+                    Grid_Menu.IsHitTestVisible = false;
                     Switcher.Switch(new Page_Main());
                     break;
-                case "Btn_About":
-                    Presenter.Content = new Ctrl_About();
-                    ((Storyboard)Resources["EnterContent"]).Begin();
-                    Grid_Menu.IsHitTestVisible = false;
+                case "Btn_Community":
+                    Presenter.Content = new Ctrl_Community();
+                    enterContent();
+                    break;
+                case "Btn_Mod":
+                    Presenter.Content = new Ctrl_Mod();
+                    enterContent();
                     break;
                 case "Btn_Options":
                     Presenter.Content = new Ctrl_Options();
-                    ((Storyboard)Resources["EnterContent"]).Begin();
-                    Grid_Menu.IsHitTestVisible = false;
+                    enterContent();
+                    break;
+                case "Btn_About":
+                    Presenter.Content = new Ctrl_About();
+                    enterContent();
+                    break;
+                case "Btn_Check":
+                    exitContent();
                     break;
                 case "Btn_Exit":
                     Application.Current.Shutdown();
                     break;
-                case "Btn_Check":
-                    Storyboard storya = ((Storyboard)Resources["ExitContent"]);
-                    storya.Begin();
-                    Grid_Menu.IsHitTestVisible = true;
-                    break;
                 default:
                     break;
             }
+        }
+
+        private void enterContent()
+        {
+            Grid_Menu.IsHitTestVisible = false;
+            Switcher.VM_EnvironmentVariables.ContentEntered = true;
+            this.Begin("EnterContent");
+        }
+
+        private void exitContent()
+        {
+            Grid_Menu.IsHitTestVisible = true;
+            Switcher.VM_EnvironmentVariables.ContentEntered = false;
+            this.Begin("ExitContent");
         }
     }
 }
