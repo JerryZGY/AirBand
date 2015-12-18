@@ -53,6 +53,11 @@
       <HintPath>Assemblies\Facebook.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Microsoft.Contracts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Microsoft.Expression.Effects, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
@@ -68,6 +73,7 @@
     </Reference>
     <Reference Include="MyoSharp">
       <HintPath>Assemblies\MyoSharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NAudio">
       <HintPath>Assemblies\NAudio.dll</HintPath>

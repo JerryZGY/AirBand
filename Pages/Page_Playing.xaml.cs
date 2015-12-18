@@ -28,6 +28,7 @@ namespace AirBand.Pages
 
         public void ExitStory(Action callback)
         {
+            Switcher.PageSwitcher.MyoHandler.StopInstSelectorPose();
             IsHitTestVisible = false;
             this.Begin("Exit", () =>
             {
@@ -57,6 +58,7 @@ namespace AirBand.Pages
             snd = new SoundHandler();
             Switcher.PageSwitcher.KinectHandler.InputEvent += inputEvent;
             Switcher.PageSwitcher.MyoHandler.InputHandler += myoInputEvent;
+            Switcher.PageSwitcher.MyoHandler.StartInstSelectorPose();
         }
 
         private void inputEvent(KinectInputArgs e)
@@ -73,13 +75,9 @@ namespace AirBand.Pages
             Dispatcher.Invoke(() =>
             {
                 if (Btn_Inst.IsHitTestVisible)
-                {
-                    Btn_Inst.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                }
+                    enterInstSelector();
                 else if (Btn_Return.IsHitTestVisible)
-                {
-                    Btn_Return.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                }
+                    exitInstSelector();
             });
         }
 
@@ -112,7 +110,10 @@ namespace AirBand.Pages
             switch (((Button)sender).Name)
             {
                 case "Btn_Piano":
-                    equipInst(0);
+                    if (Switcher.VM_EnvironmentVariables.BackgroundRemoval)
+                        equipBackPiano();
+                    else
+                        equipInst(0);
                     break;
                 case "Btn_Guitar":
                     equipInst(1);
@@ -155,6 +156,8 @@ namespace AirBand.Pages
 
         private void cancelInst()
         {
+            Grid_BackControls.Children.Clear();
+            Grid_ForeControls.Children.Clear();
             ((Grid)body.Instrument.Tag).Children.Remove(body.Instrument);
             body.ClearInstrument();
             cancelDebounceTimer.Enabled = true;
@@ -163,6 +166,22 @@ namespace AirBand.Pages
                 cancelDebounceTimer.Enabled = false;
                 Btn_Exit.IsHitTestVisible = true;
             };
+        }
+
+        private void equipBackPiano()
+        {
+            Grid_BackControls.Children.Clear();
+            Grid_ForeControls.Children.Clear();
+            if (body == null)
+                return;
+            if (body.Instrument == null || body.Instrument.GetType() != typeof(Inst_Piano))
+            {
+                if (body.Instrument != null)
+                    ((Grid)body.Instrument.Tag).Children.Remove(body.Instrument);
+                body.ClearInstrument();
+                body.SetInstrument(new Inst_Piano(Grid_BackControls));
+            }
+            Grid_BackControls.Children.Add(body.Instrument);
         }
 
         private void equipInst(int id)
@@ -229,14 +248,14 @@ namespace AirBand.Pages
         private void enterInstSelector()
         {
             isSelectMode = Cnv_InstSelector.IsHitTestVisible = true;
-            Btn_Inst.IsEnabled = Cnv_Main.IsHitTestVisible = !isSelectMode;
+            Btn_Inst.IsHitTestVisible = Btn_Inst.IsEnabled = Cnv_Main.IsHitTestVisible = !isSelectMode;
             this.Begin("EnterInstSelector");
         }
 
         private void exitInstSelector()
         {
             isSelectMode = Cnv_InstSelector.IsHitTestVisible = false;
-            this.Begin("ExitInstSelector", () => Btn_Inst.IsEnabled = Cnv_Main.IsHitTestVisible = !isSelectMode);
+            this.Begin("ExitInstSelector", () => Btn_Inst.IsHitTestVisible = Btn_Inst.IsEnabled = Cnv_Main.IsHitTestVisible = !isSelectMode);
         }
     }
 }

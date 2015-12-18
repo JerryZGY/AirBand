@@ -13,8 +13,8 @@
             <Image Source="{Binding Background, Mode=OneWay}" Width="1366" Height="768"/>
             <Grid x:Name="Grid_BackControls"/>
             <Image x:Name="Img_KinectFrame" Width="1366" Height="768" Stretch="Fill"/>
-            <Grid x:Name="Grid_ForeControls" Opacity=".8"/>
             <Canvas x:Name="Cnv_Masks" Width="1366" Height="768"/>
+            <Grid x:Name="Grid_ForeControls" Opacity=".8"/>
             <Image x:Name="Img_UserView" Width="155" Height="128" Stretch="Fill" Canvas.Left="12.8" Canvas.Top="627.2" Opacity=".8"/>
             <Button x:Name="Btn_Cheer" Canvas.Left="1225.2" Canvas.Top="12.8" Tag="/AirBand;component/Materials/Cheer.png" Content="振奮" Click="btn_Click"/>
             <Button x:Name="Btn_Gloom" Canvas.Left="1225.2" Canvas.Top="166.4" Tag="/AirBand;component/Materials/Gloom.png" Content="沮喪" Click="btn_Click"/>

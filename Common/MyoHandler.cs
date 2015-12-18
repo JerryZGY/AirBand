@@ -10,8 +10,8 @@ namespace AirBand
     {
         public delegate void MyoInputHandler();
         public event MyoInputHandler InputHandler;
+        public MyoEventArgs MyoEventArgs;
         private IHeldPose instSelectorPose;
-        private MyoEventArgs myoEventArgs;
 
         public MyoHandler()
         {
@@ -21,16 +21,18 @@ namespace AirBand
             var hub = Hub.Create(channel);
             hub.MyoConnected += (sender, e) =>
             {
-                myoEventArgs = e;
-                myoEventArgs.Myo.Unlock(UnlockType.Hold);
-                StartInstSelectorPose();
+                MyoEventArgs = e;
             };
             channel.StartListening();
         }
 
         public void StartInstSelectorPose()
         {
-            instSelectorPose = HeldPose.Create(myoEventArgs.Myo, Pose.DoubleTap);
+            if (MyoEventArgs == null)
+                return;
+            if (!MyoEventArgs.Myo.IsUnlocked)
+                MyoEventArgs.Myo.Unlock(UnlockType.Hold);
+            instSelectorPose = HeldPose.Create(MyoEventArgs.Myo, Pose.DoubleTap);
             instSelectorPose.Triggered += Pose_Triggered;
             instSelectorPose.Interval = TimeSpan.FromSeconds(.5);
             instSelectorPose.Start();
@@ -42,6 +44,7 @@ namespace AirBand
             instSelectorPose.Stop();
             instSelectorPose.Dispose();
             instSelectorPose = null;
+            MyoEventArgs.Myo.Lock();
         }
 
         private void Pose_Triggered(object sender, PoseEventArgs e)
