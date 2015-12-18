@@ -28,7 +28,7 @@ namespace AirBand.Controls
 
         private void btn_Click(object sender, RoutedEventArgs e)
         {
-            Button button = sender as Button;
+            var button = sender as Button;
             switch (button.Name)
             {
                 case "Btn_Prev":

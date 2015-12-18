@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="AirBand.Controls.Ctrl_SynthSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" d:DesignWidth="278" d:DesignHeight="40" Width="278" Background="#66000000" Loaded="ctrl_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="Btn_Prev" Style="{DynamicResource SelectButton}" Tag="/AirBand;component/Materials/LeftArrow.png" Click="btn_Click"/>
+        <TextBlock x:Name="Lbl" Grid.Column="1" Width="198" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+        <Button x:Name="Btn_Next" Grid.Column="2" Style="{DynamicResource SelectButton}" Tag="/AirBand;component/Materials/RightArrow.png" Click="btn_Click"/>
+    </Grid>
+</UserControl>

@@ -37,5 +37,11 @@ namespace AirBand
             else
                 return null;
         }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Switcher.PageSwitcher.KinectHandler.Dispose();
+            Switcher.PageSwitcher.MidiHandler.Dispose();
+        }
     }
 }

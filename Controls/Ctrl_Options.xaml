@@ -88,6 +88,7 @@
             <Label Content="樂器音量" Tag="/AirBand;component/Materials/InstrumentsVolume.png"/>
             <Label Content="鋼琴感度" Tag="/AirBand;component/Materials/Piano.png"/>
             <Label Content="吉他感度" Tag="/AirBand;component/Materials/Guitar.png"/>
+            <Label Content="混音音源" Tag="/AirBand;component/Materials/Synth.png"/>
             <Label Content="主題背景" Height="111" Tag="/AirBand;component/Materials/BackgroundSelector.png"/>
             <Label Content="演奏面具" Height="111" Tag="/AirBand;component/Materials/Masks.png"/>
         </StackPanel>
@@ -99,6 +100,7 @@
             <Slider Value="{Binding InstrumentsVolume, Mode=TwoWay}" Maximum="127"/>
             <Slider Value="{Binding PianoSense, Converter={StaticResource PianoSenseConverter}, Mode=TwoWay}" Maximum="99" TickFrequency="5"/>
             <Slider Value="{Binding GuitarSense, Converter={StaticResource GuitarSenseConverter}, Mode=TwoWay}" Maximum="99" TickFrequency="10"/>
+            <ctrl:Ctrl_SynthSelector Margin="2,2,20,2"/>
             <ctrl:Ctrl_BackgroundSelector Height="111" Margin="2,2,20,2"/>
             <ctrl:Ctrl_MaskSelector Height="111" Margin="2,2,20,2"/>
         </StackPanel>

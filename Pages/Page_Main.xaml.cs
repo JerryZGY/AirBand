@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using AirBand.Controls;
 
 namespace AirBand.Pages
@@ -19,15 +18,15 @@ namespace AirBand.Pages
 
         public void EnterStory()
         {
-            Storyboard story = ((Storyboard)Resources["Enter"]);
-            story.Begin();
+            Switcher.PageSwitcher.Begin("FadeIn", () => Switcher.PageSwitcher.Music.ApplyAnimationClock(MediaElement.VolumeProperty, null));
+            this.Begin("Enter");
         }
 
         public void ExitStory(Action callback)
         {
-            Storyboard story = ((Storyboard)Resources["Exit"]);
-            story.Completed += (s, e) => callback();
-            story.Begin();
+            IsHitTestVisible = false;
+            Switcher.PageSwitcher.Begin("FadeOut");
+            this.Begin("Exit", callback);
         }
 
         public void InitializeProperty()
@@ -41,6 +40,7 @@ namespace AirBand.Pages
             Img_Version.RenderTransform = new TranslateTransform(165, 110);
             Cnv_Btns.Opacity = 0;
             Cnv_Btns.RenderTransform = new RotateTransform(-90);
+            Switcher.PageSwitcher.Cur.Visibility = Visibility.Collapsed;
         }
 
         private void page_Loaded(object sender, RoutedEventArgs e)
@@ -54,8 +54,8 @@ namespace AirBand.Pages
             switch (((Button)sender).Name)
             {
                 case "Btn_Playing":
-                    Grid_Menu.IsHitTestVisible = false;
-                    Switcher.Switch(new Page_Main());
+                    Switcher.PageSwitcher.KinectHandler.StartRead();
+                    Switcher.Switch(new Page_Playing());
                     break;
                 case "Btn_Community":
                     Presenter.Content = new Ctrl_Community();

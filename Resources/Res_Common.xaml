@@ -4,6 +4,23 @@
     <c:VolumeConverter x:Key="VolumeConverter"/>
     <c:PianoSenseConverter x:Key="PianoSenseConverter"/>
     <c:GuitarSenseConverter x:Key="GuitarSenseConverter"/>
+    <Style x:Key="UserControl" TargetType="UserControl">
+        <Setter Property="Background" Value="#66000000"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="UserControl">
+                    <Border Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="Border" Value="0.1"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="TitleLabel" TargetType="Label">
         <Setter Property="Margin" Value="20 2"/>
         <Setter Property="Height" Value="40"/>
@@ -64,6 +81,32 @@
                         <!--<EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
                             <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
                         </EventTrigger>-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="SelectButton" TargetType="Button">
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="#66000000">
+                        <Rectangle Name="BackRectangle" Fill="#E5FFFFFF" Margin="7"/>
+                        <Image Name="Image" Margin="9" Source="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Fill" TargetName="BackRectangle" Value="#B2FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="true">
+                            <Setter Property="Fill" TargetName="BackRectangle" Value="#E5FFFFFF"/>
+                        </Trigger>
+                        <!--<EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                <SoundPlayerAction Source="/AirBand;component/Resources/click.wav" />
+                            </EventTrigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

@@ -3,13 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrl="clr-namespace:AirBand.Controls"
         mc:Ignorable="d" Title="AirBand" ResizeMode="NoResize" WindowStyle="None" Width="1366" Height="768" WindowStartupLocation="CenterScreen" Background="Black">
+    <Window.Resources>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimation Storyboard.TargetName="Music" Storyboard.TargetProperty="Volume" From="0" To="{Binding MainVolume, Mode=OneWay}" Duration="0:0:1.5"/>
+        </Storyboard>
+        <Storyboard x:Key="FadeOut">
+            <DoubleAnimation Storyboard.TargetName="Music" Storyboard.TargetProperty="Volume" To="0" Duration="0:0:1.5"/>
+        </Storyboard>
+    </Window.Resources>
     <Viewbox>
         <Grid Width="1366" Height="768">
             <ContentPresenter x:Name="Presenter"/>
-            <Canvas x:Name="Canvas_Pointer" IsHitTestVisible="False" Width="1366" Height="768">
-                <!--<ctrl:Ctrl_Cursor x:Name="Cur" Canvas.Left="633" Canvas.Top="334" IsHitTestVisible="False" Visibility="Collapsed"/>-->
+            <Canvas x:Name="Cnv_Pointer" IsHitTestVisible="False" Width="1366" Height="768">
+                <ctrl:Ctrl_Cursor x:Name="Cur" Canvas.Left="633" Canvas.Top="334" IsHitTestVisible="False" Visibility="Collapsed"/>
             </Canvas>
+            <MediaElement x:Name="Music" Volume="{Binding MainVolume, Mode=OneWay}" Source="Music/Title.m4a" LoadedBehavior="Manual" UnloadedBehavior="Stop" MediaEnded="mediaEnded" Visibility="Collapsed" IsMuted="{Binding MainVolumeMute, Mode=OneWay}"/>
+            <!--<Label x:Name="Lbl_X" Content="123" Foreground="White" FontSize="50" HorizontalAlignment="Left" VerticalAlignment="Center"/>-->
+            <!--<Label x:Name="Lbl_Y" Content="123" Foreground="White" FontSize="50" HorizontalAlignment="Right" VerticalAlignment="Center"/>-->
         </Grid>
     </Viewbox>
 </Window>

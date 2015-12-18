@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="AirBand.Pages.Page_Playing"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ctrl="clr-namespace:AirBand.Controls"
+             mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Width="1366" Height="768" Loaded="page_Loaded" IsHitTestVisible="False">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/Res_Page_Playing.xaml"/>
+    </UserControl.Resources>
+    <Grid x:Name="Grid_Main">
+        <Canvas x:Name="Cnv_Main" Width="1366" Height="768">
+            <Image Source="{Binding Background, Mode=OneWay}" Width="1366" Height="768"/>
+            <Grid x:Name="Grid_BackControls"/>
+            <Image x:Name="Img_KinectFrame" Width="1366" Height="768" Stretch="Fill"/>
+            <Grid x:Name="Grid_ForeControls" Opacity=".8"/>
+            <Canvas x:Name="Cnv_Masks" Width="1366" Height="768"/>
+            <Image x:Name="Img_UserView" Width="155" Height="128" Stretch="Fill" Canvas.Left="12.8" Canvas.Top="627.2" Opacity=".8"/>
+            <Button x:Name="Btn_Cheer" Canvas.Left="1225.2" Canvas.Top="12.8" Tag="/AirBand;component/Materials/Cheer.png" Content="振奮" Click="btn_Click"/>
+            <Button x:Name="Btn_Gloom" Canvas.Left="1225.2" Canvas.Top="166.4" Tag="/AirBand;component/Materials/Gloom.png" Content="沮喪" Click="btn_Click"/>
+            <Button x:Name="Btn_Inst" Canvas.Left="1225.2" Canvas.Top="320" Tag="/AirBand;component/Materials/Instruments.png" Content="樂器" Click="btn_Click"/>
+            <Button x:Name="Btn_Mask" Canvas.Left="1225.2" Canvas.Top="473.6" Tag="/AirBand;component/Materials/Masks.png" Content="面具" Click="btn_Click"/>
+            <Button x:Name="Btn_Exit" Canvas.Left="1225.2" Canvas.Top="627.2" Tag="/AirBand;component/Materials/Return.png" Content="返回" Click="btn_Click"/>
+        </Canvas>
+        <ctrl:Ctrl_Instrumentation x:Name="Inst" Width="610" Height="610" CurrentValue="10" Foreground="White" ActiveForeground="Aqua" IsEnabled="True"/>
+        <ctrl:Ctrl_HexagonCanvas x:Name="Cnv_InstSelector">
+            <Button x:Name="Btn_Piano" Tag="/AirBand;component/Materials/Piano.png" Content="鋼琴" Click="btn_Click"/>
+            <Button x:Name="Btn_Guitar" Tag="/AirBand;component/Materials/Guitar.png" Content="吉他" Click="btn_Click"/>
+            <Button x:Name="Btn_Drum" Tag="/AirBand;component/Materials/Drum.png" Content="爵士鼓" Click="btn_Click"/>
+            <Button x:Name="Btn_Return" Tag="/AirBand;component/Materials/Return.png" Content="返回" Click="btn_Click"/>
+            <Button x:Name="Btn_Flute" Tag="/AirBand;component/Materials/Flute.png" Content="長笛" Click="btn_Click"/>
+            <Button x:Name="Btn_Violin" Tag="/AirBand;component/Materials/Violin.png" Content="小提琴" Click="btn_Click"/>
+        </ctrl:Ctrl_HexagonCanvas>
+        <Image Name="Img_Effect" Stretch="UniformToFill" Width="1366" Height="768" IsHitTestVisible="False" Opacity="0"/>
+    </Grid>
+</UserControl>

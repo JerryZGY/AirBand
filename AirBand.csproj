@@ -38,6 +38,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -55,8 +56,23 @@
     <Reference Include="Microsoft.Expression.Effects, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Kinect, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Microsoft.Kinect.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Kinect.Wpf.Controls, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Assemblies\Microsoft.Kinect.Wpf.Controls.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NAudio">
+      <HintPath>Assemblies\NAudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,12 +97,19 @@
     </Compile>
     <Compile Include="Common\DoubleUtil.cs" />
     <Compile Include="Common\GeometryExtensions.cs" />
-    <Compile Include="Common\JStoryteller.cs" />
+    <Compile Include="Common\FrameworkElementExtensions.cs" />
+    <Compile Include="Common\KinectHandler.cs" />
+    <Compile Include="Common\KinectInput.cs" />
+    <Compile Include="Common\MidiHandler.cs" />
+    <Compile Include="Common\SoundHandler.cs" />
     <Compile Include="Controls\Ctrl_Community.xaml.cs">
       <DependentUpon>Ctrl_Community.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Ctrl_CommunityElement.xaml.cs">
       <DependentUpon>Ctrl_CommunityElement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Ctrl_Cursor.xaml.cs">
+      <DependentUpon>Ctrl_Cursor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Ctrl_Instrumentation.cs" />
     <Compile Include="Common\RightClickCommand.cs" />
@@ -103,6 +126,9 @@
       <DependentUpon>Ctrl_Mod.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Ctrl_OutlinedTextBlock.cs" />
+    <Compile Include="Controls\Ctrl_SynthSelector.xaml.cs">
+      <DependentUpon>Ctrl_SynthSelector.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Ctrl_Test4.xaml.cs">
       <DependentUpon>Ctrl_Test4.xaml</DependentUpon>
     </Compile>
@@ -122,6 +148,19 @@
     <Compile Include="Converters\InstrumentsVolumeConverter.cs" />
     <Compile Include="Converters\PianoSenseConverter.cs" />
     <Compile Include="Converters\VolumeConverter.cs" />
+    <Compile Include="Instruments\Inst_Drum.xaml.cs">
+      <DependentUpon>Inst_Drum.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Instruments\Inst_Guitar.xaml.cs">
+      <DependentUpon>Inst_Guitar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Instruments\Inst_Piano.xaml.cs">
+      <DependentUpon>Inst_Piano.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Page_Playing.xaml.cs">
+      <DependentUpon>Page_Playing.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\VM_Body.cs" />
     <Compile Include="ViewModels\VM_EnvironmentVariables.cs" />
     <Page Include="Controls\Ctrl_About.xaml">
       <SubType>Designer</SubType>
@@ -139,6 +178,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Ctrl_Cursor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Ctrl_MaskSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -148,6 +191,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Ctrl_Options.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Ctrl_SynthSelector.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -171,6 +218,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Instruments\Inst_Drum.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Instruments\Inst_Guitar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Instruments\Inst_Piano.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PageSwitcher.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -179,11 +238,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\Page_Playing.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Res_Common.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Res_Page_Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Res_Page_Playing.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -247,9 +314,7 @@
   <ItemGroup>
     <Resource Include="AirBand.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Sounds\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Materials\About.png" />
     <Resource Include="Materials\Mod.png" />
@@ -284,6 +349,47 @@
     <Resource Include="Materials\RightArrow.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Music\Title.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Sounds\Gloom.wav" />
+    <Resource Include="Sounds\Cheer.wav" />
+    <Resource Include="Materials\Cursor.png" />
+    <Resource Include="Materials\CursorCenter.png" />
+    <Resource Include="Materials\GloomEffect.png" />
+    <Resource Include="Materials\CheerEffect.png" />
+    <Content Include="Materials\Masks\Mask00.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask01.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask02.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask03.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask04.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask05.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask06.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask07.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask08.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Materials\Masks\Mask09.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Materials\Return.png" />
+    <Resource Include="Materials\Synth.png" />
     <Resource Include="Materials\Violin.png" />
     <Resource Include="Materials\YouTube.jpg" />
     <EmbeddedResource Include="Assemblies\Microsoft.Expression.Effects.dll" />
@@ -291,6 +397,9 @@
     <EmbeddedResource Include="Assemblies\System.Windows.Interactivity.dll" />
     <EmbeddedResource Include="Assemblies\Facebook.dll" />
     <Resource Include="Materials\AirBand.jpg" />
+    <EmbeddedResource Include="Assemblies\Microsoft.Kinect.dll" />
+    <EmbeddedResource Include="Assemblies\Microsoft.Kinect.Wpf.Controls.dll" />
+    <EmbeddedResource Include="Assemblies\NAudio.dll" />
     <Content Include="Materials\Backgrounds\BG00.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -303,15 +412,9 @@
     <Resource Include="Materials\Facebook.jpg" />
     <Resource Include="Materials\Drum.png" />
     <Resource Include="Materials\Flute.png" />
-    <Content Include="Materials\Masks\Mask00.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Materials\Masks\Mask01.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Materials\Masks\Mask02.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Materials\Instruments.png" />
+    <Resource Include="Materials\Cheer.png" />
+    <Resource Include="Materials\Gloom.png" />
     <Resource Include="Materials\Guitar.png" />
     <Resource Include="Materials\Piano.png" />
     <Resource Include="Materials\Masks.png" />
@@ -324,7 +427,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>del $(TargetDir)\*.xml</PostBuildEvent>
+    <PostBuildEvent>del $(TargetDir)\*.xml
+del $(TargetDir)\*.config</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

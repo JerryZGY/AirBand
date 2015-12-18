@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ctrl="clr-namespace:AirBand.Controls"
-             mc:Ignorable="d"
-             d:DesignWidth="1366" d:DesignHeight="768" Width="1366" Height="768" Loaded="page_Loaded">
+             mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="768" Width="1366" Height="768" Loaded="page_Loaded">
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/Res_Page_Main.xaml"/>
     </UserControl.Resources>
@@ -13,7 +12,7 @@
         <Image Source="{Binding Background, Mode=OneWay}"/>
         <Grid x:Name="Grid_Menu">
             <Grid.Effect>
-                <BlurEffect Radius="0" KernelType="Gaussian"/>
+                <BlurEffect Radius="0"/>
             </Grid.Effect>
             <Grid.RenderTransform>
                 <TranslateTransform/>

@@ -34,7 +34,7 @@ namespace AirBand
             }
         }
 
-        private double mainVolume = .5;
+        private double mainVolume = 0.1;
         public double MainVolume
         {
             get
@@ -58,8 +58,8 @@ namespace AirBand
             set
             {
                 fullScreen = value;
-                Switcher.pageSwitcher.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                Switcher.pageSwitcher.WindowState = (fullScreen) ? WindowState.Maximized : WindowState.Normal;
+                Switcher.PageSwitcher.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                Switcher.PageSwitcher.WindowState = (fullScreen) ? WindowState.Maximized : WindowState.Normal;
                 OnPropertyChanged("FullScreen");
             }
         }
@@ -148,7 +148,7 @@ namespace AirBand
             }
         }
 
-        private int instrumentsVolume = 63;
+        private int instrumentsVolume = 70;
         public int InstrumentsVolume
         {
             get
@@ -187,6 +187,20 @@ namespace AirBand
             {
                 guitarSense = value;
                 OnPropertyChanged("GuitarSense");
+            }
+        }
+
+        private int outDeviceIndex = 0;
+        public int OutDeviceIndex
+        {
+            get
+            {
+                return outDeviceIndex;
+            }
+            set
+            {
+                outDeviceIndex = value;
+                OnPropertyChanged("OutDeviceIndex");
             }
         }
     }
