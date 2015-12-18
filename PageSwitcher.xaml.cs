@@ -9,12 +9,14 @@ namespace AirBand
     {
         public KinectHandler KinectHandler;
         public MidiHandler MidiHandler;
+        public MyoHandler MyoHandler;
 
         public PageSwitcher()
         {
             KinectHandler = new KinectHandler();
             KinectHandler.InputEvent += inputEvent;
             MidiHandler = new MidiHandler();
+            MyoHandler = new MyoHandler();
             DataContext = Switcher.VM_EnvironmentVariables;
             InitializeComponent();
             Switcher.PageSwitcher = this;

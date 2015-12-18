@@ -50,12 +50,13 @@ namespace AirBand.Pages
             Inst.Height = 50;
             Cnv_InstSelector.Opacity = 0;
             Cnv_InstSelector.RenderTransform = new RotateTransform(-90);
-            Switcher.PageSwitcher.KinectHandler.InputEvent += inputEvent;
             Img_KinectFrame.Source = Switcher.PageSwitcher.KinectHandler.ImageSource;
             Img_UserView.Source = Switcher.PageSwitcher.KinectHandler.BodyIndexImageSource;
             debounceTimer = new System.Windows.Forms.Timer() { Interval = 1500 };
             cancelDebounceTimer = new System.Windows.Forms.Timer() { Interval = 1500 };
             snd = new SoundHandler();
+            Switcher.PageSwitcher.KinectHandler.InputEvent += inputEvent;
+            Switcher.PageSwitcher.MyoHandler.InputHandler += myoInputEvent;
         }
 
         private void inputEvent(KinectInputArgs e)
@@ -65,6 +66,21 @@ namespace AirBand.Pages
             if (Cnv_InstSelector.IsHitTestVisible)
                 foreach (var element in Cnv_InstSelector.Children)
                     checkIntersects(element as Button);
+        }
+
+        private void myoInputEvent()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (Btn_Inst.IsHitTestVisible)
+                {
+                    Btn_Inst.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                }
+                else if (Btn_Return.IsHitTestVisible)
+                {
+                    Btn_Return.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                }
+            });
         }
 
         private void checkIntersects(Button btn)
